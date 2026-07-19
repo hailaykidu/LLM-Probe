@@ -1,0 +1,9 @@
+Identify the part of speech of the following Tigrigna item.
+Answer only with one word in lowercase (e.g., noun, verb, adjective).
+
+Example:
+Phrase: ኣብ
+Output: preposition
+
+Now analyze:
+Phrase: {tigrigna_sentence} ({english_sentence})

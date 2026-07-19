@@ -1,0 +1,118 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:04<00:04,  4.64s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.35s/it]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:03<00:10,  3.41s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:06<00:07,  3.51s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:10<00:03,  3.54s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:12<00:00,  2.72s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:12<00:00,  3.01s/it]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:03<00:07,  3.55s/it]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:07<00:03,  3.58s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:10<00:00,  3.39s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:10<00:00,  3.44s/it]
+Device set to use cuda:0
+Device set to use cuda:3
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:1
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:0
+Some weights of the model checkpoint at xlm-roberta-base were not used when initializing XLMRobertaForMaskedLM: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+- This IS expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:03<00:11,  3.76s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:07<00:07,  3.90s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:11<00:03,  3.93s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:14<00:00,  3.54s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:14<00:00,  3.66s/it]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:08<00:08,  8.94s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:12<00:00,  6.01s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:12<00:00,  6.45s/it]
+Device set to use cuda:0
+CUDA-fused xIELU not available (No module named 'xielu') – falling back to a Python version.
+For CUDA xIELU (experimental), `pip install git+https://github.com/nickjbrowning/XIELU`
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:04<00:14,  4.97s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:09<00:09,  4.85s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:14<00:04,  4.92s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:15<00:00,  3.39s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:15<00:00,  3.95s/it]
+Device set to use cuda:0
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.80it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.04it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.02it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.01it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.30it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.18it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:01<00:02,  1.01s/it]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:02<00:01,  1.04s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:03<00:00,  1.01it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:03<00:00,  1.00s/it]
+Device set to use cuda:0
+Device set to use cuda:3
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:1
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:0
+Some weights of the model checkpoint at xlm-roberta-base were not used when initializing XLMRobertaForMaskedLM: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+- This IS expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.23it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.19it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.18it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.25it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.23it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.99s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.34s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.44s/it]
+Device set to use cuda:0
+CUDA-fused xIELU not available (No module named 'xielu') – falling back to a Python version.
+For CUDA xIELU (experimental), `pip install git+https://github.com/nickjbrowning/XIELU`
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.02it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.01s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.01s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.44it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.24it/s]
+Device set to use cuda:0
+Traceback (most recent call last):
+  File "/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/tasks/pos_tagging.py", line 51, in <module>
+    df = pd.concat([pos_df, gold_df], axis=1).dropna(subset=["English", "Tigrigna", "ExpectedTags"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/pandas/core/frame.py", line 6692, in dropna
+    raise KeyError(np.array(subset)[check].tolist())
+KeyError: ['Tigrigna', 'ExpectedTags']
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.14it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.24it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.33it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.29it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.28it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.66it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.50it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:00<00:01,  1.23it/s]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:01<00:00,  1.23it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:02<00:00,  1.28it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:02<00:00,  1.27it/s]
+Device set to use cuda:0
+Device set to use cuda:3
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:1
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:0
+Some weights of the model checkpoint at xlm-roberta-base were not used when initializing XLMRobertaForMaskedLM: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+- This IS expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:01,  1.58it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.51it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:01<00:00,  1.49it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.58it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.55it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.53s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.11s/it]
+Device set to use cuda:0
+CUDA-fused xIELU not available (No module named 'xielu') – falling back to a Python version.
+For CUDA xIELU (experimental), `pip install git+https://github.com/nickjbrowning/XIELU`
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.31it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.30it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.28it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.87it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.60it/s]
+Device set to use cuda:0
+Traceback (most recent call last):
+  File "/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/tasks/morphosyntax_probe.py", line 51, in <module>
+    df = pd.concat([probe_df, gold_df], axis=1).dropna(subset=["English", "Tigrigna", "ExpectedTags"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/pandas/core/frame.py", line 6692, in dropna
+    raise KeyError(np.array(subset)[check].tolist())
+KeyError: ['ExpectedTags']
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.14it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.24it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.32it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.26it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.26it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.63it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.48it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:00<00:01,  1.23it/s]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:01<00:00,  1.24it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:02<00:00,  1.30it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:02<00:00,  1.28it/s]
+Device set to use cuda:0
+Device set to use cuda:3
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:1
+/home/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.12/site-packages/accelerate/utils/modeling.py:1598: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:0
+Some weights of the model checkpoint at xlm-roberta-base were not used when initializing XLMRobertaForMaskedLM: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+- This IS expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:01,  1.58it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.52it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:01<00:00,  1.49it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.58it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.56it/s]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.54s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.11s/it]
+Device set to use cuda:0
+CUDA-fused xIELU not available (No module named 'xielu') – falling back to a Python version.
+For CUDA xIELU (experimental), `pip install git+https://github.com/nickjbrowning/XIELU`
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.32it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.30it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.29it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.86it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.61it/s]
+Device set to use cuda:0

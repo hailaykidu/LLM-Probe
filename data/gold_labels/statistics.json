@@ -1,0 +1,11 @@
+{
+  "TotalEntries": 7234,
+  "UniqueEnglishPhrases": 7068,
+  "UniqueTigrignaPhrases": 6073,
+  "AverageEnglishPhraseLength": 1.15,
+  "AverageTigrignaPhraseLength": 1.37,
+  "MultiwordEnglishPhrases": 967,
+  "MultiwordTigrignaPhrases": 2000,
+  "POSCategoryDistribution": {},
+  "BLEUReadyPairs": 7234
+}

@@ -1,0 +1,27 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:59<00:59, 59.26s/it]Fetching 2 files: 100%|██████████| 2/2 [00:59<00:00, 29.63s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:17<00:17, 17.03s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  7.19s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.66s/it]
+Device set to use cuda:0
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files:  25%|██▌       | 1/4 [02:20<07:02, 140.74s/it]Fetching 4 files:  50%|█████     | 2/4 [02:20<01:56, 58.07s/it] Fetching 4 files: 100%|██████████| 4/4 [02:20<00:00, 35.24s/it]
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:14<00:43, 14.45s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:30<00:30, 15.14s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:45<00:15, 15.44s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:52<00:00, 11.86s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:52<00:00, 13.06s/it]
+Device set to use cuda:0
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [02:04<04:09, 124.97s/it]Fetching 3 files:  67%|██████▋   | 2/3 [02:05<00:51, 51.54s/it] Fetching 3 files: 100%|██████████| 3/3 [02:05<00:00, 41.70s/it]
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:16<00:32, 16.33s/it]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:34<00:17, 17.26s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:49<00:00, 16.32s/it]Loading checkpoint shards: 100%|██████████| 3/3 [00:49<00:00, 16.48s/it]
+Device set to use cuda:0
+Device set to use cuda:3
+/homes/neumann/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.13/site-packages/accelerate/utils/modeling.py:1615: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:1
+/homes/neumann/teklehaymanot/TigrinyaTokenizer/MPETokenization/Paralleldata/MoVoC/LLM_Evaluation_Tigrinya/env/lib/python3.13/site-packages/accelerate/utils/modeling.py:1615: UserWarning: The following device_map keys do not match any submodules in the model: ['decoder.embed_tokens', 'encoder.embed_tokens']
+  warnings.warn(
+Device set to use cuda:0
+Some weights of the model checkpoint at xlm-roberta-base were not used when initializing XLMRobertaForMaskedLM: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+- This IS expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing XLMRobertaForMaskedLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Device set to use cuda:0
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files:  25%|██▌       | 1/4 [01:27<04:23, 87.76s/it]Fetching 4 files:  50%|█████     | 2/4 [02:09<02:01, 60.88s/it]Fetching 4 files: 100%|██████████| 4/4 [02:09<00:00, 32.46s/it]
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:13<00:41, 13.99s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:28<00:28, 14.22s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:42<00:14, 14.40s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:54<00:00, 13.21s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:54<00:00, 13.60s/it]
+Device set to use cuda:0
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [02:11<02:11, 131.58s/it]Fetching 2 files: 100%|██████████| 2/2 [02:11<00:00, 65.79s/it] 
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:35<00:35, 35.94s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:51<00:00, 23.95s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:51<00:00, 25.75s/it]
+Device set to use cuda:0
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files:  25%|██▌       | 1/4 [02:14<06:43, 134.65s/it][2026-07-13T16:11:36.084] error: *** JOB 49187 ON gpunode05 CANCELLED AT 2026-07-13T16:11:36 DUE to SIGNAL Terminated ***

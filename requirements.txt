@@ -1,0 +1,21 @@
+# Core libraries
+pandas
+numpy
+
+# Hugging Face Transformers and dependencies
+transformers
+torch
+sentencepiece
+accelerate
+protobuf
+
+# Evaluation metrics
+nltk
+
+# Utility and progress
+tqdm
+
+# Optional: for Jupyter notebooks and visualization
+jupyter
+matplotlib
+seaborn

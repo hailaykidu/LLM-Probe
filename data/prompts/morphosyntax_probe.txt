@@ -1,0 +1,9 @@
+Identify the morphosyntactic features of the following Tigrigna phrase.
+Answer only with a comma-separated list of lowercase terms.
+
+Example:
+Phrase: ኣብ ገዛ
+Output: preposition, noun, singular
+
+Now analyze:
+Phrase: {tigrigna_sentence} ({english_sentence})

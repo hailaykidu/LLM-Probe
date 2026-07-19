@@ -1,0 +1,11 @@
+Align the following English sentence with its Tigrinya translation.
+Provide word-to-word mappings in the format EnglishWord→TigrinyaWord, separated by commas.
+
+Example:
+English: cat
+Tigrigna: ድሙ
+Output: cat→ድሙ
+
+Now align:
+English: {english_sentence}
+Tigrigna: {tigrigna_sentence}

@@ -1,0 +1,9 @@
+Translate the following English phrase into Tigrigna.
+Answer only with the Tigrigna translation.
+
+Example:
+English: house
+Output: ገዛ
+
+Now translate:
+English: {english_sentence}
