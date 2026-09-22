@@ -1,0 +1,30 @@
+Translate the following English phrase into Tigrigna.
+Answer with the Tigrigna translation only. Do not explain, do not repeat the
+English, do not add notes. Output one line containing only Ge'ez script.
+
+English: house
+Output: ገዛ
+
+English: a lot
+Output: ብዙሕ
+
+English: accept
+Output: ተቐበለ
+
+English: accident
+Output: ሓደጋ
+
+English: above
+Output: ኣብ ልዕሊ
+
+English: absolute
+Output: ፍጹም
+
+English: abrupt
+Output: ሃንደበት
+
+English: account
+Output: ሕሳብ
+
+English: {english_sentence}
+Output:

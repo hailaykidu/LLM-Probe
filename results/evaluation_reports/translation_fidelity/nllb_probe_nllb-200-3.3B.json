@@ -1,0 +1,460 @@
+{
+  "checkpoint": "facebook/nllb-200-3.3B",
+  "n": 5775,
+  "chrf": 16.05396922610878,
+  "bleu4_char": 14.230587300076172,
+  "bleu4_word": 0.23961202800698178,
+  "exact": 16.242424242424242,
+  "samples": [
+    {
+      "English": "a little",
+      "Expected": [
+        "ንእሽቶይ",
+        "ቁሩብ",
+        "ውሕድ"
+      ],
+      "Output": "ቁሩብ"
+    },
+    {
+      "English": "a long time",
+      "Expected": [
+        "ነዊሕ ግዝ"
+      ],
+      "Output": "ነዊሕ ግዜ"
+    },
+    {
+      "English": "a lot",
+      "Expected": [
+        "ብዙሕ"
+      ],
+      "Output": "ብዙሕ"
+    },
+    {
+      "English": "abandon",
+      "Expected": [
+        "ገደፈ",
+        "ረጥረጠ"
+      ],
+      "Output": "ምውጋድ"
+    },
+    {
+      "English": "abandonment",
+      "Expected": [
+        "ርጥረጣ"
+      ],
+      "Output": "ምብትታን"
+    },
+    {
+      "English": "abbot",
+      "Expected": [
+        "ኣባ"
+      ],
+      "Output": "ኣቡነ"
+    },
+    {
+      "English": "ability",
+      "Expected": [
+        "ጥበብ",
+        "ክእለት",
+        "ብቕዓት"
+      ],
+      "Output": "ክእለት"
+    },
+    {
+      "English": "able",
+      "Expected": [
+        "ጥበባዊ",
+        "ክእለታዊ"
+      ],
+      "Output": "ክኢላ"
+    },
+    {
+      "English": "above",
+      "Expected": [
+        "ኣብ ልዕሊ"
+      ],
+      "Output": "ኣብ ላዕሊ"
+    },
+    {
+      "English": "abrupt",
+      "Expected": [
+        "ሃንደበት"
+      ],
+      "Output": "ሃንደበታዊ"
+    },
+    {
+      "English": "abruptly",
+      "Expected": [
+        "ብጋህዲ"
+      ],
+      "Output": "ብሃንደበት"
+    },
+    {
+      "English": "abscess",
+      "Expected": [
+        "ሓገል"
+      ],
+      "Output": "ረኽሲ (abscess)"
+    },
+    {
+      "English": "absence",
+      "Expected": [
+        "ብኩራት"
+      ],
+      "Output": "ዘይምህላዉ"
+    },
+    {
+      "English": "absent (from oneself)",
+      "Expected": [
+        "ቦኾረ"
+      ],
+      "Output": "ካብ ገዛእ ርእሱ ዝተፈልየ"
+    },
+    {
+      "English": "absent",
+      "Expected": [
+        "ብኹር"
+      ],
+      "Output": "ዘይህሉ"
+    },
+    {
+      "English": "absent minded",
+      "Expected": [
+        "ዝንጉዕ"
+      ],
+      "Output": "ኣተሓሳስባ ዘይብሎም"
+    },
+    {
+      "English": "absent mindedness",
+      "Expected": [
+        "ምዝንጋዕ"
+      ],
+      "Output": "ኣተሓሳስባ ዘይምህላው"
+    },
+    {
+      "English": "absolute",
+      "Expected": [
+        "ፍጹም"
+      ],
+      "Output": "ፍጹም"
+    },
+    {
+      "English": "absolutely",
+      "Expected": [
+        "ብፍጹም"
+      ],
+      "Output": "ብርግጽ"
+    },
+    {
+      "English": "absolve",
+      "Expected": [
+        "ፈተሐ"
+      ],
+      "Output": "ሓራ ምውጻእ"
+    },
+    {
+      "English": "abundance",
+      "Expected": [
+        "ታዐሚ",
+        "እኹልተረፍ"
+      ],
+      "Output": "ብዙሕነት"
+    },
+    {
+      "English": "abuse",
+      "Expected": [
+        "በደል",
+        "ጸርፊ"
+      ],
+      "Output": "ዘይግቡእ ኣጠቓቕማ"
+    },
+    {
+      "English": "abuse",
+      "Expected": [
+        "ጸረፈ"
+      ],
+      "Output": "ዘይግቡእ ኣጠቓቕማ"
+    },
+    {
+      "English": "abusive",
+      "Expected": [
+        "በደላዊ"
+      ],
+      "Output": "ዘይግቡእ ኣጠቓቕማ"
+    },
+    {
+      "English": "abusively",
+      "Expected": [
+        "ብድላ"
+      ],
+      "Output": "ብጌጋ"
+    },
+    {
+      "English": "accept",
+      "Expected": [
+        "ተቐበለ"
+      ],
+      "Output": "ተቐባልነት"
+    },
+    {
+      "English": "accident",
+      "Expected": [
+        "ሓደጋ"
+      ],
+      "Output": "ሓደጋ"
+    },
+    {
+      "English": "accidental",
+      "Expected": [
+        "ሓደጋዊ",
+        "ሃንደበታዊ"
+      ],
+      "Output": "ሃንደበታዊ"
+    },
+    {
+      "English": "accidentally",
+      "Expected": [
+        "ብሓደጋ"
+      ],
+      "Output": "ብጌጋ"
+    },
+    {
+      "English": "acclaim",
+      "Expected": [
+        "ኣጨብጨበ"
+      ],
+      "Output": "ኣድናቖት"
+    },
+    {
+      "English": "acclamation",
+      "Expected": [
+        "ውዕውዕ ደገፍታ"
+      ],
+      "Output": "ኣድናቖት"
+    },
+    {
+      "English": "accompany",
+      "Expected": [
+        "ኣሰነየ"
+      ],
+      "Output": "ምኻድ"
+    },
+    {
+      "English": "account",
+      "Expected": [
+        "ሕሳብ"
+      ],
+      "Output": "ሕሳብ"
+    },
+    {
+      "English": "accuracy",
+      "Expected": [
+        "ሓቂ",
+        "ልክዕ",
+        "ቅኑዕ",
+        "ልክዕነት"
+      ],
+      "Output": "ቅኑዕነት"
+    },
+    {
+      "English": "accurate",
+      "Expected": [
+        "ሓቓዊ",
+        "ልክዓዊ",
+        "ቕንዓዊ"
+      ],
+      "Output": "ቅኑዕ"
+    },
+    {
+      "English": "accurately",
+      "Expected": [
+        "ብሓቂ",
+        "ብልክዕ",
+        "ብቑኑዕ"
+      ],
+      "Output": "ብልክዕ"
+    },
+    {
+      "English": "accusation",
+      "Expected": [
+        "ወከሰ",
+        "ክሲ"
+      ],
+      "Output": "ክሲ"
+    },
+    {
+      "English": "accuse",
+      "Expected": [
+        "ምውካስ",
+        "ከሰሰ"
+      ],
+      "Output": "ክኸስስ"
+    },
+    {
+      "English": "accuser",
+      "Expected": [
+        "ወካሲት",
+        "ከሳሲት"
+      ],
+      "Output": "ከሳሲ"
+    },
+    {
+      "English": "accuser",
+      "Expected": [
+        "ወካሲ",
+        "ከሳሲ"
+      ],
+      "Output": "ከሳሲ"
+    },
+    {
+      "English": "accusers",
+      "Expected": [
+        "ወከስቲ",
+        "ከሰስቲ"
+      ],
+      "Output": "ከሳሲ"
+    },
+    {
+      "English": "accustomed, get",
+      "Expected": [
+        "ኣልመደ"
+      ],
+      "Output": "ተለማሚዱ"
+    },
+    {
+      "English": "ache",
+      "Expected": [
+        "ቓንዛ"
+      ],
+      "Output": "ቃንዛ"
+    },
+    {
+      "English": "achieve",
+      "Expected": [
+        "ፈጸመ"
+      ],
+      "Output": "ምርካብ"
+    },
+    {
+      "English": "achievement",
+      "Expected": [
+        "ጭብጢ"
+      ],
+      "Output": "ዓወት"
+    },
+    {
+      "English": "aching",
+      "Expected": [
+        "መቐንዘዊ"
+      ],
+      "Output": "ቃንዛ"
+    },
+    {
+      "English": "achy",
+      "Expected": [
+        "ቓንዛዊ"
+      ],
+      "Output": "ቃንዛ"
+    },
+    {
+      "English": "acidic",
+      "Expected": [
+        "መጺጽ"
+      ],
+      "Output": "ኣሲዳዊ"
+    },
+    {
+      "English": "acorn",
+      "Expected": [
+        "ፍረ ኦክ"
+      ],
+      "Output": "ዕምባባ"
+    },
+    {
+      "English": "acquaint",
+      "Expected": [
+        "ምልላይ",
+        "ምፍላጥ"
+      ],
+      "Output": "ኣፍልጦ"
+    },
+    {
+      "English": "acquaintance",
+      "Expected": [
+        "ሌላ",
+        "ፍልጠት"
+      ],
+      "Output": "ኣፍልጦ"
+    },
+    {
+      "English": "acquire",
+      "Expected": [
+        "ረኸበ"
+      ],
+      "Output": "ምርካብ"
+    },
+    {
+      "English": "acquit",
+      "Expected": [
+        "ፈተሐ",
+        "ንጹህ",
+        "ቕንዕና"
+      ],
+      "Output": "ነጻ ምውጻእ"
+    },
+    {
+      "English": "acquittal",
+      "Expected": [
+        "ምኽፋል ዕዳ"
+      ],
+      "Output": "ናጻ ምውጻእ"
+    },
+    {
+      "English": "act",
+      "Expected": [
+        "ገበረ",
+        "ምግባር",
+        "ምትውሳእ"
+      ],
+      "Output": "ስጉምቲ ምውሳድ"
+    },
+    {
+      "English": "action",
+      "Expected": [
+        "ተግባር",
+        "ግብሪ"
+      ],
+      "Output": "ስጉምቲ"
+    },
+    {
+      "English": "actively",
+      "Expected": [
+        "ተግባራዊ",
+        "ግብራዊ"
+      ],
+      "Output": "ብዕቱብ"
+    },
+    {
+      "English": "activity",
+      "Expected": [
+        "ንጥፈት",
+        "ስራሕ"
+      ],
+      "Output": "ንጥፈት"
+    },
+    {
+      "English": "actor",
+      "Expected": [
+        "ተዋሳአይ"
+      ],
+      "Output": "ተዋሳኣይ"
+    },
+    {
+      "English": "actors",
+      "Expected": [
+        "ተዋሰእቲ"
+      ],
+      "Output": "ተዋሳእቲ"
+    }
+  ]
+}
