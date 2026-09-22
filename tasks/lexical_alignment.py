@@ -1,108 +1,3 @@
-# import sys
-# import os
-# import json
-# import pandas as pd
-
-# # Ensure the parent directory is in the Python path
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# from utils.logger import log_result
-
-# # === Load models ===
-# from models.gemma_loader import load_model as load_gemma_2b
-# from models.gemma7b_loader import load_model as load_gemma_7b
-# from models.mistral_loader import load_model as load_mistral_7b
-# from models.mt5_loader import load_model as load_mt5_base
-# from models.mt5_large_loader import load_model as load_mt5_large
-# from models.byt5_loader import load_model as load_byt5
-# from models.xlm_roberta_loader import load_model as load_xlm_roberta
-# from models.qwen_loader import load_model as load_qwen_7b
-# from models.falcon_loader import load_model as load_falcon_10b
-# from models.apertus_loader import load_model as load_apertus_8b  # ✅ NEW
-
-# # === Tagged model wrapper ===
-# class TaggedModel:
-#     def __init__(self, name, pipeline):
-#         self.name = name
-#         self.pipeline = pipeline
-
-#     def __call__(self, prompts):
-#         responses = self.pipeline(prompts)
-#         return [{"model": self.name, "response": r} for r in responses]
-
-# # === Initialize models ===
-# models = {
-#     "gemma-2b": TaggedModel("gemma-2b", load_gemma_2b()),
-#     "gemma-7b": TaggedModel("gemma-7b", load_gemma_7b()),
-#     "mistral-7b": TaggedModel("mistral-7b", load_mistral_7b()),
-#     "mt5-base": TaggedModel("mt5-base", load_mt5_base()),
-#     "mt5-large": TaggedModel("mt5-large", load_mt5_large()),
-#     "byt5": TaggedModel("byt5", load_byt5()),
-#     "xlm-roberta": TaggedModel("xlm-roberta", load_xlm_roberta()),
-#     "qwen-7b": TaggedModel("qwen-7b", load_qwen_7b()),
-#     "falcon-10b": TaggedModel("falcon-10b", load_falcon_10b()),
-#     "apertus-8b": TaggedModel("apertus-8b", load_apertus_8b())
-# }
-
-# # === Load data ===
-# prompt_template = open("data/prompts/lexical_alignment.txt", encoding="utf-8").read()
-# lexicon_df = pd.read_json("data/lexicon.json")
-# gold_df = pd.read_json("data/gold_labels/lexical_alignment.json")
-# df = pd.concat([lexicon_df, gold_df], axis=1).dropna(subset=["English", "Tigrigna", "ExpectedAlignment"])
-
-# # === Evaluation loop ===
-# for model_name, model in models.items():
-#     print(f"\n🚀 Lexical Alignment with {model_name}")
-#     result_path = f"results/evaluation_reports/lexical_alignment_{model_name}.json"
-#     accuracy_path = f"results/evaluation_reports/lexical_alignment_accuracy_{model_name}.txt"
-
-#     completed_keys = set()
-#     if os.path.exists(result_path):
-#         try:
-#             previous = json.load(open(result_path, encoding="utf-8"))
-#             completed_keys = {(r["English"], r["Tigrigna"]) for r in previous}
-#         except Exception:
-#             previous = []
-#     else:
-#         previous = []
-
-#     filtered = df[~df.apply(lambda r: (r["English"], r["Tigrigna"]) in completed_keys, axis=1)]
-#     if filtered.empty:
-#         print("⏭️ Already done.")
-#         continue
-
-#     prompts = [
-#         prompt_template.replace("{english_sentence}", r["English"]).replace("{tigrigna_sentence}", r["Tigrigna"])
-#         for _, r in filtered.iterrows()
-#     ]
-
-#     try:
-#         tagged_responses = model(prompts)
-#     except Exception as e:
-#         print(f"❌ Error with {model_name}: {e}")
-#         continue
-
-#     new_results = []
-#     for (_, row), tagged in zip(filtered.iterrows(), tagged_responses):
-#         response = tagged["response"]
-#         output = response.get("generated_text") or response.get("text", "").strip() if isinstance(response, dict) else ""
-#         match = bool(set(row["ExpectedAlignment"].replace(" ", "").split(",")) & set(output.replace(" ", "").split(",")))
-#         new_results.append({
-#             "Model": tagged["model"],
-#             "English": row["English"],
-#             "Tigrigna": row["Tigrigna"],
-#             "ExpectedAlignment": row["ExpectedAlignment"],
-#             "ModelOutput": output,
-#             "Match": match
-#         })
-
-#     all_results = previous + new_results
-#     log_result(all_results, result_path)
-#     acc = sum(r["Match"] for r in all_results) / len(all_results)
-#     with open(accuracy_path, "w") as f:
-#         f.write(f"{acc:.4f}")
-#     print(f"✅ Accuracy: {acc:.2%}")
-#     print("📌 Sample:", new_results[0])
 import sys
 import os
 import json
@@ -113,26 +8,33 @@ import pandas as pd
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import log_result
+from models.span_infilling import to_span_infilling_prompts
 
 # === Load models ===
 from models.gemma_loader import load_model as load_gemma_2b
 from models.gemma7b_loader import load_model as load_gemma_7b
 from models.mistral_loader import load_model as load_mistral_7b
-from models.mt5_loader import load_model as load_mt5_base
+from models.mt5_loader import load_model as load_mt5_small
 from models.mt5_large_loader import load_model as load_mt5_large
 from models.byt5_loader import load_model as load_byt5
 from models.xlm_roberta_loader import load_model as load_xlm_roberta
 from models.qwen_loader import load_model as load_qwen_7b
-from models.falcon_loader import load_model as load_falcon_10b
+from models.falcon_loader import load_model as load_falcon_7b
 from models.apertus_loader import load_model as load_apertus_8b
 
 # === Helpers ===
 EXTRA_ID_RE = re.compile(r"<extra_id_\d+>")
 OUTPUT_FORMAT_ECHO_RE = re.compile(r"(?i)output\s*format.*")
+# Models routinely echo the prompt's few-shot "Output:" label back as a
+# prefix to their own answer (e.g. "Output: a little→ቁሩብ"). Left unstripped,
+# this polluted every downstream comparison against gold labels that never
+# contain that prefix.
+OUTPUT_PREFIX_RE = re.compile(r"(?i)^\s*[\*_]*\s*(output|answer)\s*[\*_]*\s*:\s*")
 
 def strip_special_tokens(text: str) -> str:
     text = EXTRA_ID_RE.sub("", text)
     text = OUTPUT_FORMAT_ECHO_RE.sub("", text)
+    text = OUTPUT_PREFIX_RE.sub("", text)
     return " ".join(text.split()).strip()
 
 def extract_text(response) -> str:
@@ -184,26 +86,64 @@ class TaggedModel:
         return [{"model": self.name, "response": responses}]
 
 # === Initialize models ===
-models = {
-    "gemma-2b": TaggedModel("gemma-2b", load_gemma_2b()),
-    "gemma-7b": TaggedModel("gemma-7b", load_gemma_7b()),
-    "mistral-7b": TaggedModel("mistral-7b", load_mistral_7b()),
-    "mt5-base": TaggedModel("mt5-base", load_mt5_base()),
-    "mt5-large": TaggedModel("mt5-large", load_mt5_large()),
-    "byt5": TaggedModel("byt5", load_byt5()),
-    "xlm-roberta": TaggedModel("xlm-roberta", load_xlm_roberta()),
-    "qwen-7b": TaggedModel("qwen-7b", load_qwen_7b()),
-    "falcon-10b": TaggedModel("falcon-10b", load_falcon_10b()),
+# Each model is loaded independently, with failures caught and logged rather
+# than fatal. Previously this dict was built as a single literal with every
+# load_*() call evaluated eagerly and unguarded -- one model's load failure
+# (e.g. xlm-roberta's known "No mask_token" issue, or a version-dependent
+# crash in device_map inference) raised an exception that killed the entire
+# module before the evaluation loop below ever ran, silently discarding
+# every other model's results for the whole task.
+_MODEL_LOADERS = [
+    ("gemma-2b", load_gemma_2b),
+    ("gemma-7b", load_gemma_7b),
+    ("mistral-7b", load_mistral_7b),
+    # google/mt5-small is what this loader actually loads, despite the
+    # earlier "mt5-base" naming; relabeled to match the checkpoint used.
+    ("mt5-small", load_mt5_small),
+    ("mt5-large", load_mt5_large),
+    ("byt5", load_byt5),
+    ("xlm-roberta", load_xlm_roberta),
+    ("qwen-7b", load_qwen_7b),
+    # tiiuae/falcon-7b-instruct -- the Falcon model this project evaluates.
+    # Published as "Falcon-10B"; that label is incorrect.
+    ("falcon-7b", load_falcon_7b),
     # apertus-8b repeatedly stalls mid-download from the HF CDN (observed
     # hanging for hours on a partial shard) — skip until that's resolved.
-    # "apertus-8b": TaggedModel("apertus-8b", load_apertus_8b()),
-}
+    # ("apertus-8b", load_apertus_8b),
+]
+
+# Optional scoping for follow-up/re-runs of just one or a few models (e.g.
+# after fixing a loader bug for a model that was skipped in the main run)
+# without re-running every other model's already-completed work. Unset by
+# default, so normal full-sweep invocations are unaffected.
+_only = os.environ.get("EVAL_ONLY_MODELS")
+if _only:
+    _wanted = {m.strip() for m in _only.split(",") if m.strip()}
+    _MODEL_LOADERS = [(n, l) for n, l in _MODEL_LOADERS if n in _wanted]
+
+models = {}
+for _name, _loader in _MODEL_LOADERS:
+    try:
+        models[_name] = TaggedModel(_name, _loader())
+    except Exception as e:
+        print(f"❌ Skipping {_name}: failed to load ({e})")
 
 # === Load data ===
 prompt_template = open("data/prompts/lexical_alignment.txt", encoding="utf-8").read()
-lexicon_df = pd.read_json("data/lexicon.json").rename(columns={"english": "English"})
+# gold_labels/lexical_alignment.json is now the authoritative,
+# already-corrected source (regenerated directly from the fixed
+# Combined_POS_Lexicon.csv, with the English/Tigrigna column swap and
+# duplicate rows already resolved) -- load it directly instead of
+# re-merging against lexicon.json, which avoids reintroducing a fragile
+# English-only join that used to cross-multiply on duplicate headwords
+# (3,561 lexicon entries x 7,234 gold entries produced 3,899+ rows instead
+# of one row per lexicon entry).
 gold_df = pd.read_json("data/gold_labels/lexical_alignment.json")
-df = pd.merge(lexicon_df, gold_df, on="English", how="inner").dropna(subset=["English", "Tigrigna", "ExpectedAlignment"])
+# Dedup on (English, Tigrigna) rather than English alone -- the lexicon
+# contains real distinct senses of the same headword, and deduping on
+# English alone would silently discard those senses instead of preserving
+# them as separate evaluation items.
+df = gold_df.drop_duplicates(subset=["English", "Tigrigna"], keep="first").dropna(subset=["English", "Tigrigna", "ExpectedAlignment"])
 
 # === Evaluation loop ===
 task_name = "lexical_alignment"
@@ -230,10 +170,21 @@ for model_name, model in models.items():
         print("⏭️ Already done for this model.")
         continue
 
+    # The prompt's "Tigrigna:" line shows only the first comma-separated
+    # form. For ~3.2% of rows (182 of 5,775), the gold Tigrigna field lists
+    # multiple candidate translations (e.g. "abandon" -> "ገደፈ, ረጥረጠ"), and
+    # ExpectedAlignment is always annotated against the first one shown --
+    # showing every candidate gave the model no way to know which one the
+    # gold answer expects. The stored "Tigrigna" field on each result row
+    # (and clean_and_enforce_format's fallback) still uses the full,
+    # untrimmed value.
     prompts = [
-        prompt_template.replace("{english_sentence}", str(r["English"])).replace("{tigrigna_sentence}", str(r["Tigrigna"]))
+        prompt_template.replace("{english_sentence}", str(r["English"])).replace(
+            "{tigrigna_sentence}", str(r["Tigrigna"]).split(",")[0].strip()
+        )
         for _, r in filtered.iterrows()
     ]
+    prompts = to_span_infilling_prompts(prompts, model_name)
 
     try:
         tagged_responses = model(prompts)

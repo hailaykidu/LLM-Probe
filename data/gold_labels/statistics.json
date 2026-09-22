@@ -1,11 +1,22 @@
 {
-  "TotalEntries": 7234,
-  "UniqueEnglishPhrases": 7068,
-  "UniqueTigrignaPhrases": 6073,
-  "AverageEnglishPhraseLength": 1.15,
-  "AverageTigrignaPhraseLength": 1.37,
-  "MultiwordEnglishPhrases": 967,
-  "MultiwordTigrignaPhrases": 2000,
-  "POSCategoryDistribution": {},
-  "BLEUReadyPairs": 7234
+  "TotalEntries": 5783,
+  "UniqueEnglishPhrases": 5025,
+  "UniqueTigrignaPhrases": 3926,
+  "AverageEnglishPhraseLength": 1.39,
+  "AverageTigrignaPhraseLength": 1.19,
+  "MultiwordEnglishPhrases": 1639,
+  "MultiwordTigrignaPhrases": 969,
+  "POSCategoryDistribution": {
+    "noun": 3109,
+    "verb": 1542,
+    "adjective": 879,
+    "adverb": 158,
+    "uncategorized": 70,
+    "pronoun": 9,
+    "preposition": 7,
+    "interjection": 5,
+    "conjunction": 4
+  },
+  "BLEUReadyPairs": 5783,
+  "Note": "Regenerated from data/lexicon_combined_fixed.csv after fixing the English/Tigrigna column swap present in the second half of the original Combined_POS_Lexicon.csv (rows 3587-7233), dropping 8 rows with no Tigrigna translation, and removing 1,443 rows that were exact duplicates once the swap was corrected. Original file reported 7,234 entries; this reflects the corrected 5,783."
 }

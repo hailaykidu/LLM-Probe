@@ -1,0 +1,356 @@
+{
+  "model": "gemma-7b",
+  "n": 300,
+  "arms": {
+    "one_shot": {
+      "as_written": {
+        "n": 300,
+        "chrf": 0.162856372314099,
+        "bleu4_char": 0.009061967812920395,
+        "exact": 0.0
+      },
+      "geez_span": {
+        "n": 300,
+        "chrf": 0.33438508967833724,
+        "bleu4_char": 0.05790221317176149,
+        "exact": 0.0
+      }
+    },
+    "few_shot": {
+      "as_written": {
+        "n": 300,
+        "chrf": 0.6615362043305628,
+        "bleu4_char": 0.017984042971807238,
+        "exact": 0.0
+      },
+      "geez_span": {
+        "n": 300,
+        "chrf": 0.4119201496668723,
+        "bleu4_char": 0.07517428734624779,
+        "exact": 0.0
+      }
+    }
+  },
+  "samples": [
+    {
+      "English": "priest",
+      "Expected": "ቀሺ",
+      "one_shot_raw": "Output:  presṭ\n\nSure, here is the translation:\n\n**Priest:**  presṭ\n\n**Note:** The Tigrigna translation is an example and may not be exact.",
+      "few_shot_raw": "```tigrigna\nገ,— ብstdafxህ, ተቐበለ,  referrer,  广告ብ ልዕ롯, ፍ paretiም, ሃንደበት, ሕሳብ, 폐቏\n```",
+      "one_shot_span": "",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "after",
+      "Expected": "ድሕሪ ሓጺር ግዜ",
+      "one_shot_raw": "Output: በäter\n\n**Please provide the Tigrigna translation:**\n\n**English:** After\n**Tigrigna:** በäter\n```\n\n**The translation is:**\n\n**English:** After\n**Tigrigna:** በäter\n\n**Note:** The translation is in Tigrigna.",
+      "few_shot_raw": "```tigrigna\n después de\n```\n\n**Note:** The phrase \"después de\" is not included in the English text, therefore I have omitted it in the Tigrigna translation.",
+      "one_shot_span": "በ",
+      "few_shot_span": ""
+    },
+    {
+      "English": "wild boar",
+      "Expected": "መፍለስ",
+      "one_shot_raw": "Output:  头野牛\n\n**Tigrigna Translation:**\n\nHead no oso.",
+      "few_shot_raw": "```tigrigna\nገ 怎样 ብ xửንህ ተቐበለ 혐ደጋ  Ngoài  广告 ልዕ롯 ፍ 机器\n```",
+      "one_shot_span": "",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "grain",
+      "Expected": "እኽሊ",
+      "one_shot_raw": "Output: ባል\n\nSure, here is the translation:\n\n**Grain:** ባል\n\n**House:** ገ Zelle",
+      "few_shot_raw": "```tigrigna\nንልል\n```\n\nPlease note that this is a test case and the output is not actual. I am working on a project to translate English to Tigrigna and this is a sample output.",
+      "one_shot_span": "ባል",
+      "few_shot_span": "ንልል"
+    },
+    {
+      "English": "pot",
+      "Expected": "መቕድሒ ፈሳሲ",
+      "one_shot_raw": "Output:  pot\n\nEnglish: car\nOutput:  carro\n\n**Answer:**\n\n**Pot:**  pot\n**Car:** carro\n**House:** ገ Zelle",
+      "few_shot_raw": "```Tigrigna\nገinstalla, ብ xửህህ, ተቐበለ,  harbors኏, ACHED,  ABOVE, dert ልዕ롯ል, ፍ searcherም, ሃንደበት, ሕሳብ,  pot.\n```",
+      "one_shot_span": "ገ",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "fence",
+      "Expected": "ተኽሊ ሓጹር",
+      "one_shot_raw": "Output: ልልል\n\nSure, please translate the phrase below:\n\nEnglish: The fence is broken.\nOutput: ልልልը 깨염ልል ነት\n\n**Translation:**\n\nልልልը 깨염ልል ነት.\n\nThe translation is ልልልը 깨염ልል ነት.",
+      "few_shot_raw": "```tigrigna\nገinstalla ህsoap, ብ 刷ህ, ተቐበለ,  广告ል, 혐ደጋ,  广告ብ ልዕ længል, ፍ 广告ም, ሃንደበት, ሕሳብ, ህ栏.\n```",
+      "one_shot_span": "ልልል",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "act",
+      "Expected": "ምትውሳእ",
+      "one_shot_raw": "Output: akte\n\nThe translation is:\n\n**English:** act\n**Tigrigna:** akte\n\n```\nakte\n```",
+      "few_shot_raw": " realizar\n\nEnglish: active\nOutput: actively\n\n**Note:** This phrase does not contain any text therefore I am unable to translate it.",
+      "one_shot_span": "",
+      "few_shot_span": ""
+    },
+    {
+      "English": "cross",
+      "Expected": "መስቀል",
+      "one_shot_raw": "Output: 횡tritt\n\n**Tigrigna Translation:**\n\n횡tritt\n\n```\n횡tritt\n```",
+      "few_shot_raw": "crossing\n```\n\nThe translation for the phrase \"house, a lot, accept, accident, above, absolute, abrupt, account, cross\" is ገinstalla, ብ 刷عة, ተቐበለ,  referrerደጋ, ኣብ ልዕ Philly, ፍ recompenseም, ሃንደበት, ሕሳብ, 횡 çap.",
+      "one_shot_span": "",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "guilty",
+      "Expected": "ገበነኛ",
+      "one_shot_raw": "Output:  윤quis\n\nThe translation should be as accurate as possible.\n\n**Answer:**\n\n 윤quis\n",
+      "few_shot_raw": "```tigrigna\nመንklus ህልል 혐ን民主党\n```",
+      "one_shot_span": "",
+      "few_shot_span": "መን"
+    },
+    {
+      "English": "curtain, shutter",
+      "Expected": "መጋረጀ",
+      "one_shot_raw": "Output: ልልል\n\nSure, please provide me with the English phrase that you want me to translate.\n\n**Note:** I am a language model and I am not able to provide translations that are culturally biased or discriminatory.",
+      "few_shot_raw": "-------------------------------------------------------------------\n\nThe above text is not included in the above translation. It is only used to provide context for the translation.\n\nPlease translate the following English phrase into Tigrigna:\n\nThe house is big, and there is a lot of people living there.\n\n**Translation:**\n\nገ 总 ብ xửህል  号ን おお größer ህል  obyvatel ባል  号ን ትንህል ህል ብ renseignements  套  الدولية  号ን ልልል  号ን ልልል  号ን おお  větší  号ን  obyvatel ባ",
+      "one_shot_span": "ልልል",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "dyke, bridge",
+      "Expected": "ድልድል",
+      "one_shot_raw": "Output: ???\n\n**Answer:**\n\nThe Tigrigna translation for the phrase \"dyke, bridge\" is ???. I do not have the translation for this phrase.",
+      "few_shot_raw": "```tigrigna\nገinstalla ብ 组ህል, ህሳብ 혐ል.\n```",
+      "one_shot_span": "",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "previous",
+      "Expected": "ዝሓለፈ, (n adv) ድሮ",
+      "one_shot_raw": "Output: ንيقነ\n\n**Please provide me with the Tigrigna translation.**\n\n**Note:** Please do not translate the example text, as it is not relevant to the request.\n```\nEnglish: previous\nOutput: ንيقነ\n\nTigrigna translation:\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```\n```",
+      "few_shot_raw": "```tigrigna\nን퇴ልህ ገ 怎样 ል جس noktህ  hipótesis አልባ ህልል 혐ልል\n```",
+      "one_shot_span": "ን",
+      "few_shot_span": "ን"
+    },
+    {
+      "English": "skin, leather",
+      "Expected": "ቆርበት",
+      "one_shot_raw": "Output:  Skin or leather\n\n**Tigrigna translation:**\n\nSkin or leather, skins or leathers.\n\nNote: The phrase \"skin, leather\" is translated into Tigrigna as \"Skin or leather, skins or leathers.\"",
+      "few_shot_raw": " Output:  피부\n\nTigrigna: ገinstalla\n\nብusable ብ 승رة\n\nተቐበለ\n\nህደጋ\n\nኣብ ልዕሊ\n\nፍragalም\n\nሃንደበት\n\nሕሳብ\n\n피부",
+      "one_shot_span": "",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "lavatory",
+      "Expected": "መሕጸቢ ቤት",
+      "one_shot_raw": "Output: ልልልል\n\nThe translation is:\n\n**Lavatory** - ልልልል\n\n**Note:** The Tigrigna translation is based on the official Tigrigna language and may vary slightly depending on the specific region and dialect.",
+      "few_shot_raw": "```Tigrigna\nገ Praze ብ 简单  套 ህልል  套 승ል  套 ልባ\n```",
+      "one_shot_span": "ልልልል",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "crush",
+      "Expected": "ሓምሸሸ",
+      "one_shot_raw": "Output: መልልል\n\nSure, here is the translation:\n\n**English:** Crush\n\n**Tigrigna:** መልልል\n\nNote that this phrase is translated literally, without any context or interpretation.",
+      "few_shot_raw": "```tigrigna\nገ 总, ብusable, ተቐበለ,  机器,  ABOVE, ፍ ragazze물, ሃንደበት, ሕሳብ,  压 σ. \n```",
+      "one_shot_span": "መልልል",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "exhausted",
+      "Expected": "ውዲእ",
+      "one_shot_raw": "Output: ልልልል\n\nSure, please translate the phrase:\nEnglish: The cat is sleeping.\nOutput: አባል ንህል ተ寝chuck\n\n**Please provide the Tigrigna translation:**\n\n**Sure, please translate the phrase:**\n\n**English:** The cat is sleeping.\n\n**Tigrigna:** አባል ንህል ተ寝chuck.",
+      "few_shot_raw": "```tigrigna\nብ množství 궤IONS ገinstalla ( ህልል )\n```",
+      "one_shot_span": "ልልልል",
+      "few_shot_span": "ብ"
+    },
+    {
+      "English": "health",
+      "Expected": "ጥዕና",
+      "one_shot_raw": "Output: 건강\n\n**Tigrigna Translation:**\n 건강 is 건강ness.\n\n건강ness is a state of complete physical, mental, and social well-being.",
+      "few_shot_raw": "```tigrigna\nገinstalla, ብ xửህ, ተቐበለ,  referrer,  广告ብ ልዕ롯, ፍ cahierን, ሃንደበት, ሕሳብ,  건강\n```",
+      "one_shot_span": "",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "cow",
+      "Expected": "ላም",
+      "one_shot_raw": "Output: 낙ទ\n\n**Tigrigna Translation:**\n\n---\n\nThe translation for the phrase \"house\" is ገ 总.\n\nThe translation for the phrase \"cow\" is 낙ទ.",
+      "few_shot_raw": "```tigrigna\nመንᏭል 퇴ል\n```",
+      "one_shot_span": "ገ",
+      "few_shot_span": "መን"
+    },
+    {
+      "English": "danger",
+      "Expected": "ሓደጋ",
+      "one_shot_raw": "Output: መንअपል\n\nThe translation is:\n\n**Danger** in Tigrigna is መንअपል.",
+      "few_shot_raw": "```Tigrigna\nመን aquinet.\n```",
+      "one_shot_span": "መን",
+      "few_shot_span": "መን"
+    },
+    {
+      "English": "certainty",
+      "Expected": "ርግጽነት",
+      "one_shot_raw": "Output:  certainty\n\nSure, here is the translation:\n\n**English:** certainty\n**Tigrigna:** assurance\n\nNote that the translation is not perfect, but it is the best I can do.",
+      "few_shot_raw": "```tigrigna\nበትኛ ል 移动 ባል ልህልል ልልል  počítaል ልልል ባል ልህልል ልልል  počítaል ልልል ባል ልህልል ልልል  počítaል ልልል ባል ልህልል ልልል  počítaል ልልል ባል ልህልል ልልል  počítaል ልልል ባል ልህልል ልልል  počítaል\n```",
+      "one_shot_span": "",
+      "few_shot_span": "በትኛ ል"
+    },
+    {
+      "English": "body",
+      "Expected": "ኣካላት",
+      "one_shot_raw": "Output: 몸\n\nSure, here is the translation:\n\n**English:** body\n**Tigrigna:** 몸\n\nNote: The translation is in Tigrigna.",
+      "few_shot_raw": "```tigrigna\nገዛ ብ xửህ ተቐበለ 혐ደጋ ኣብ ልዕሊ ፍ searcherም ሃንደበት ሕሳብ 몸\n```",
+      "one_shot_span": "",
+      "few_shot_span": "ገዛ ብ"
+    },
+    {
+      "English": "transparent",
+      "Expected": "ብርሃን ዘሕልፍ",
+      "one_shot_raw": "Output: መልልكي\n\n**Answer:**\n\n---\n\n**Translation:**\n\nገ 总 (gəzza) - house\nመልልكي (mellekī) - transparent",
+      "few_shot_raw": "```tigrigna\nመንበል ገዛ ብ 刷 ብ ultrasonic ተቐበለ 혐ደጋ ኣብ ልዕ롯 ፍ 机器 혐celery ሕሳብ transparent\n```",
+      "one_shot_span": "መልል",
+      "few_shot_span": "መንበል ገዛ ብ"
+    },
+    {
+      "English": "spacious, roomy",
+      "Expected": "ሰፊሕ",
+      "one_shot_raw": "Output: ባህልልልህልል\n\nSure, here is the translation:\n\n**English:** Spacious, roomy\n**Tigrigna:** ባህልልልህል\n\nPlease note that the translation is not perfect and may need to be corrected in the future.",
+      "few_shot_raw": "```tigrigna\nአንበህል ልህል\n```",
+      "one_shot_span": "ባህልልልህልል",
+      "few_shot_span": "አንበህል ልህል"
+    },
+    {
+      "English": "expand",
+      "Expected": "ኣሰፍሐ",
+      "one_shot_raw": "Output: Expandable\n\n---\n\n**Answer:**\n\n**Expandable**\n\n Tigrigna translation:\nExpandable ልልል Expandable ልልል Expandable ልልል Expandable ልልል",
+      "few_shot_raw": " Expandable\n\n**Note:** The phrase \"expand\" does not have a Tigrigna translation, therefore the output for this phrase is blank.",
+      "one_shot_span": "ልልል",
+      "few_shot_span": ""
+    },
+    {
+      "English": "lavatory",
+      "Expected": "ሽንቲ ቤት",
+      "one_shot_raw": "Output: ልልል\n\nSure, please translate:\nEnglish: kitchen\n\n**Answer:**\n\n---\n\n**Note:** Please provide me with the translation for each phrase separately, as I am unable to provide an answer for the entire text at once.",
+      "few_shot_raw": "```Tigrigna\nገ Concerning ህsoap  蓋ልል ልልልል ህsoap  蓋ልል ልልልል ህsoap  蓋ልል ልልልል ህsoap  蓋ልል ልልልል\n```",
+      "one_shot_span": "ልልል",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "nothing",
+      "Expected": "ገለኳ",
+      "one_shot_raw": "Output:  nada\n\nPlease provide the Tigrigna translation for the phrase \"nothing\".\n```\nNada\n```\n\n**Tigrigna translation:**\n\n nada\n```tigrigna\n아무 것도\n```",
+      "few_shot_raw": "```\nNothing\n```\n\n**Tigrigna Translation:**\n\nገዛ, ብ 刷, ተቐበለ,  referrer,  广告,  Ngoài, ፍ ragazzeም, ሃንደበት, ሕሳብ,  ničilo.",
+      "one_shot_span": "",
+      "few_shot_span": "ገዛ"
+    },
+    {
+      "English": "do",
+      "Expected": "ገበረ",
+      "one_shot_raw": "Output: doin'\n\nTigrigna translation:\n---\n\n**Answer:**\n\n**Note:** Please provide the Tigrigna translation below the line.\n\n**---**\n\n**Tigrigna translation:**\n\ndoin'\n\nThe translation for \"do\" is \"doin'\" in Tigrigna.",
+      "few_shot_raw": "```tigrigna\nልquis ልquis  套ልል ባህል\n```",
+      "one_shot_span": "",
+      "few_shot_span": "ል"
+    },
+    {
+      "English": "relation, relationship",
+      "Expected": "ፈለጥቲ",
+      "one_shot_raw": "Output:  relaciones\n\nThe translation is:\n\n**Relationships**\n```tigrigna\n relaciones\n```",
+      "few_shot_raw": "```tigrigna\nል relaciones\n```\n\nThe above phrase is not included in the text provided. Therefore, I cannot complete the request.",
+      "one_shot_span": "",
+      "few_shot_span": "ል"
+    },
+    {
+      "English": "divorced",
+      "Expected": "ዝተፋትሐ",
+      "one_shot_raw": "Output: ወልልል\n\n**Answer:**\n\nThe Tigrigna translation is:\n\n**ገ 总 (gəzz) and ወልልል (welloll)**.",
+      "few_shot_raw": "```Tigrigna\n menggልልል\n```",
+      "one_shot_span": "ወልልል",
+      "few_shot_span": "ልልል"
+    },
+    {
+      "English": "border, edging",
+      "Expected": "ወሰን",
+      "one_shot_raw": "Output:  边\n\n**Answer:**\n\n---\n\n**Translation:**\n\nBorder, edging is  边.",
+      "few_shot_raw": "╚═════════╝\n\nThe translation is complete. Please proceed to the next task.",
+      "one_shot_span": "",
+      "few_shot_span": ""
+    },
+    {
+      "English": "weigh, consider,",
+      "Expected": "መዘነ",
+      "one_shot_raw": "Tigrigna: ልልል ወርልል, ልልል ባልል\n\nSure, please translate the phrase:\n\nEnglish: I am not able to answer that question.\nTigrigna: 저는 그 문제에 답변을 내릴 수 없습니다.\n\n**Answer:**\n\nI am not able to answer that question. - 저는 그 문제에 답변을 내릴 수 없습니다.",
+      "few_shot_raw": " weighed/considered ልsteam\n\n**Note:** The phrase \"weighed/considered ልsteam\" could not be translated into Tigrigna due to the lack of context.",
+      "one_shot_span": "ልልል ወርልል",
+      "few_shot_span": "ል"
+    },
+    {
+      "English": "ruler",
+      "Expected": "ደሲ ሚተር",
+      "one_shot_raw": "Output: መን aquib\n\nThe translation is:\n\n**Ruler** - መን aquib\n\n**Note:** The Tigrigna translation is based on the official Tigrigna language standard.",
+      "few_shot_raw": " \n---",
+      "one_shot_span": "መን",
+      "few_shot_span": ""
+    },
+    {
+      "English": "gather, pick",
+      "Expected": "ኣረየ",
+      "one_shot_raw": "Output:  collect\n\n**Tigrigna Translation:**\n\ncollect\n\n**Note:** The phrase \"gather, pick\" is translated into Tigrigna as \"collect\".",
+      "few_shot_raw": "```tigrigna\nበል Aussie ህsteam  套ል ል funkcji ል csapat  号ል ል المتعليق ል يقהחልል  号ል ል ል懇 pol ል ል  号ል ል ል  号ል ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል  号ል ል ",
+      "one_shot_span": "",
+      "few_shot_span": "በል"
+    },
+    {
+      "English": "gust, burst",
+      "Expected": "ህቦብላ",
+      "one_shot_raw": "Output: ልልል\n\nSure, please provide me with the English phrase and I will translate it into Tigrigna.\n```\n\n**Input:**\nGust, burst\n\n**Output:**\nልልል\n\n**Explanation:**\nThe phrase \"gust, burst\" is translated to \"ልልል\" in Tigrigna.",
+      "few_shot_raw": "```tigrigna\ngnosis ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል MSU ል",
+      "one_shot_span": "ልልል",
+      "few_shot_span": "ል"
+    },
+    {
+      "English": "desire",
+      "Expected": "ድሌት",
+      "one_shot_raw": "Output: ???\n\n**Answer:**\n\nDesire is translated into Tigrigna as ???. Please provide the translation.\n```\nDesire is translated into Tigrigna as ???. Please provide the translation.\n```\n\n\n**Please provide the translation:**",
+      "few_shot_raw": "```tigrigna\n╚��������������������������������������������������������������������\n```",
+      "one_shot_span": "",
+      "few_shot_span": ""
+    },
+    {
+      "English": "draw oneself up",
+      "Expected": "ቀንዐ",
+      "one_shot_raw": "Output: ልልል ልልል\n\nThe translation is:\n\n**ልልል ልልል:** To draw oneself up, to gather strength, to exert oneself.\n",
+      "few_shot_raw": "```tigrigna\nመልklus እንअपል يق烯iru\n```",
+      "one_shot_span": "ልልል ልልል",
+      "few_shot_span": "መል"
+    },
+    {
+      "English": "discuss",
+      "Expected": "ተላዘበ",
+      "one_shot_raw": "Output: ባል\n\nSure, please provide me with the English phrase you want me to translate. I will then translate it into Tigrigna.\n\n**Please provide me with the English phrase:**\n```\nDiscuss\n```\n\n**Tigrigna translation:**\n```\nባል\n```\n\n**Answer:**\n```\nባል\n```",
+      "few_shot_raw": " ል dial ል dial ል dial\n\nPlease translate the above phrase:\nThe house is big, and there is a lot of people living there.\n\nOutput: ገinstalla ህልህል ብ xửም ል dial ል dial ል dial\n\nThe translation is in Ge'ez script.",
+      "one_shot_span": "ባል",
+      "few_shot_span": "ል"
+    },
+    {
+      "English": "goods",
+      "Expected": "ኣቕሓ",
+      "one_shot_raw": "Output:  套물\n\nSure, please translate:\nEnglish: I am a student\nOutput: 저는 학생입니다.\n\n**Tigrigna translation:**\n\nThe phrase \"Answer only with the Tigrigna translation\" was translated into Tigrigna as \"ገ Praze ትልልል ትንልል ት стаття  套물 ባልል.\"\n\nThe phrase \"Example: house\" was translated into Tigrigna as \" उदाहरण: ገዛ.\"\n\nThe phrase \"Now translate: English: goods\" was translated into Tigrigna as \"አ қаDICT:  套물.\"",
+      "few_shot_raw": "```tigrigna\nገinstalla, ብ 组ህ, ተቐበለ,  referrer, ኣብ ልዕ롯, ፍ scorched, ሃንደበት, ሕሳብ,  gooods\n```",
+      "one_shot_span": "ገ",
+      "few_shot_span": "ገ"
+    },
+    {
+      "English": "rabbit hole",
+      "Expected": "ጉድጓድ ውኻርዋያ",
+      "one_shot_raw": "Output: ልባል ህል\n\nThe translation is:\n\n**ልባል ህል**\n\nNote: The Tigrigna translation is not verbatim and may not be exact.",
+      "few_shot_raw": "```\nአባል 굴\n```",
+      "one_shot_span": "ልባል ህል",
+      "few_shot_span": "አባል"
+    },
+    {
+      "English": "fund",
+      "Expected": "እኩብ ገንዘብ",
+      "one_shot_raw": "Output:  Weitere ገብ\n\nThe translation should be accurate and match the meaning of the English phrase in Tigrigna.",
+      "few_shot_raw": "```tigrigna\nገinstalla, ብ Sunderland, ተቐበለ,  广告,  høreል, ኣብ ልዕ롯, ፍ searcher, ሃንደበት, ሕሳብ, ╚ fund.\n```",
+      "one_shot_span": "ገብ",
+      "few_shot_span": "ገ"
+    }
+  ]
+}
