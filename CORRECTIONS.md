@@ -74,6 +74,61 @@ computed over. Both numbers are right; the paper does not distinguish them.
 
 ---
 
+### 1.6 Provenance: the source lexicon was not new and was not changed
+
+`results/evaluation_reports/Combined_POS_Lexicon.csv` is the source lexicon
+underlying the published benchmark, digitized from the Swansea
+Tigrinya–English dictionary with additional entries contributed by
+native-speaker linguists (paper §3.1). It was not created or modified during
+this audit.
+
+This is verifiable from files already in the repository. Compared
+case-insensitively against `data/gold_labels/backup_pre_split/pos_tags_fixed.json`
+— the pre-audit state — the two are **identical**: 7,217 distinct
+`(English, POS_CATEGORIES)` pairs on both sides, with no pair present in one
+and absent from the other. The only textual difference is letter case in 64
+rows, where the CSV reads `(uncategorized) Uncategorized` and the backup
+reads `(uncategorized) uncategorized`.
+
+The file first appears in version control in the commit of 22 September 2026
+because that commit is the first time it was tracked, not because it was
+altered; its modification time on disk predates that commit.
+
+**No annotation was added, removed or revised.** Every correction in §1.1–1.5
+concerns how this file's two direction-blocks were split, and how gold labels
+were matched against model output — not the annotated content itself. The
+scores changed because the split and the matching changed.
+
+Verify with:
+
+```bash
+python - <<'EOF'
+import pandas as pd, json
+c = pd.read_csv('results/evaluation_reports/Combined_POS_Lexicon.csv')
+b = json.load(open('data/gold_labels/backup_pre_split/pos_tags_fixed.json', encoding='utf-8'))
+cs = {(str(a).strip(), str(p).strip().lower()) for a, p in zip(c['English'], c['POS_CATEGORIES'])}
+bs = {(str(r['English']).strip(), str(r['POS_CATEGORIES']).strip().lower()) for r in b}
+print('identical:', cs == bs, '| pairs:', len(cs), len(bs))
+EOF
+```
+
+### 1.7 Job logs for the September 2026 runs
+
+SLURM stdout/stderr for every run behind the corrected numbers is in `logs/`:
+
+| Job | Log | Produces |
+|---|---|---|
+| 75167 | `eval_75167.out` | corrected POS / morphosyntax / lexical alignment |
+| 76683 | `eval_tf_rerun_76683.out` | translation fidelity rerun |
+| 77601 | `fewshot_probe_77601.out` | one-shot vs few-shot prompting probe |
+| 77608 | `nllb_probe_77608.out` | NLLB-200-600M probe |
+| 77617 | `nllb_sweep_77617.out` | NLLB-200 600M/1.3B/3.3B sweep |
+| 75279 | `eval_xlmr_75279.out` | xlm-roberta follow-up |
+| 77595 | `eval_falcon3_77595.out` | falcon3-10b attempt (failed to load, no results) |
+
+These were added in a commit after the initial audit commit; they were
+present on disk throughout but had not been tracked.
+
 ## 2. What is now confirmed
 
 **Causal models substantially outperform sequence-to-sequence models on POS
