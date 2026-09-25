@@ -1,0 +1,14 @@
+==========================================
+SLURM_JOB_ID = 77601
+SLURM_NODELIST = gpunode06
+==========================================
+model=gemma-7b  sample=300 rows  (excluded 8 exemplar phrases)
+
+arm       variant          n     chrF   BLEU-4c   exact%
+--------------------------------------------------------
+one_shot  as_written     300     0.16      0.01     0.00
+one_shot  geez_span      300     0.33      0.06     0.00
+few_shot  as_written     300     0.66      0.02     0.00
+few_shot  geez_span      300     0.41      0.08     0.00
+
+written to /homes/neumann/teklehaymanot/Project/LLM-Probe/results/evaluation_reports/translation_fidelity/fewshot_probe_gemma-7b.json

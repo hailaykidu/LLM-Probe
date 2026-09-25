@@ -1,0 +1,12 @@
+==========================================
+SLURM_JOB_ID = 75159
+SLURM_NODELIST = gpunode03
+==========================================
+🔁 Starting LLM Evaluation for Tigrinya Lexicon...
+🔍 Lexical Alignment
+🧠 POS Tagging
+🧬 Morphosyntactic Probing
+🌍 Translation Fidelity
+✅ All evaluations completed.
+📊 Merging all evaluation reports into one JSON...
+✅ Consolidated results written to results/evaluation_reports/all_results.json

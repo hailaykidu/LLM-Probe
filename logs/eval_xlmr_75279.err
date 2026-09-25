@@ -1,0 +1,36 @@
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights:   5%|▍         | 10/202 [00:02<00:41,  4.63it/s]Loading weights: 100%|██████████| 202/202 [00:02<00:00, 93.17it/s]
+[transformers] [1mXLMRobertaForMaskedLM LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     |  | 
+----------------------------+------------+--+-
+roberta.pooler.dense.weight | UNEXPECTED |  | 
+roberta.pooler.dense.bias   | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 2880.34it/s]
+[transformers] [1mXLMRobertaForMaskedLM LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     |  | 
+----------------------------+------------+--+-
+roberta.pooler.dense.bias   | UNEXPECTED |  | 
+roberta.pooler.dense.weight | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights:   5%|▍         | 10/202 [00:02<00:38,  4.96it/s]Loading weights: 100%|██████████| 202/202 [00:02<00:00, 99.64it/s]
+[transformers] [1mXLMRobertaForMaskedLM LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     |  | 
+----------------------------+------------+--+-
+roberta.pooler.dense.weight | UNEXPECTED |  | 
+roberta.pooler.dense.bias   | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 3082.06it/s]
+[transformers] [1mXLMRobertaForMaskedLM LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     |  | 
+----------------------------+------------+--+-
+roberta.pooler.dense.weight | UNEXPECTED |  | 
+roberta.pooler.dense.bias   | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.

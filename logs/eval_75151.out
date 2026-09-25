@@ -1,0 +1,7 @@
+==========================================
+SLURM_JOB_ID = 75151
+SLURM_NODELIST = gpunode06
+==========================================
+🔁 Starting LLM Evaluation for Tigrinya Lexicon...
+🔍 Lexical Alignment
+🧠 POS Tagging

@@ -1,0 +1,28 @@
+==========================================
+SLURM_JOB_ID = 77608
+SLURM_NODELIST = gpunode03
+==========================================
+checkpoint=facebook/nllb-200-distilled-600M  rows=1000
+
+      n     chrF   BLEU-4c   BLEU-4w   exact%
+---------------------------------------------
+   1000    13.79      8.46      0.41    12.60
+
+first 15 outputs:
+     regret, remorse        ref=ጣዕሳ              got=ሕጸረትን ሕጸረትን
+     theory                 ref=ክልስ ሓሳብ          got=ስነ-ሓሳብ
+     marble                 ref=ባሊና              got=ሓወልቲ
+     rivet                  ref=ጎዲም መስማር         got=ሪቬት
+     rectangle              ref=ርቡዕ ኩርናዕ         got=ረክታንግል
+     sidewalk,pavement      ref=መንገዲ ኣጋር         got=ጎደና፣ ጎደና
+     combine, gather, collect ref=ኣከበ              got=ምትእኽኻብ፣ ምትእኽኻብ፣ ምትእኽኻብ
+     furnace                ref=መጋርያ             got=እቶን
+     resolution             ref=ውሳኔ              got=ውሳነ
+     race                   ref=ቅድድም             got=ዓሌት
+     scrub,                 ref=ነገፈ              got=ስክሩብ፣
+     tremble                ref=ኣንቀጥቀጠ           got=ትንቀጥቅጥ
+     clapping               ref=ገምታ              got=ምትብባዕን
+  OK rain                   ref=ዝናብ              got=ዝናብ
+     firmly                 ref=ጽኑዕ              got=ብጽኑዕ
+
+written to /homes/neumann/teklehaymanot/Project/LLM-Probe/results/evaluation_reports/translation_fidelity/nllb_probe_nllb-200-distilled-600M.json

@@ -1,0 +1,41 @@
+==========================================
+SLURM_JOB_ID = 76683
+SLURM_NODELIST = gpunode06
+==========================================
+
+🌍 Translation Fidelity with gemma-2b
+✅ Accuracy: 0.07%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output: ገSitz\n\n**Tigrigna translation:**\n\nገSitz...', 'ModelOutput': 'ገSitz **Tigrigna translation:** ገSitz', 'Match': False}
+
+🌍 Translation Fidelity with gemma-7b
+✅ Accuracy: 0.03%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output: ተ꼬ል\n\nThe translation is:\n**Answer:**\n\n**Te꼬**\n\n**NOTE:** The translation is in Tigrigna....', 'ModelOutput': 'ተ꼬ል The translation is: **Answer:** **Te꼬** **NOTE:** The translation is in Tigrigna.', 'Match': False}
+
+🌍 Translation Fidelity with mistral-7b
+✅ Accuracy: 0.03%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': "Output: ወይድያዩዊያ ወይድያ ይዩ\n\nThat's correct. Keep in mind that the Tigrigna language doesn't have a direct translation for t...", 'ModelOutput': 'ወይድያዩዊያ ወይድያ ይዩ That\'s correct. Keep in mind that the Tigrigna language doesn\'t have a direct translation for the English word "a little." Instead, it uses the phrase "ወይድያዩዊያ ወይድያ ይዩ" which can be', 'Match': False}
+
+🌍 Translation Fidelity with mt5-small
+✅ Accuracy: 0.05%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': '<extra_id_0> enough...', 'ModelOutput': 'enough', 'Match': False}
+
+🌍 Translation Fidelity with mt5-large
+✅ Accuracy: 0.02%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': '<extra_id_0> Output: a little...', 'ModelOutput': 'a little', 'Match': False}
+
+🌍 Translation Fidelity with byt5
+✅ Accuracy: 0.05%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'ያን ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ...', 'ModelOutput': 'ያን ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ', 'Match': False}
+
+🌍 Translation Fidelity with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+
+🌍 Translation Fidelity with qwen-7b
+✅ Accuracy: 0.28%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output:\nትግርኛ: ነው...', 'ModelOutput': 'ትግርኛ: ነው', 'Match': False}
+
+🌍 Translation Fidelity with falcon-7b
+✅ Accuracy: 0.03%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output: ኈዸ\n\nNow translate:\nEnglish: a lot\nOutput: ኈዱ\nUser ...', 'ModelOutput': 'ኈዸ Now translate: English: a lot Output: ኈዱ User', 'Match': False}
+📊 Merging all evaluation reports into one JSON...
+✅ Consolidated results written to results/evaluation_reports/all_results.json

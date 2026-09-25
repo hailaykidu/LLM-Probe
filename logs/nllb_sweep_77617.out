@@ -1,0 +1,79 @@
+==========================================
+SLURM_JOB_ID = 77617
+SLURM_NODELIST = gpunode05
+==========================================
+############ facebook/nllb-200-distilled-600M ############
+checkpoint=facebook/nllb-200-distilled-600M  rows=5775
+
+      n     chrF   BLEU-4c   BLEU-4w   exact%
+---------------------------------------------
+   5775    14.11     12.59      0.25    14.42
+
+first 15 outputs:
+  OK a little               ref=ንእሽቶይ            got=ቁሩብ
+     a long time            ref=ነዊሕ ግዝ           got=ነዊሕ ግዜ
+  OK a lot                  ref=ብዙሕ              got=ብዙሕ
+     abandon                ref=ገደፈ              got=ገዲፍካ
+     abandonment            ref=ርጥረጣ             got=ጥልቀት
+     abbot                  ref=ኣባ               got=ኣቡነ
+  OK ability                ref=ጥበብ              got=ክእለት
+     able                   ref=ጥበባዊ             got=ክኢላ
+     above                  ref=ኣብ ልዕሊ           got=ኣብ ላዕሊ
+  OK abrupt                 ref=ሃንደበት            got=ሃንደበት
+     abruptly               ref=ብጋህዲ             got=ብሃንደበት
+     abscess                ref=ሓገል              got=ኣፕሰስ
+     absence                ref=ብኩራት             got=ሕጽረት
+     absent (from oneself)  ref=ቦኾረ              got=(ካብ ገዛእ ርእሱ)
+     absent                 ref=ብኹር              got=ዘይምህላዉ
+
+written to /homes/neumann/teklehaymanot/Project/LLM-Probe/results/evaluation_reports/translation_fidelity/nllb_probe_nllb-200-distilled-600M.json
+############ facebook/nllb-200-1.3B ############
+checkpoint=facebook/nllb-200-1.3B  rows=5775
+
+      n     chrF   BLEU-4c   BLEU-4w   exact%
+---------------------------------------------
+   5775    15.01     13.29      0.23    15.00
+
+first 15 outputs:
+  OK a little               ref=ንእሽቶይ            got=ቁሩብ
+     a long time            ref=ነዊሕ ግዝ           got=ነዊሕ ግዜ
+  OK a lot                  ref=ብዙሕ              got=ብዙሕ
+     abandon                ref=ገደፈ              got=ምብትታን
+     abandonment            ref=ርጥረጣ             got=ምብትታን
+     abbot                  ref=ኣባ               got=ኣቡነ
+  OK ability                ref=ጥበብ              got=ክእለት
+     able                   ref=ጥበባዊ             got=ክኢላ
+     above                  ref=ኣብ ልዕሊ           got=ኣብ ላዕሊ
+     abrupt                 ref=ሃንደበት            got=ብሃንደበት
+     abruptly               ref=ብጋህዲ             got=ብሃንደበት
+     abscess                ref=ሓገል              got=ዓጸቦ
+     absence                ref=ብኩራት             got=ዘይምህላው
+     absent (from oneself)  ref=ቦኾረ              got=ካብ ገዛእ ርእስኻ ርሒቕካ
+     absent                 ref=ብኹር              got=ዘይርከብ
+
+written to /homes/neumann/teklehaymanot/Project/LLM-Probe/results/evaluation_reports/translation_fidelity/nllb_probe_nllb-200-1.3B.json
+############ facebook/nllb-200-3.3B ############
+checkpoint=facebook/nllb-200-3.3B  rows=5775
+
+      n     chrF   BLEU-4c   BLEU-4w   exact%
+---------------------------------------------
+   5775    16.05     14.23      0.24    16.24
+
+first 15 outputs:
+  OK a little               ref=ንእሽቶይ            got=ቁሩብ
+     a long time            ref=ነዊሕ ግዝ           got=ነዊሕ ግዜ
+  OK a lot                  ref=ብዙሕ              got=ብዙሕ
+     abandon                ref=ገደፈ              got=ምውጋድ
+     abandonment            ref=ርጥረጣ             got=ምብትታን
+     abbot                  ref=ኣባ               got=ኣቡነ
+  OK ability                ref=ጥበብ              got=ክእለት
+     able                   ref=ጥበባዊ             got=ክኢላ
+     above                  ref=ኣብ ልዕሊ           got=ኣብ ላዕሊ
+     abrupt                 ref=ሃንደበት            got=ሃንደበታዊ
+     abruptly               ref=ብጋህዲ             got=ብሃንደበት
+     abscess                ref=ሓገል              got=ረኽሲ (abscess)
+     absence                ref=ብኩራት             got=ዘይምህላዉ
+     absent (from oneself)  ref=ቦኾረ              got=ካብ ገዛእ ርእሱ ዝተፈልየ
+     absent                 ref=ብኹር              got=ዘይህሉ
+
+written to /homes/neumann/teklehaymanot/Project/LLM-Probe/results/evaluation_reports/translation_fidelity/nllb_probe_nllb-200-3.3B.json
