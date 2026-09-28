@@ -1,0 +1,128 @@
+{
+  "morphosyntax_probe": {
+    "byt5": {
+      "n": 5701,
+      "set_intersection": 38.55463953692335,
+      "first_token": 0.0,
+      "exact": 0.0,
+      "echoes_prompt_example": 69.7246097175934
+    },
+    "falcon-7b": {
+      "n": 5701,
+      "set_intersection": 76.28486230485879,
+      "first_token": 39.168566918084544,
+      "exact": 0.6840905104367655,
+      "echoes_prompt_example": 19.47026837396948
+    },
+    "gemma-2b": {
+      "n": 5701,
+      "set_intersection": 78.02139975442904,
+      "first_token": 64.58516049815822,
+      "exact": 0.017540782318891425,
+      "echoes_prompt_example": 1.245395544641291
+    },
+    "gemma-7b": {
+      "n": 5701,
+      "set_intersection": 89.42290826170847,
+      "first_token": 63.32222417119804,
+      "exact": 0.0,
+      "echoes_prompt_example": 97.40396421680407
+    },
+    "mistral-7b": {
+      "n": 5701,
+      "set_intersection": 81.09103666023505,
+      "first_token": 54.92018944044904,
+      "exact": 0.0,
+      "echoes_prompt_example": 3.7011050692860903
+    },
+    "mt5-large": {
+      "n": 5701,
+      "set_intersection": 0.7367128573934397,
+      "first_token": 0.10524469391334855,
+      "exact": 0.0,
+      "echoes_prompt_example": 0.0
+    },
+    "mt5-small": {
+      "n": 5701,
+      "set_intersection": 2.490791089282582,
+      "first_token": 0.8594983336256797,
+      "exact": 0.017540782318891425,
+      "echoes_prompt_example": 0.0
+    },
+    "qwen-7b": {
+      "n": 5701,
+      "set_intersection": 54.44658831783897,
+      "first_token": 34.327310998070516,
+      "exact": 1.4208033678302052,
+      "echoes_prompt_example": 0.35081564637782847
+    },
+    "_baselines": {
+      "majority_label": "noun",
+      "majority": 52.37677600420979,
+      "english_only": 61.56814593930889
+    }
+  },
+  "pos_tagging": {
+    "byt5": {
+      "n": 5701,
+      "set_intersection": 0.052622346956674275,
+      "first_token": 0.0,
+      "exact": 0.0,
+      "echoes_prompt_example": 0.0
+    },
+    "falcon-7b": {
+      "n": 5701,
+      "set_intersection": 44.44834239607086,
+      "first_token": 40.64199263287143,
+      "exact": 26.94264164181723,
+      "echoes_prompt_example": 0.0
+    },
+    "gemma-2b": {
+      "n": 5701,
+      "set_intersection": 73.28538852832837,
+      "first_token": 72.86440975267497,
+      "exact": 71.70671811962814,
+      "echoes_prompt_example": 0.0
+    },
+    "gemma-7b": {
+      "n": 5701,
+      "set_intersection": 82.44167689878968,
+      "first_token": 79.38958077530258,
+      "exact": 0.0,
+      "echoes_prompt_example": 0.0
+    },
+    "mistral-7b": {
+      "n": 5701,
+      "set_intersection": 85.9147517979302,
+      "first_token": 81.56463778284511,
+      "exact": 33.71338361690931,
+      "echoes_prompt_example": 0.0
+    },
+    "mt5-large": {
+      "n": 5701,
+      "set_intersection": 1.7540782318891421,
+      "first_token": 0.08770391159445712,
+      "exact": 0.0,
+      "echoes_prompt_example": 0.0
+    },
+    "mt5-small": {
+      "n": 5701,
+      "set_intersection": 0.0,
+      "first_token": 0.0,
+      "exact": 0.0,
+      "echoes_prompt_example": 0.0
+    },
+    "qwen-7b": {
+      "n": 5701,
+      "set_intersection": 17.067181196281354,
+      "first_token": 16.99701806700579,
+      "exact": 16.99701806700579,
+      "echoes_prompt_example": 0.0
+    },
+    "_baselines": {
+      "majority_label": "noun",
+      "majority": 53.72741624276443,
+      "english_only": 60.375372741624275
+    }
+  }
+}
