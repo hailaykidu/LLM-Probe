@@ -402,10 +402,7 @@ since later runs add result files to the same directories.
 | §4.3 few-shot | `python scripts/probe_fewshot_translation.py --model gemma-7b` | `fewshot_probe_gemma-7b.json` | `logs/fewshot_probe_77601.out` |
 
 Raw model outputs for every item are in
-`results/evaluation_reports/<task>/<task>_<model>.json`. Pre-correction
-results are preserved unmodified in
-`results/evaluation_reports_pre_fix_backup/`. `CORRECTIONS.md` documents the
-audit.
+`results/evaluation_reports/<task>/<task>_<model>.json`.
 
 ## 8. Limitations
 

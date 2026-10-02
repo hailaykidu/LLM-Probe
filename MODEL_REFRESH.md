@@ -2,8 +2,8 @@
 
 Replaces the evaluated checkpoints with current open-weight successors.
 **Nothing here has been re-run**: no result file, results table or reported
-number has been touched. The numbers in `PAPER_DRAFT.md`, `CORRECTIONS.md`
-and `README.md` belong to the old roster and remain attached to it.
+number has been touched. The numbers in `PAPER_DRAFT.md` and `README.md`
+belong to the evaluated roster and remain attached to it.
 
 ## Replacement map
 
@@ -153,8 +153,7 @@ No hyperparameter was changed silently.
 
 Left untouched, for your decision:
 
-- `PAPER_DRAFT.md` — §3 model table, §4.1–4.4 result tables, §6 comparison
-- `CORRECTIONS.md` — §2 before/after tables, translation table
+- `PAPER_DRAFT.md` — §3 model table, §4.1–4.4 result tables
 - `README.md` — model list and correction notes
 
 All report measurements of the **old** checkpoints and remain valid for them.

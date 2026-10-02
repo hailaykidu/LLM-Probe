@@ -296,8 +296,8 @@ def report_sample(workbook, adjudicated):
     print()
     print("Column swap in the source sheets: %d of %d rows (%.1f%%) carry"
           % (swapped, total, swapped / total * 100))
-    print("Ge'ez script in the English column -- the same defect recorded for")
-    print("Combined_POS_Lexicon.csv in CORRECTIONS.md section 1.2.")
+    print("Ge'ez script in the English column, the same defect the merge in")
+    print("scripts/build_merged_eval_set.py reorients.")
     return {
         "corpus": dict(corpus),
         "sampled": sample,
