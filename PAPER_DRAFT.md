@@ -66,6 +66,21 @@ English→Tigrinya entries followed by 3,647 Tigrinya→English entries. The two
 blocks share column headers, so in the second block the column named
 `English` holds Ge'ez script and the column named `Tigrigna` holds English.
 
+**Provenance.** That CSV is a flattening of
+`data/POS_english_to_tigrigna_Annotated.xlsx`, the working annotation
+workbook, whose eleven part-of-speech sheets hold the same 7,234 rows with
+the same per-category counts (3,929 noun, 1,784 verb, 993 adjective, 194
+adverb, …). The flattening concatenates those sheets in workbook order and
+lifts the inline gender/number markers that the workbook keeps inside the
+Tigrinya field — `(nf) ወካሲት, ከሳሲት` — out into the `POS_CATEGORIES` column,
+which is where the finer labels `(nm) noun masculine`, `(nf) noun feminine`
+and `(npl) noun plural` come from. The two files differ on exactly the 247
+rows carrying such a marker. The column swap described above is present in
+the workbook as well: 3,635 of its 7,234 rows (50.2%) carry Ge'ez script in
+the `English` column, so the defect originates in digitisation, not in the
+CSV export. Both files are released; `scripts/compute_iaa.py` reports the
+sheet-level counts.
+
 `scripts/build_merged_eval_set.py` detects the second block by script,
 reorients it, and merges both directions, yielding **5,775 unique
 (English, Tigrinya) pairs**. Expanding comma-separated senses gives 5,864
@@ -88,11 +103,41 @@ a second POS task with a different prompt.
 
 ### 2.3 Inter-annotator agreement
 
-We do not report inter-annotator agreement. An agreement study was carried
-out during the original work, but the annotation records are not available
-to us, and the categories for which agreement was previously reported
-(number, agreement features) do not occur in the released data. We state
-this rather than reproduce unverifiable figures.
+We do not report inter-annotator agreement, and the reason is worth stating
+precisely, because the annotation records do exist. They are released here as
+`data/POS_english_to_tigrigna_Annotated.xlsx`, which holds a 500-item sample,
+two annotator sheets, an adjudicated sheet and an annotation guide.
+`scripts/compute_iaa.py` recomputes everything in this section from it.
+
+Agreement cannot be measured from these records, for two independent reasons.
+
+**The second annotation is not independent of the adjudication.** On the 500
+shared items, the Annotator 2 sheet is identical to the adjudicated sheet on
+part of speech, agreement and alignment, and differs on one gender and two
+number cells; Annotator 1 differs from the adjudication on 19–52 cells per
+dimension. Cohen's κ between the two sheets is therefore 1.0000 for gender,
+number, agreement and alignment — not strong agreement, but a column compared
+against its own adjudication. Part of speech is the only dimension on which
+the two sheets genuinely differ, giving κ = 0.9076 on 500 items.
+
+**The sample is not random.** Tracing each sampled item back to its source
+sheet shows the 500 items are the alphabetical head of each category: all 9
+prepositions, all 10 pronouns and all 6 interjections, then 305 adjectives
+and 150 nouns from the tops of those sheets. The corpus is 54% nouns and 25%
+verbs; the sample is 61% adjectives and contains **no verbs at all**. A κ
+computed here would not describe the corpus even if the two columns were
+independent.
+
+The retracted paper reported κ of 0.89 (POS), 0.86 (gender), 0.88 (number),
+0.84 (agreement) and 0.91 (lexical alignment). None of these is recoverable.
+We release the workbook so that this is checkable rather than asserted.
+
+The annotator's free-text notes, on 201 of the 500 items, are a more useful
+record than the κ values ever were: they document mislabelled parts of speech
+in the source dictionary, inflected forms given as citation forms, and
+outright mistranslations (`at least` → ብብዚሒ, which means *at most*). They are
+direct evidence for the caveat in §2.2 that the POS labels are the source
+dictionary's and were not independently verified.
 
 ## 3. Experimental setup
 
@@ -288,7 +333,7 @@ has been retracted. The following were wrong and are corrected here.
 | Dataset statistics | computed on the swapped file | recomputed after reorientation |
 | Model identifiers | "Falcon-10B", "mT5-base" | `falcon-7b-instruct`, `mt5-small` |
 | BLEU | reported, never computed | chrF and char-BLEU, implemented |
-| Inter-annotator agreement | κ reported for absent categories | not reported (§2.3) |
+| Inter-annotator agreement | κ 0.84–0.91 over five dimensions | not reported; records released and shown unusable (§2.3) |
 
 The published Table 5 values could not be reproduced from the codebase
 before or after these fixes, and their origin has not been determined.
@@ -300,6 +345,7 @@ Every number in this paper comes from a committed artifact.
 | Table | Command | Artifact | Job log |
 |---|---|---|---|
 | §2.1 counts | `python scripts/build_merged_eval_set.py --dry-run` | `Combined_POS_Lexicon.csv` | — |
+| §2.3 agreement | `python scripts/compute_iaa.py` | `POS_english_to_tigrigna_Annotated.xlsx` | — |
 | §4.1, §4.2 | `python scripts/rescore_tasks.py` | `rescored_2026-09-28.json` | `logs/eval_75167.out` |
 | §4.3 LLMs | `python scripts/compute_bleu.py` | `translation_fidelity_bleu.json` | `logs/eval_tf_rerun_76683.out` |
 | §4.3 NLLB | `python scripts/probe_nllb_translation.py --checkpoint facebook/nllb-200-3.3B --n 0` | `nllb_probe_*.json` | `logs/nllb_sweep_77617.out` |
@@ -313,8 +359,10 @@ audit.
 
 ## 8. Limitations
 
-- POS labels are the source dictionary's, not independently annotated; no
-  agreement study accompanies the released data (§2.3).
+- POS labels are the source dictionary's, not independently annotated. The
+  annotation workbook is released, but its second annotator sheet is not
+  independent of the adjudication and its 500-item sample is alphabetical and
+  verb-free, so no usable agreement statistic can be derived from it (§2.3).
 - Morphosyntactic features cover 185 of 5,775 entries.
 - Lexical alignment gold is 38% positional fallback; §4.4 is not a result.
 - Entries are dictionary headwords, not running text; performance here does
