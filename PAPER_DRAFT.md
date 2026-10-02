@@ -103,41 +103,48 @@ a second POS task with a different prompt.
 
 ### 2.3 Inter-annotator agreement
 
-We do not report inter-annotator agreement, and the reason is worth stating
-precisely, because the annotation records do exist. They are released here as
-`data/POS_english_to_tigrigna_Annotated.xlsx`, which holds a 500-item sample,
-two annotator sheets, an adjudicated sheet and an annotation guide.
-`scripts/compute_iaa.py` recomputes everything in this section from it.
+We do not report an inter-annotator agreement coefficient for this dataset.
+The annotation records are released as
+`data/POS_english_to_tigrigna_Annotated.xlsx` — a 500-item sample, two
+annotator sheets, an adjudicated sheet and an annotation guide — and
+`scripts/compute_iaa.py` recomputes everything in this section from them.
+We state what they support, because a κ computed from them would be
+misleading in two independent ways.
 
-Agreement cannot be measured from these records, for two independent reasons.
+**The two annotation columns are not independent.** On the 25 part-of-speech
+items where the annotators differ, the adjudicated sheet reproduces
+Annotator 2 on 25 of 25 and Annotator 1 on none; on the three gender,
+agreement and alignment items where they differ, it reproduces Annotator 1.
+The adjudication is assembled from the two columns rather than decided
+separately, so agreement with it is not evidence about either. On gender and
+number the two sheets never disagree at all — 0 disagreements across 420 and
+428 jointly-labelled items respectively, on a four-way gender distinction.
+Independent annotation does not produce that.
 
-**The second annotation is not independent of the adjudication.** On the 500
-shared items, the Annotator 2 sheet is identical to the adjudicated sheet on
-part of speech, agreement and alignment, and differs on one gender and two
-number cells; Annotator 1 differs from the adjudication on 19–52 cells per
-dimension. Cohen's κ between the two sheets is therefore 1.0000 for gender,
-number, agreement and alignment — not strong agreement, but a column compared
-against its own adjudication. Part of speech is the only dimension on which
-the two sheets genuinely differ, giving κ = 0.9076 on 500 items.
+**The coefficient is not stable under blank handling.** Both sheets leave
+cells empty, and unevenly (Annotator 1 leaves 74 gender and 52 agreement
+cells blank; Annotator 2 leaves 48 and 9). Dropping those rows pairwise gives
+κ = 0.9076 (POS), 1.0000 (gender), 1.0000 (number), 0.9815 (agreement) and
+0.9850 (alignment). Treating a blank as its own label gives 0.9076, 0.8079,
+0.6762, 0.5912 and 0.8487. The same records yield values 0.39 apart under two
+defensible conventions, and nothing in the records indicates which was
+intended.
 
 **The sample is not random.** Tracing each sampled item back to its source
 sheet shows the 500 items are the alphabetical head of each category: all 9
 prepositions, all 10 pronouns and all 6 interjections, then 305 adjectives
 and 150 nouns from the tops of those sheets. The corpus is 54% nouns and 25%
 verbs; the sample is 61% adjectives and contains **no verbs at all**. A κ
-computed here would not describe the corpus even if the two columns were
-independent.
+computed here would not describe the corpus even if the columns were
+independent and the convention were fixed.
 
-The retracted paper reported κ of 0.89 (POS), 0.86 (gender), 0.88 (number),
-0.84 (agreement) and 0.91 (lexical alignment). None of these is recoverable.
-We release the workbook so that this is checkable rather than asserted.
-
-The annotator's free-text notes, on 201 of the 500 items, are a more useful
-record than the κ values ever were: they document mislabelled parts of speech
-in the source dictionary, inflected forms given as citation forms, and
-outright mistranslations (`at least` → ብብዚሒ, which means *at most*). They are
-direct evidence for the caveat in §2.2 that the POS labels are the source
-dictionary's and were not independently verified.
+What the workbook does contribute is the annotator's free-text notes on 201
+of the 500 items, which document mislabelled parts of speech in the source
+dictionary, inflected forms given as citation forms, and outright
+mistranslations (`at least` → ብብዚሒ, which means *at most*). These are direct
+evidence for the caveat in §2.2 that the POS labels are the source
+dictionary's and were not independently verified, and they inform the
+limitations in §8.
 
 ## 3. Experimental setup
 
@@ -333,7 +340,7 @@ has been retracted. The following were wrong and are corrected here.
 | Dataset statistics | computed on the swapped file | recomputed after reorientation |
 | Model identifiers | "Falcon-10B", "mT5-base" | `falcon-7b-instruct`, `mt5-small` |
 | BLEU | reported, never computed | chrF and char-BLEU, implemented |
-| Inter-annotator agreement | κ 0.84–0.91 over five dimensions | not reported; records released and shown unusable (§2.3) |
+| Inter-annotator agreement | κ reported over five dimensions | not reported; records released, with the reasons a κ from them would mislead (§2.3) |
 
 The published Table 5 values could not be reproduced from the codebase
 before or after these fixes, and their origin has not been determined.
@@ -360,9 +367,11 @@ audit.
 ## 8. Limitations
 
 - POS labels are the source dictionary's, not independently annotated. The
-  annotation workbook is released, but its second annotator sheet is not
-  independent of the adjudication and its 500-item sample is alphabetical and
-  verb-free, so no usable agreement statistic can be derived from it (§2.3).
+  annotation workbook is released, but its two annotation columns are not
+  independent of each other or of the adjudication, its κ moves by up to 0.39
+  under blank handling, and its 500-item sample is alphabetical and verb-free,
+  so we report no agreement coefficient for the dataset (§2.3). A fresh
+  double annotation on a stratified sample would be needed to establish one.
 - Morphosyntactic features cover 185 of 5,775 entries.
 - Lexical alignment gold is 38% positional fallback; §4.4 is not a result.
 - Entries are dictionary headwords, not running text; performance here does

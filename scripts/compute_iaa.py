@@ -6,28 +6,29 @@ sample, both annotators' sheets and the adjudicated version.
 
 Why this script exists
 ----------------------
-The retracted paper's Table 2 reported Cohen's kappa of 0.89 (POS), 0.86
-(Gender), 0.88 (Number), 0.84 (Agreement) and 0.91 (Lexical alignment) over
-"500 pairs independently annotated by two trained linguists". Those values
-cannot be recovered from the workbook, and this script shows why rather than
-asserting it. It reports three things:
+Section 2.3 of the paper reports no inter-annotator agreement coefficient for
+this dataset. That is a claim about what the records support, so this script
+derives it from them rather than asserting it. It reports three things:
 
 1. **Cohen's kappa per dimension**, pairwise-complete (rows where both
-   annotators left a value). POS is the only dimension where the two sheets
-   actually differ; the other four come out at exactly 1.0000.
+   annotators left a value), and again with a blank treated as its own
+   label. The two conventions disagree by up to 0.39 on the same records,
+   so no single coefficient is well defined.
 
-2. **Annotator 2 against the adjudicated sheet.** The two are identical on
-   POS, Agreement and Alignment, and differ on 1 Gender and 2 Number rows,
-   while Annotator 1 differs from the adjudication on 19-52 rows per
-   dimension. The natural reading is that "Annotator 2" IS the adjudicated
-   file rather than an independent second pass -- which is what drives the
-   four kappa values of 1.0, and means they do not measure agreement.
+2. **Each annotator against the adjudicated sheet.** Where the annotators
+   differ on POS, the adjudication reproduces Annotator 2 on every row and
+   Annotator 1 on none; on the handful of Gender/Agreement/Alignment
+   disagreements it reproduces Annotator 1. The adjudication is assembled
+   from the two columns rather than decided separately, so agreement with it
+   is not evidence about either. Gender and Number show zero disagreements
+   across 420+ jointly-labelled items, which independent annotation does not
+   produce.
 
 3. **How the 500 items were drawn.** Each sampled row is traced back to the
    POS sheet it came from. The sample is alphabetical from the top of each
    sheet, not random: it is 61% adjectives and contains no verbs at all,
    against a corpus that is 54% nouns and 25% verbs. A kappa computed on it
-   would not describe the corpus even if the two columns were independent.
+   would not describe the corpus even if the columns were independent.
 
 The workbook is read straight from its zip/XML so no spreadsheet library is
 required (openpyxl is not installed in this project's environment).
@@ -66,16 +67,6 @@ POS_SHEETS = [
 ANNOTATOR_A = "Annotator 1"
 ANNOTATOR_B = "Annotator 2"
 ADJUDICATED = "Sheet1"
-
-# Values published in Table 2 of the retracted paper, for side-by-side
-# comparison only. Nothing here is computed from them.
-PUBLISHED = {
-    "POS": 0.89,
-    "Gender": 0.86,
-    "Number": 0.88,
-    "Agreement": 0.84,
-    "Alignment": 0.91,
-}
 
 GEEZ_RE = re.compile(r"[ሀ-፿]")
 
@@ -161,11 +152,13 @@ def cohens_kappa(pairs):
 def report_kappa(a, b):
     print("## 1. Cohen's kappa, Annotator 1 vs Annotator 2")
     print()
-    print("Pairwise-complete: rows where both annotators left a value.")
+    print("Two conventions for the cells an annotator left empty:")
+    print("  pairwise  -- drop rows where either annotator left a blank")
+    print("  blank=label -- treat a blank as its own category, over all 500")
     print()
-    print("%-12s %7s %9s %9s %12s" % (
-        "dimension", "n", "P(obs)", "kappa", "published"))
-    print("-" * 54)
+    print("%-12s %7s %9s %9s %9s %9s" % (
+        "dimension", "n", "P(obs)", "pairwise", "n(all)", "blank=lbl"))
+    print("-" * 60)
     shared = sorted(set(a) & set(b), key=lambda x: int(x) if x.isdigit() else 0)
     results = {}
     for dimension in DIMENSIONS:
@@ -175,18 +168,32 @@ def report_kappa(a, b):
             if a[i][dimension] and b[i][dimension]
         ]
         kappa, n, observed = cohens_kappa(pairs)
+        with_blanks = [
+            (a[i][dimension] or "BLANK", b[i][dimension] or "BLANK")
+            for i in shared
+        ]
+        kappa_blank, n_blank, _ = cohens_kappa(with_blanks)
         results[dimension] = {
             "n": n,
             "observed_agreement": observed,
-            "kappa": kappa,
-            "published": PUBLISHED[dimension],
+            "kappa_pairwise": kappa,
+            "n_all": n_blank,
+            "kappa_blank_as_label": kappa_blank,
         }
-        print("%-12s %7d %9.4f %9s %12.2f" % (
+        print("%-12s %7d %9.4f %9s %9d %9s" % (
             dimension, n, observed,
             "undef" if kappa is None else "%.4f" % kappa,
-            PUBLISHED[dimension]))
+            n_blank,
+            "undef" if kappa_blank is None else "%.4f" % kappa_blank))
     print()
     print("Shared Item_IDs: %d" % len(shared))
+    spread = max(
+        abs(r["kappa_pairwise"] - r["kappa_blank_as_label"])
+        for r in results.values()
+        if r["kappa_pairwise"] is not None
+        and r["kappa_blank_as_label"] is not None
+    )
+    print("Largest gap between the two conventions: %.4f" % spread)
     return results
 
 
@@ -194,25 +201,39 @@ def report_adjudication(a, b, adjudicated):
     print()
     print("## 2. Each annotator against the adjudicated sheet (%s)" % ADJUDICATED)
     print()
-    print("A kappa of 1.0 means the two columns are not independent. If one")
-    print("annotator sheet is identical to the adjudication, it is the")
-    print("adjudication, and agreement with it measures nothing.")
+    print("Where the annotators disagree, a separately-decided adjudication")
+    print("would side with each of them sometimes. One assembled from their")
+    print("columns reproduces one or the other wholesale.")
     print()
-    print("%-12s %22s %22s" % (
-        "dimension", "A1 differs from adj.", "A2 differs from adj."))
-    print("-" * 58)
+    print("%-12s %7s %10s %10s %9s" % (
+        "dimension", "disagr", "adj = A1", "adj = A2", "neither"))
+    print("-" * 52)
     results = {}
+    shared = sorted(set(a) & set(b), key=lambda x: int(x) if x.isdigit() else 0)
     for dimension in DIMENSIONS:
-        d_a = sum(
-            1 for i in adjudicated
-            if i in a and a[i][dimension] != adjudicated[i][dimension]
+        both = [
+            i for i in shared
+            if a[i][dimension] and b[i][dimension] and i in adjudicated
+        ]
+        disagreed = [i for i in both if a[i][dimension] != b[i][dimension]]
+        with_a = sum(
+            1 for i in disagreed if adjudicated[i][dimension] == a[i][dimension]
         )
-        d_b = sum(
-            1 for i in adjudicated
-            if i in b and b[i][dimension] != adjudicated[i][dimension]
+        with_b = sum(
+            1 for i in disagreed if adjudicated[i][dimension] == b[i][dimension]
         )
-        results[dimension] = {"annotator_1": d_a, "annotator_2": d_b}
-        print("%-12s %22d %22d" % (dimension, d_a, d_b))
+        results[dimension] = {
+            "disagreements": len(disagreed),
+            "adjudication_follows_a1": with_a,
+            "adjudication_follows_a2": with_b,
+            "neither": len(disagreed) - with_a - with_b,
+        }
+        print("%-12s %7d %10d %10d %9d" % (
+            dimension, len(disagreed), with_a, with_b,
+            len(disagreed) - with_a - with_b))
+    print()
+    print("Dimensions with zero disagreements are ones the two sheets never")
+    print("differ on at all, across every jointly-labelled item.")
     print()
     blanks_a = {d: sum(1 for i in a if not a[i][d]) for d in DIMENSIONS}
     blanks_b = {d: sum(1 for i in b if not b[i][d]) for d in DIMENSIONS}
@@ -316,12 +337,12 @@ def main():
         print()
         print("## Conclusion")
         print()
-        print("POS is the only dimension with two differing columns, and it")
-        print("yields kappa=%.4f against a published %.2f. The remaining four"
-              % (kappa["POS"]["kappa"], PUBLISHED["POS"]))
-        print("are 1.0000 because Annotator 2 is the adjudicated sheet. The")
-        print("sample is alphabetical and excludes verbs entirely. Table 2 of")
-        print("the retracted paper cannot be reconstructed from this file.")
+        print("The two annotation columns are not independent of each other")
+        print("or of the adjudication; the coefficient is not stable under")
+        print("blank handling; and the sample is alphabetical, excluding")
+        print("verbs entirely. No single agreement coefficient derived here")
+        print("would describe the corpus, which is why section 2.3 reports")
+        print("none.")
 
         if args.json:
             import json
