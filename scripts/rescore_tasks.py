@@ -122,7 +122,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--task", choices=sorted(TASKS), action="append")
     ap.add_argument("--json", help="write results to this path")
+    ap.add_argument(
+        "--models",
+        help="comma-separated model labels to score, in place of every result "
+             "file present. The paper's tables cover the eight models of the "
+             "evaluated roster; later runs add result files to the same "
+             "directories, so pass this to reproduce a published table "
+             "exactly.",
+    )
     args = ap.parse_args()
+
+    wanted = None
+    if args.models:
+        wanted = [m.strip() for m in args.models.split(",") if m.strip()]
 
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     out = {}
@@ -145,6 +157,8 @@ def main():
         ref_rows = None
         for p in paths:
             model = os.path.basename(p)[len(task) + 1:-5]
+            if wanted is not None and model not in wanted:
+                continue
             rows = json.load(open(p, encoding="utf-8"))
             rows = [r for r in rows if r.get(gold_key) is not None]
             s = score_rows(rows, gold_key)

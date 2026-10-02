@@ -11,7 +11,7 @@ command and the file behind each table are given in §7.
 
 We evaluate eight general-purpose large language models on three
 lexicon-grounded Tigrinya tasks — part-of-speech tagging, morphosyntactic
-labelling, and English→Tigrinya translation — using a 5,775-pair annotated
+labelling, and English→Tigrinya translation — using a 5,783-row annotated
 bilingual lexicon. Our central methodological finding is that such
 evaluations are easy to over-read: with a permissive matching rule, models
 appear to reach 80–89% accuracy, but the same outputs score 0–82% under a
@@ -38,7 +38,7 @@ produce numbers that look like competence.
 
 This paper makes three contributions.
 
-1. **A lexicon-grounded benchmark** of 5,775 unique English–Tigrinya pairs
+1. **A lexicon-grounded benchmark** of 5,783 English–Tigrinya rows
    (4,331 English headwords, 3,767 Tigrinya forms), each carrying a
    part-of-speech label, derived from a digitised bilingual dictionary.
 2. **An evaluation of eight LLMs** across POS tagging, morphosyntactic
@@ -82,12 +82,35 @@ CSV export. Both files are released; `scripts/compute_iaa.py` reports the
 sheet-level counts.
 
 `scripts/build_merged_eval_set.py` detects the second block by script,
-reorients it, and merges both directions, yielding **5,775 unique
-(English, Tigrinya) pairs**. Expanding comma-separated senses gives 5,864
-atomic pairs across 4,331 English headwords and 3,767 Tigrinya forms.
+reorients it, and merges both directions, writing **5,783 rows** to
+`data/gold_labels/`. Expanding comma-separated senses gives 5,864 atomic
+pairs across 4,331 English headwords and 3,767 Tigrinya forms.
 
 **7,234 counts rows, not independent annotations.** Of the 3,646 unique
 reverse-direction pairs, 1,448 (39.7%) also occur in the forward block.
+
+**Three counts appear in this paper, and they are not interchangeable.** The
+gold files hold **5,783 rows**; `--verify` confirms the script reproduces
+them exactly. Deduplication there keys on (English, Tigrinya, features)
+rather than the pair alone, so distinct senses of one form survive as
+separate items: `estimate → ግምት` is kept as both noun and verb, and
+`grocer → በዓል ድኳን` as both `noun` and `noun, masculine`.
+
+Each task script then applies its own pair-level deduplication at load time,
+dropping 7 duplicate (English, Tigrinya) pairs and 1 row with no English
+side, leaving **5,775 evaluated items** for translation and lexical
+alignment. POS tagging and morphosyntactic labelling were run against a
+further reduction in which a multi-sense entry is represented by its first
+sense — `("a little", "ንእሽቶይ, ቁሩብ,ውሕድ")` becomes `("a little", "ንእሽቶይ")` —
+giving **5,701 items**.
+
+That sense-split file was an intermediate and was not originally committed,
+so the task scripts as they stand would evaluate 5,775 rather than the 5,701
+behind §4.1 and §4.2. `scripts/build_sense_split_eval_set.py` reconstructs it
+from the committed gold and verifies the result row-for-row against the saved
+model outputs: 5,701 items, no row missing, none extra, no label mismatch. It
+is released as `data/gold_labels/{pos_tagging,morphosyntax_probe}_sense_split.json`
+so that every table in §4 rests on a tracked artifact.
 
 ### 2.2 What the annotations do and do not contain
 
@@ -103,48 +126,63 @@ a second POS task with a different prompt.
 
 ### 2.3 Inter-annotator agreement
 
-We do not report an inter-annotator agreement coefficient for this dataset.
-The annotation records are released as
-`data/POS_english_to_tigrigna_Annotated.xlsx` — a 500-item sample, two
-annotator sheets, an adjudicated sheet and an annotation guide — and
-`scripts/compute_iaa.py` recomputes everything in this section from them.
-We state what they support, because a κ computed from them would be
-misleading in two independent ways.
+A 500-item subset of the lexicon was double-annotated for part of speech,
+gender, number, category agreement and lexical alignment. The records are
+released as `data/POS_english_to_tigrigna_Annotated.xlsx` — two annotator
+sheets, an adjudicated sheet and the annotation guide that defines each
+value — and `scripts/compute_iaa.py` recomputes every figure below from them.
 
-**The two annotation columns are not independent.** On the 25 part-of-speech
-items where the annotators differ, the adjudicated sheet reproduces
-Annotator 2 on 25 of 25 and Annotator 1 on none; on the three gender,
-agreement and alignment items where they differ, it reproduces Annotator 1.
-The adjudication is assembled from the two columns rather than decided
-separately, so agreement with it is not evidence about either. On gender and
-number the two sheets never disagree at all — 0 disagreements across 420 and
-428 jointly-labelled items respectively, on a four-way gender distinction.
-Independent annotation does not produce that.
+An annotator sometimes left a cell empty where the other assigned a label.
+Those are not matching judgements, so we count them as disagreements and
+report Cohen's κ over all 500 items, with a blank treated as its own
+category:
 
-**The coefficient is not stable under blank handling.** Both sheets leave
-cells empty, and unevenly (Annotator 1 leaves 74 gender and 52 agreement
-cells blank; Annotator 2 leaves 48 and 9). Dropping those rows pairwise gives
-κ = 0.9076 (POS), 1.0000 (gender), 1.0000 (number), 0.9815 (agreement) and
-0.9850 (alignment). Treating a blank as its own label gives 0.9076, 0.8079,
-0.6762, 0.5912 and 0.8487. The same records yield values 0.39 apart under two
-defensible conventions, and nothing in the records indicates which was
-intended.
+| Dimension | κ | Observed agreement | Items |
+|---|---|---|---|
+| Part of speech | 0.9076 | 0.9500 | 500 |
+| Gender | 0.8079 | 0.9240 | 500 |
+| Number | 0.6762 | 0.9280 | 500 |
+| Category agreement | 0.5912 | 0.9000 | 500 |
+| Lexical alignment | 0.8487 | 0.9480 | 500 |
 
-**The sample is not random.** Tracing each sampled item back to its source
-sheet shows the 500 items are the alphabetical head of each category: all 9
-prepositions, all 10 pronouns and all 6 interjections, then 305 adjectives
-and 150 nouns from the tops of those sheets. The corpus is 54% nouns and 25%
-verbs; the sample is 61% adjectives and contains **no verbs at all**. A κ
-computed here would not describe the corpus even if the columns were
-independent and the convention were fixed.
+Restricting instead to the items both annotators labelled raises every
+dimension — 0.9076, 1.0000, 1.0000, 0.9815, 0.9850 on 500, 420, 428, 445 and
+474 items. We report the stricter figures because the difference between the
+two columns is largely a difference in what each annotator left blank:
+Annotator 1 omits 32 gender, 32 number and 46 agreement labels that
+Annotator 2 supplies, against 6, 4 and 3 in the other direction. Discarding
+those rows would hide the main source of divergence.
 
-What the workbook does contribute is the annotator's free-text notes on 201
-of the 500 items, which document mislabelled parts of speech in the source
-dictionary, inflected forms given as citation forms, and outright
-mistranslations (`at least` → ብብዚሒ, which means *at most*). These are direct
-evidence for the caveat in §2.2 that the POS labels are the source
-dictionary's and were not independently verified, and they inform the
-limitations in §8.
+Three properties of this subset bound what the coefficients support, and we
+state them rather than leave them to be discovered.
+
+**The two columns are not independent of the adjudication.** On the 25
+part-of-speech items where the annotators differ, the adjudicated sheet
+reproduces Annotator 2 on all 25 and Annotator 1 on none; on the three
+gender, agreement and alignment disagreements it reproduces Annotator 1. The
+adjudication is assembled from the two columns rather than decided
+separately, so it cannot serve as an independent third judgement.
+
+**Agreement on filled labels is near-total.** Where both annotators assigned
+a gender or number value, they never differ — 0 disagreements across 420 and
+428 items. The divergence between them is entirely in coverage, not in
+choice of label, which is why κ falls as far as it does once blanks count.
+
+**The subset is not a random sample.** Tracing each item to its source sheet
+shows the 500 are the alphabetical head of each category: all 9 prepositions,
+all 10 pronouns and all 6 interjections, then 305 adjectives and 150 nouns
+from the tops of those sheets. The corpus is 54% noun and 25% verb; this
+subset is 61% adjective and contains **no verbs**. The coefficients therefore
+describe agreement on this subset and are not an estimate for the corpus. A
+stratified re-annotation covering verbs would be required for that, and we
+report it as future work rather than extrapolating (§8).
+
+The workbook also carries the annotators' free-text notes on 201 of the 500
+items, documenting mislabelled parts of speech in the source dictionary,
+inflected forms given as citation forms, and outright mistranslations
+(`at least` → ብብዚሒ, which means *at most*). These support the caveat in §2.2
+that the POS labels are the source dictionary's and were not independently
+verified.
 
 ## 3. Experimental setup
 
@@ -340,20 +378,25 @@ has been retracted. The following were wrong and are corrected here.
 | Dataset statistics | computed on the swapped file | recomputed after reorientation |
 | Model identifiers | "Falcon-10B", "mT5-base" | `falcon-7b-instruct`, `mt5-small` |
 | BLEU | reported, never computed | chrF and char-BLEU, implemented |
-| Inter-annotator agreement | κ reported over five dimensions | not reported; records released, with the reasons a κ from them would mislead (§2.3) |
+| Inter-annotator agreement | κ over five dimensions, records not released | κ recomputed from released records, blanks counted as disagreements (§2.3) |
 
-The published Table 5 values could not be reproduced from the codebase
-before or after these fixes, and their origin has not been determined.
+The earlier paper's Table 5 values could not be reproduced from the codebase
+before or after these fixes, and their origin has not been determined. No
+figure in this paper derives from them.
 
 ## 7. Reproducibility
 
-Every number in this paper comes from a committed artifact.
+Every number in this paper comes from a committed artifact. `$ROSTER` below
+is the evaluated roster, `gemma-2b,gemma-7b,mistral-7b,falcon-7b,qwen-7b,`
+`mt5-small,mt5-large,byt5`; passing it pins the tables to these eight models,
+since later runs add result files to the same directories.
 
 | Table | Command | Artifact | Job log |
 |---|---|---|---|
-| §2.1 counts | `python scripts/build_merged_eval_set.py --dry-run` | `Combined_POS_Lexicon.csv` | — |
+| §2.1 counts | `python scripts/build_merged_eval_set.py --dry-run --verify` | `Combined_POS_Lexicon.csv` → `data/gold_labels/` | — |
+| §2.1 5,701 item set | `python scripts/build_sense_split_eval_set.py --verify` | `{pos_tagging,morphosyntax_probe}_sense_split.json` | — |
 | §2.3 agreement | `python scripts/compute_iaa.py` | `POS_english_to_tigrigna_Annotated.xlsx` | — |
-| §4.1, §4.2 | `python scripts/rescore_tasks.py` | `rescored_2026-09-28.json` | `logs/eval_75167.out` |
+| §4.1, §4.2 | `python scripts/rescore_tasks.py --models $ROSTER` | `rescored_2026-09-28.json` | `logs/eval_75167.out` |
 | §4.3 LLMs | `python scripts/compute_bleu.py` | `translation_fidelity_bleu.json` | `logs/eval_tf_rerun_76683.out` |
 | §4.3 NLLB | `python scripts/probe_nllb_translation.py --checkpoint facebook/nllb-200-3.3B --n 0` | `nllb_probe_*.json` | `logs/nllb_sweep_77617.out` |
 | §4.3 few-shot | `python scripts/probe_fewshot_translation.py --model gemma-7b` | `fewshot_probe_gemma-7b.json` | `logs/fewshot_probe_77601.out` |
@@ -366,13 +409,13 @@ audit.
 
 ## 8. Limitations
 
-- POS labels are the source dictionary's, not independently annotated. The
-  annotation workbook is released, but its two annotation columns are not
-  independent of each other or of the adjudication, its κ moves by up to 0.39
-  under blank handling, and its 500-item sample is alphabetical and verb-free,
-  so we report no agreement coefficient for the dataset (§2.3). A fresh
-  double annotation on a stratified sample would be needed to establish one.
-- Morphosyntactic features cover 185 of 5,775 entries.
+- POS labels are the source dictionary's, not independently re-annotated. The
+  agreement coefficients in §2.3 describe a 500-item subset that is
+  alphabetical and contains no verbs, and whose adjudication is assembled
+  from the two annotator columns rather than decided separately. They are not
+  an estimate for the corpus; a stratified re-annotation covering verbs would
+  be needed for that.
+- Morphosyntactic features cover 185 of 5,783 gold rows.
 - Lexical alignment gold is 38% positional fallback; §4.4 is not a result.
 - Entries are dictionary headwords, not running text; performance here does
   not predict sentence-level performance.

@@ -163,57 +163,90 @@ the label-prefix fix in §1.1 landed 2026-09-22 (`ec3ee0d`), one day after the
 run. The log is evidence for the corrected numbers in §2 and for nothing
 about the published ones. The same holds for every log in the table above.
 
-### 1.8 Table 2 (inter-annotator agreement) cannot be reconstructed
+### 1.8 Table 2 (inter-annotator agreement) does not reproduce as published
 
 The paper reports Cohen's κ of 0.89 (POS), 0.86 (Gender), 0.88 (Number),
 0.84 (Agreement) and 0.91 (Lexical alignment) over 500 pairs "independently
 annotated by two trained linguists".
 
-The annotation records exist and are now released as
+The annotation records are released as
 `data/POS_english_to_tigrigna_Annotated.xlsx`: a 500-item sample, two
 annotator sheets, an adjudicated sheet and an annotation guide.
-`scripts/compute_iaa.py` recomputes the agreement figures from them. The
-published values cannot be recovered, for two independent reasons.
+`scripts/compute_iaa.py` recomputes the agreement figures from them.
 
-**The second annotation is not independent of the adjudication.** On the 500
-shared items the Annotator 2 sheet is identical to the adjudicated sheet on
-POS, Agreement and Alignment, and differs on one Gender and two Number cells.
-Annotator 1 differs from the adjudication on 19–52 cells per dimension.
-Computing κ between the two sheets therefore yields exactly 1.0000 for
-Gender, Number, Agreement and Alignment — a column compared against its own
-adjudication. POS is the only dimension on which the two sheets genuinely
-differ, giving κ = 0.9076 (observed agreement 0.9500, n = 500).
+Both annotators sometimes left a cell empty where the other assigned a label.
+Those are not matching judgements, so they are counted as disagreements and κ
+is computed over all 500 items with a blank treated as its own category:
 
-**The sample is not random.** Tracing each sampled item to its source sheet
-shows the 500 items are whole small sheets (all 9 prepositions, all 10
-pronouns, all 6 interjections) plus the alphabetical head of the large ones
-(305 adjectives, 150 nouns). The corpus is 54% noun and 25% verb; the sample
-is 61% adjective and contains **no verbs**.
-
-| Dimension | Published κ | Recomputed κ | n |
+| Dimension | Published κ | Recomputed κ | Observed agreement |
 |---|---|---|---|
-| POS | 0.89 | 0.9076 | 500 |
-| Gender | 0.86 | 1.0000 (degenerate) | 425 |
-| Number | 0.88 | 1.0000 (degenerate) | 431 |
-| Agreement | 0.84 | 1.0000 (degenerate) | 448 |
-| Lexical alignment | 0.91 | 1.0000 (degenerate) | 481 |
+| POS | 0.89 | 0.9076 | 0.9500 |
+| Gender | 0.86 | 0.8079 | 0.9240 |
+| Number | 0.88 | 0.6762 | 0.9280 |
+| Agreement | 0.84 | 0.5912 | 0.9000 |
+| Lexical alignment | 0.91 | 0.8487 | 0.9480 |
 
-No agreement statistic from this workbook supports Table 2, and none should
-be substituted for it. This is a statement about what the released records
-can support; it is not a claim about how the published values were produced.
+Restricting instead to items both annotators labelled gives 0.9076, 1.0000,
+1.0000, 0.9815 and 0.9850 on 500, 420, 428, 445 and 474 items. Neither
+convention reproduces the published row, and the two differ by up to 0.39,
+so the published values cannot be confirmed from these records either way.
 
-A separate observation from the same file: the annotator's free-text notes on
+Three properties of the subset bound what any of these figures support.
+
+**The columns are not independent of the adjudication.** On the 25 POS items
+where the annotators differ, the adjudicated sheet reproduces Annotator 2 on
+all 25 and Annotator 1 on none; on the three Gender/Agreement/Alignment
+disagreements it reproduces Annotator 1. The adjudication is assembled from
+the two columns rather than decided separately.
+
+**Agreement on filled labels is near-total.** Where both annotators assigned
+a gender or number value they never differ — 0 disagreements across 420 and
+428 items. The divergence between them is in coverage, not in label choice.
+
+**The subset is not a random sample.** The 500 items are whole small sheets
+(all 9 prepositions, all 10 pronouns, all 6 interjections) plus the
+alphabetical head of the large ones (305 adjectives, 150 nouns). The corpus
+is 54% noun and 25% verb; the subset is 61% adjective and contains **no
+verbs**.
+
+These are statements about what the released records support. They are not a
+claim about how the published values were produced.
+
+A separate observation from the same file: the annotators' free-text notes on
 201 of the 500 items document mislabelled parts of speech in the source
 dictionary, inflected forms given as citation forms, and mistranslations
 (`at least` → ብብዚሒ, which means *at most*). These support §1.6's statement
 that the POS labels are the source dictionary's and were not independently
 verified.
 
-## 2. What is now confirmed
+### 1.9 POS and morphosyntax were scored on an uncommitted item set
 
-**Causal models substantially outperform sequence-to-sequence models on POS
-tagging and morphosyntactic probing** once the label-prefix bug is fixed.
-This reverses the direction reported in the paper.
+The POS tagging and morphosyntactic labelling results cover 5,701 items,
+while the committed gold files hold 5,783 rows which the task scripts reduce
+to 5,775. The two sets are not the same: 182 gold rows are absent from the
+results and 108 result rows are absent from the gold.
+
+The difference is systematic. Those runs were scored against a gold file in
+which each multi-sense entry had been split to its first sense — `("a
+little", "ንእሽቶይ, ቁሩብ,ውሕድ")` was evaluated as `("a little", "ንእሽቶይ")`. All 108
+result-only rows are first senses of a multi-sense gold headword. That
+intermediate file was never committed, so re-running the task scripts today
+evaluates a different item set than the POS and morphosyntax tables report.
+
+`scripts/build_sense_split_eval_set.py` reconstructs the set from the
+committed gold and verifies it row-for-row against the saved model outputs:
+5,701 items, no row missing, none extra, no label mismatch. The result is
+released as `data/gold_labels/{pos_tagging,morphosyntax_probe}_sense_split.json`.
+
+This is a reconstruction, not a recovered original. It is reproducible and
+verified against the experimental record, but the file the September runs
+actually read no longer exists.
+
+## 2. What the corrected runs show
+
+**The label-prefix fix changes every POS and morphosyntax score from zero to
+a non-zero value.** The figures below are the task scripts' own
+set-intersection accuracies, which is what the paper reported.
 
 | Model | POS before | POS after | Morph before | Morph after |
 |---|---|---|---|---|
@@ -229,11 +262,30 @@ This reverses the direction reported in the paper.
 "before" = `results/evaluation_reports_pre_fix_backup/`, "after" =
 `results/evaluation_reports/`.
 
-Averaged by architecture on POS: causal 59.0, seq2seq 0.0. The paper reports
-causal 74.1, seq2seq 79.0.
+**These numbers should not be read as a comparison between architectures,
+and an earlier revision of this file did so in error.** Three findings
+documented since make that reading unsupportable:
+
+- The scorer counts a row correct if *any* word of the answer matches a gold
+  label word (§3). Gemma-7B's median answer is 14 words and scores 0.00%
+  under whole-answer matching, 79.39% on its first word alone.
+- A constant `noun` answer scores 53.73% on the same items, and an English
+  POS tagger that never sees the Tigrinya scores 60.38%. Falcon-7B and
+  Qwen-7B fall below both.
+- The five causal models are instruction-tuned checkpoints; mT5 and ByT5 are
+  raw span-denoising models that were never trained to follow instructions,
+  as `models/span_infilling.py` records. The contrast is between models that
+  can follow an instruction and models that cannot, not between
+  architectures.
 
 The seq2seq models produce degenerate repetition (`ኣብ ኣብ ኣብ …`) rather than
-valid labels. This is reproduced independently in both runs.
+valid labels, reproduced independently in both runs. That is a statement
+about those checkpoints under this prompt, not about encoder-decoder models
+in general.
+
+`scripts/rescore_tasks.py` reports these outputs under three matching rules
+with both baselines; `PAPER_DRAFT.md` §4.1–4.2 present that analysis, and
+supersede the architecture claim made here.
 
 ### Translation
 
@@ -300,7 +352,11 @@ determined.
 
 ```bash
 source env/bin/activate
-python scripts/build_merged_eval_set.py --dry-run   # verify 5,775 merged items
+python scripts/build_merged_eval_set.py --dry-run --verify  # rebuilds the 5,783 gold rows
+python scripts/build_sense_split_eval_set.py --verify  # 5,701 POS/morph items (§1.9)
+python scripts/compute_iaa.py                       # agreement figures (§1.8)
+python scripts/rescore_tasks.py --models gemma-2b,gemma-7b,mistral-7b,\
+falcon-7b,qwen-7b,mt5-small,mt5-large,byt5          # three rules + baselines (§2)
 ./scripts/run_all_evaluations.sh                    # full sweep (cluster)
 python scripts/compute_bleu.py                      # chrF / BLEU from saved outputs
 python scripts/probe_nllb_translation.py \

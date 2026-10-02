@@ -337,12 +337,13 @@ def main():
         print()
         print("## Conclusion")
         print()
-        print("The two annotation columns are not independent of each other")
-        print("or of the adjudication; the coefficient is not stable under")
-        print("blank handling; and the sample is alphabetical, excluding")
-        print("verbs entirely. No single agreement coefficient derived here")
-        print("would describe the corpus, which is why section 2.3 reports")
-        print("none.")
+        print("Section 2.3 reports the blank=label column, counting a cell")
+        print("one annotator left empty as a disagreement. Three properties")
+        print("bound what those figures support: the columns are not")
+        print("independent of the adjudication, agreement on filled labels")
+        print("is near-total so the divergence is in coverage rather than")
+        print("label choice, and the subset is alphabetical and verb-free,")
+        print("so it is not an estimate for the corpus.")
 
         if args.json:
             import json
