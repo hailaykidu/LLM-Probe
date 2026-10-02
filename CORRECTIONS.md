@@ -25,7 +25,34 @@ This zeroed out POS tagging and morphosyntactic probing completely: all eight
 models scored `0.0000` across all 3,899 evaluated rows.
 
 Fixed: gold labels are written without the prefix
-(`scripts/build_merged_eval_set.py`).
+(`scripts/build_merged_eval_set.py`), and `normalize_tags` in the task
+scripts now strips any parenthetical abbreviation and splits on whitespace as
+well as commas.
+
+**Reconciliation with the archived zeros.** The scoring predicate itself is
+unchanged across the fix — `bool(expected_tags & output_tags)` in both the
+initial commit and now. Only label normalisation changed. The old
+`normalize_tags` deleted spaces *before* splitting on commas, so `(n) noun`
+became the single token `(n)noun`, which no model output can equal:
+
+| Gold | Old tokens | New tokens | Model says `noun` |
+|---|---|---|---|
+| `(n) noun` | `{(n)noun}` | `{noun}` | old ✗ / new ✓ |
+| `(adv) adverb` | `{(adv)adverb}` | `{adverb}` | old ✗ / new ✗ |
+
+Re-scoring the archived outputs confirms the mechanism exactly. Taking
+`results/evaluation_reports_pre_fix_backup/pos_tagging/pos_tagging_gemma-7b.json`
+(3,899 rows, gold stored as `(adv) adverb`) and applying each rule to the
+same stored model outputs:
+
+- old `normalize_tags`: 0/3,899 = `0.0000`, reproducing the archived file;
+- new `normalize_tags`: 3,121/3,899 = `0.8005`.
+
+The archived `0.0000` and the corrected `0.8188` are therefore the same model
+outputs under two label-handling rules, not two different experiments. The
+row count differs (3,899 archived vs 5,701 current) because the lexicon
+correction in §1.2 changed the evaluation set as well; that is a separate
+change from the normalisation fix.
 
 ### 1.2 The reverse-direction lexicon block was never reoriented
 
@@ -128,6 +155,59 @@ SLURM stdout/stderr for every run behind the corrected numbers is in `logs/`:
 
 These were added in a commit after the initial audit commit; they were
 present on disk throughout but had not been tracked.
+
+**Provenance of job 75167.** The file was written 2026-09-21 06:08 and first
+committed 2026-09-25 (`f27e5de`). It therefore postdates the published paper
+and records the *corrected* code, not the code the paper was written from:
+the label-prefix fix in §1.1 landed 2026-09-22 (`ec3ee0d`), one day after the
+run. The log is evidence for the corrected numbers in §2 and for nothing
+about the published ones. The same holds for every log in the table above.
+
+### 1.8 Table 2 (inter-annotator agreement) cannot be reconstructed
+
+The paper reports Cohen's κ of 0.89 (POS), 0.86 (Gender), 0.88 (Number),
+0.84 (Agreement) and 0.91 (Lexical alignment) over 500 pairs "independently
+annotated by two trained linguists".
+
+The annotation records exist and are now released as
+`data/POS_english_to_tigrigna_Annotated.xlsx`: a 500-item sample, two
+annotator sheets, an adjudicated sheet and an annotation guide.
+`scripts/compute_iaa.py` recomputes the agreement figures from them. The
+published values cannot be recovered, for two independent reasons.
+
+**The second annotation is not independent of the adjudication.** On the 500
+shared items the Annotator 2 sheet is identical to the adjudicated sheet on
+POS, Agreement and Alignment, and differs on one Gender and two Number cells.
+Annotator 1 differs from the adjudication on 19–52 cells per dimension.
+Computing κ between the two sheets therefore yields exactly 1.0000 for
+Gender, Number, Agreement and Alignment — a column compared against its own
+adjudication. POS is the only dimension on which the two sheets genuinely
+differ, giving κ = 0.9076 (observed agreement 0.9500, n = 500).
+
+**The sample is not random.** Tracing each sampled item to its source sheet
+shows the 500 items are whole small sheets (all 9 prepositions, all 10
+pronouns, all 6 interjections) plus the alphabetical head of the large ones
+(305 adjectives, 150 nouns). The corpus is 54% noun and 25% verb; the sample
+is 61% adjective and contains **no verbs**.
+
+| Dimension | Published κ | Recomputed κ | n |
+|---|---|---|---|
+| POS | 0.89 | 0.9076 | 500 |
+| Gender | 0.86 | 1.0000 (degenerate) | 425 |
+| Number | 0.88 | 1.0000 (degenerate) | 431 |
+| Agreement | 0.84 | 1.0000 (degenerate) | 448 |
+| Lexical alignment | 0.91 | 1.0000 (degenerate) | 481 |
+
+No agreement statistic from this workbook supports Table 2, and none should
+be substituted for it. This is a statement about what the released records
+can support; it is not a claim about how the published values were produced.
+
+A separate observation from the same file: the annotator's free-text notes on
+201 of the 500 items document mislabelled parts of speech in the source
+dictionary, inflected forms given as citation forms, and mistranslations
+(`at least` → ብብዚሒ, which means *at most*). These support §1.6's statement
+that the POS labels are the source dictionary's and were not independently
+verified.
 
 ## 2. What is now confirmed
 
