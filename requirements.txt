@@ -3,8 +3,11 @@ pandas
 numpy
 
 # Hugging Face Transformers and dependencies
-transformers
-torch
+# transformers>=5.17 is required for the 2026 model roster: gemma4,
+# gemma4_unified, mistral3, falcon_h1 and t5gemma2 model types are not
+# registered in earlier releases.
+transformers>=5.17.0
+torch>=2.6
 sentencepiece
 accelerate
 protobuf

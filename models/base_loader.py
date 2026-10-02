@@ -3,6 +3,7 @@ from transformers import (
     AutoModelForCausalLM,
     AutoModelForSeq2SeqLM,
     AutoModelForMaskedLM,
+    AutoModelForImageTextToText,
     pipeline
 )
 from huggingface_hub import login
@@ -10,6 +11,13 @@ import torch  # ✅ Correct import for torch.float16
 
 MODEL_CONFIGS = {
     "apertus": {"type": "causal", "task": "text-generation"},
+    # t5gemma-2 is an encoder-decoder despite the "gemma" in its name, so it
+    # must be matched before the "gemma" key below (dict order is match order).
+    "t5gemma": {"type": "seq2seq", "task": "text2text-generation"},
+    # Ministral-3 registers only as an image-text-to-text model; neither
+    # AutoModelForCausalLM nor AutoModelForSeq2SeqLM resolves it. Its text
+    # decoder is reached through the multimodal conditional-generation class.
+    "ministral": {"type": "image_text", "task": "text-generation"},
     "falcon": {"type": "causal", "task": "text-generation"},
     "gemma": {"type": "causal", "task": "text-generation"},
     "mistral": {"type": "causal", "task": "text-generation"},
@@ -80,17 +88,29 @@ def load_model(model_name: str, task: str = None, hf_token: str = None):
     tokenizer = AutoTokenizer.from_pretrained(model_name, legacy=False, use_fast=True)
 
     try:
+        # dtype="auto" honours each checkpoint's own stored precision.
+        # Forcing float16 breaks checkpoints published in bfloat16 --
+        # t5gemma-2 raises "expected m1 and m2 to have the same dtype,
+        # but got: c10::BFloat16 != c10::Half" during the first matmul.
         if model_type == "seq2seq":
             model = AutoModelForSeq2SeqLM.from_pretrained(
                 model_name,
                 device_map="auto",
-                dtype=torch.float16
+                dtype="auto"
             )
         elif model_type == "causal":
             model = AutoModelForCausalLM.from_pretrained(
                 model_name,
                 device_map="auto",
-                dtype=torch.float16
+                dtype="auto"
+            )
+        elif model_type == "image_text":
+            # Text-only use of a multimodal checkpoint: the vision tower is
+            # loaded but never fed, and generation runs on the text decoder.
+            model = AutoModelForImageTextToText.from_pretrained(
+                model_name,
+                device_map="auto",
+                dtype=torch.bfloat16
             )
         elif model_type == "masked":
             # device_map="auto" is avoided here: transformers 5.17.0's

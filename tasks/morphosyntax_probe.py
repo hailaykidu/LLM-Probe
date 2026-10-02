@@ -20,7 +20,14 @@ from models.byt5_loader import load_model as load_byt5
 from models.xlm_roberta_loader import load_model as load_xlm_roberta
 from models.qwen_loader import load_model as load_qwen_7b
 from models.falcon_loader import load_model as load_falcon_7b
+from models.falcon3_loader import load_model as load_falcon3_10b
 from models.apertus_loader import load_model as load_apertus_8b  # ✅ NEW
+
+# Models served over the KBS OpenAI-compatible HTTP endpoint rather than
+# loaded locally from a checkpoint (see models/endpoint_loader.py).
+from models.qwen38_endpoint_loader import load_model as load_qwen38_endpoint
+from models.deepseek_endpoint_loader import load_model as load_deepseek_endpoint
+from models.gptoss_endpoint_loader import load_model as load_gptoss_endpoint
 
 # === Helpers ===
 EXTRA_ID_RE = re.compile(r"<extra_id_\d+>")
@@ -88,22 +95,35 @@ class TaggedModel:
 # the evaluation loop ever ran, silently discarding every other model's
 # results for the whole task.
 _MODEL_LOADERS = [
-    ("gemma-2b", load_gemma_2b),
-    ("gemma-7b", load_gemma_7b),
-    ("mistral-7b", load_mistral_7b),
+    ("gemma-4-e2b", load_gemma_2b),
+    ("gemma-4-12b", load_gemma_7b),
+    ("ministral-3-8b", load_mistral_7b),
     # google/mt5-small is what this loader actually loads, despite the
     # earlier "mt5-base" naming; relabeled to match the checkpoint used.
-    ("mt5-small", load_mt5_small),
-    ("mt5-large", load_mt5_large),
+    ("t5gemma-2-270m", load_mt5_small),
+    ("t5gemma-2-1b", load_mt5_large),
     ("byt5", load_byt5),
     ("xlm-roberta", load_xlm_roberta),
-    ("qwen-7b", load_qwen_7b),
+    ("qwen3.6-27b", load_qwen_7b),
     # tiiuae/falcon-7b-instruct -- the Falcon model this project evaluates.
     # Published as "Falcon-10B"; that label is incorrect.
-    ("falcon-7b", load_falcon_7b),
+    ("falcon-h1r-7b", load_falcon_7b),
+    # Falcon3-10B-Instruct: bf16 checkpoint, loadable now that
+    # base_loader uses dtype="auto" (see models/falcon3_loader.py).
+    ("falcon3-10b", load_falcon3_10b),
     # apertus-8b repeatedly stalls mid-download from the HF CDN (observed
     # hanging for hours on a partial shard) — skip until that's resolved.
     # ("apertus-8b", load_apertus_8b),
+    # Endpoint-served models (no local GPU/checkpoint; HTTP generation).
+    # Only the three models from .claude/Test_f/config.py that the endpoint
+    # actually serves are listed -- see models/endpoint_models.py.
+    ("qwen3.8-27b", load_qwen38_endpoint),
+    ("gpt-oss-120b", load_gptoss_endpoint),
+    # deepseek-v4-flash measured ~88s per single-word request against this
+    # endpoint, i.e. >5 days for one 5775-row task. Left commented out so a
+    # full sweep does not stall on it; enable deliberately via
+    # EVAL_ONLY_MODELS for a scoped/sampled run.
+    # ("deepseek-v4-flash-284b", load_deepseek_endpoint),
 ]
 
 # Optional scoping for follow-up/re-runs of just one or a few models (e.g.

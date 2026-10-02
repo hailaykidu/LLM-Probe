@@ -13,7 +13,11 @@ substitute the prompt when that name is a known base seq2seq model, leaving
 every other model's prompt untouched.
 """
 
-SPAN_INFILLING_MODELS = {"mt5-small", "mt5-large", "byt5"}
+# t5gemma-2 replaced mt5 here and is instruction-capable, so it is
+# deliberately NOT listed: appending a sentinel to a model that follows
+# instructions suppresses the answer instead of eliciting it. byt5 remains a
+# raw span-denoising checkpoint and still needs the sentinel.
+SPAN_INFILLING_MODELS = {"byt5"}
 
 
 def to_span_infilling_prompts(prompts: list[str], model_name: str) -> list[str]:
