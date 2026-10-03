@@ -1,0 +1,9 @@
+# LaTeX build products. Rebuild with:
+#   lualatex main && bibtex main && lualatex main && lualatex main
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
