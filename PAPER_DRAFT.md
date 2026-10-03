@@ -1,6 +1,7 @@
 # How Far Can General-Purpose LLMs Go in Tigrinya? A Lexicon-Grounded Evaluation with Trivial Baselines
 
-**Draft — replaces the retracted LLMs4SSH @ LREC 2026 paper. Not submitted.**
+**Draft — not submitted.** Retraction of the earlier LLMs4SSH @ LREC 2026
+version has been requested by the authors and is not yet in effect (§6).
 
 Every number below is reproducible from artifacts in this repository. The
 command and the file behind each table are given in §7.
@@ -52,7 +53,8 @@ This paper makes three contributions.
 The third contribution is the reason for this paper. An earlier version of
 this work reported results computed with a permissive matching rule and no
 baselines, and drew an architectural conclusion that does not survive either
-correction. That paper has been retracted; §6 states what changed.
+correction. The authors have requested its retraction; §6 states the
+relationship between the two.
 
 ## 2. Dataset
 
@@ -362,27 +364,25 @@ performance. None can translate into Tigrinya. Even NLLB reaches only 16.24%
 exact on a dictionary task, which indicates the difficulty is real rather
 than an artefact of our setup.
 
-## 6. Relation to the retracted paper
+## 6. Relation to an earlier version of this work
 
-An earlier version of this work was published at LLMs4SSH @ LREC 2026 and
-has been retracted. The following were wrong and are corrected here.
+An earlier version of this work was published at LLMs4SSH @ LREC 2026. Its
+POS tagging and morphosyntactic results were computed with a permissive
+matching rule, under which an answer counts as correct if any of its words
+matches a gold label word, and were reported without baselines. Re-scored
+under a first-token rule and measured against a constant-answer baseline and
+an English-only baseline, the central claims of that paper do not hold: no
+model exceeds the English-only baseline on morphosyntactic labelling, and the
+architectural conclusion it drew is confounded with instruction-tuning, since
+the sequence-to-sequence checkpoints evaluated were never instruction-tuned.
+The authors have requested that it be retracted.
 
-| Issue | Then | Now |
-|---|---|---|
-| Matching rule | set-intersection only | three rules reported, first-token headline |
-| Baselines | none | majority 53.7, English-only 60.4 |
-| Architecture claim | seq2seq superior | withdrawn — confounded with instruction-tuning |
-| Morphosyntax | distinct task | reported as a second POS task (gold 96.8% identical) |
-| Gold POS labels | `(adv) adverb`, unmatched by any output | prefix stripped |
-| Direction blocks | reverse block not reoriented | reoriented before merge |
-| Dataset statistics | computed on the swapped file | recomputed after reorientation |
-| Model identifiers | "Falcon-10B", "mT5-base" | `falcon-7b-instruct`, `mt5-small` |
-| BLEU | reported, never computed | chrF and char-BLEU, implemented |
-| Inter-annotator agreement | κ over five dimensions, records not released | κ recomputed from released records, blanks counted as disagreements (§2.3) |
-
-The earlier paper's Table 5 values could not be reproduced from the codebase
-before or after these fixes, and their origin has not been determined. No
-figure in this paper derives from them.
+This paper reports the same model outputs, re-scored. It shares the lexicon
+and the saved generations with that version and supersedes it; no figure here
+is taken from it, and the dataset counts, matching rules and baselines are
+all regenerable from the artifacts listed in §7. Readers comparing the two
+should treat the earlier numbers as withdrawn rather than as an alternative
+measurement.
 
 ## 7. Reproducibility
 
