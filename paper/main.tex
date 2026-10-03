@@ -88,7 +88,7 @@ labelling, by under three points. On translation all eight models score at or
 below chrF 0.81, while NLLB-200-3.3B, which supports Tigrinya, reaches chrF
 16.05 on identical items with an identical scorer. We argue that low-resource
 evaluations without trivial baselines are uninterpretable, and release the
-lexicon, code, model outputs, and job logs. Because the procedure we apply
+lexicon, the scoring code and the saved model outputs. Because the procedure we apply
 here --- report every matching rule, measure against baselines that use none
 of the target language, and quantify prompt echo --- requires no resources
 beyond those an evaluation already has, it transfers directly to other
@@ -413,8 +413,8 @@ the source dictionary's and were not independently verified.
 \label{sec:setup}
 
 Eight models, all loaded through the Hugging Face \texttt{transformers}
-interface~\citep{wolf-etal-2020-transformers} on an Ampere-class GPU node
-(4$\times$A100, 32 CPU cores, 128\,GB RAM) under SLURM
+interface~\citep{wolf-etal-2020-transformers} and run on a single compute
+node with four A100 GPUs, 32 CPU cores and 128\,GB of RAM
 (Table~\ref{tab:models}).
 
 \begin{table*}[t]
@@ -688,42 +688,37 @@ alternative measurements of the same quantity.
 \section{Reproducibility}
 \label{sec:reproducibility}
 
-Every number in this paper comes from a committed artifact.
-\texttt{\$ROSTER} below is the evaluated roster,
-\texttt{gemma-2b,gemma-7b,mistral-7b,falcon-7b,qwen-7b,mt5-small,mt5-large,byt5};
-passing it pins the tables to these eight models, since later runs add result
-files to the same directories.
+Every number in this paper is recomputed from the released artifacts by the
+commands in Table~\ref{tab:repro}; none requires re-running a model.
+\texttt{\$ROSTER} denotes the eight evaluated models, which the scoring
+script takes as an explicit argument so that a reported table is reproduced
+over exactly that set.
 
 \begin{table*}[t]
 \centering
 \small
-\begin{tabular}{@{}llll@{}}
+\begin{tabular}{@{}lll@{}}
 \toprule
-Table & Command (in \texttt{scripts/}) & Artifact & Job log \\
+Reported in & Command (in \texttt{scripts/}) & Artifact read \\
 \midrule
-\S\ref{subsec:source} counts    & \texttt{build\_merged\_eval\_set.py}      & \texttt{Combined\_POS\_} & --- \\
-                                & \quad\texttt{--dry-run --verify}          & \quad\texttt{Lexicon.csv} & \\
-\S\ref{subsec:source} 5,701 set & \texttt{build\_sense\_split\_eval\_set.py}& \texttt{*\_sense\_} & --- \\
-                                & \quad\texttt{--verify}                    & \quad\texttt{split.json} & \\
-\S\ref{subsec:iaa} agreement    & \texttt{compute\_iaa.py}                  & \texttt{*\_Annotated.xlsx} & --- \\
-\S\ref{subsec:pos}, \S\ref{subsec:morph} & \texttt{rescore\_tasks.py}       & \texttt{rescored\_} & \texttt{eval\_} \\
-                                & \quad\texttt{--models \$ROSTER}           & \quad\texttt{2026-09-28.json} & \quad\texttt{75167.out} \\
-\S\ref{subsec:translation} LLMs & \texttt{compute\_bleu.py}                 & \texttt{translation\_} & \texttt{eval\_tf\_} \\
-                                &                                           & \quad\texttt{fidelity\_bleu.json} & \quad\texttt{rerun\_76683.out} \\
-\S\ref{subsec:translation} NLLB & \texttt{probe\_nllb\_translation.py}      & \texttt{nllb\_probe\_*.json} & \texttt{nllb\_} \\
-                                &                                           &                           & \quad\texttt{sweep\_77617.out} \\
-\S\ref{subsec:translation} few-shot & \texttt{probe\_fewshot\_translation.py} & \texttt{fewshot\_probe\_} & \texttt{fewshot\_} \\
-                                &                                           & \quad\texttt{gemma-7b.json} & \quad\texttt{probe\_77601.out} \\
+\S\ref{subsec:source} counts    & \texttt{build\_merged\_eval\_set.py --dry-run --verify} & \texttt{Combined\_POS\_Lexicon.csv} \\
+\S\ref{subsec:source} 5,701 set & \texttt{build\_sense\_split\_eval\_set.py --verify}     & \texttt{*\_sense\_split.json} \\
+\S\ref{subsec:iaa} agreement    & \texttt{compute\_iaa.py}                                & \texttt{*\_Annotated.xlsx} \\
+\S\ref{subsec:pos}, \S\ref{subsec:morph} & \texttt{rescore\_tasks.py --models \$ROSTER}   & \texttt{rescored\_scores.json} \\
+\S\ref{subsec:translation} LLMs & \texttt{compute\_bleu.py}                               & \texttt{translation\_fidelity\_bleu.json} \\
+\S\ref{subsec:translation} NLLB & \texttt{probe\_nllb\_translation.py}                    & \texttt{nllb\_probe\_*.json} \\
+\S\ref{subsec:translation} few-shot & \texttt{probe\_fewshot\_translation.py}             & \texttt{fewshot\_probe\_*.json} \\
 \bottomrule
 \end{tabular}
-\caption{Each reported table, the command that regenerates it, the artifact it
-reads, and the SLURM job that produced the underlying generations.}
+\caption{Each reported table, the command that regenerates it from the
+released artifacts, and the artifact it reads. No step requires model
+inference; all are computed from the saved generations.}
 \label{tab:repro}
 \end{table*}
 
-Raw model outputs for every item are in\\
-\texttt{results/evaluation\_reports/}\\
-\texttt{\quad<task>/<task>\_<model>.json}.
+The released archive also contains the raw generation for every item, stored
+per task and per model, so any scoring rule other than the three reported
+here can be applied to the same outputs without re-running the models.
 
 \section{Limitations}
 \label{sec:limitations}
