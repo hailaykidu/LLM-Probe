@@ -61,13 +61,22 @@
 \title{How Far Can General-Purpose LLMs Go in Tigrinya?\\
 A Lexicon-Grounded Evaluation with Trivial Baselines}
 
+% Author order follows the earlier version's published byline. Affiliations
+% and e-mail addresses are the only fields still to be supplied; they are not
+% recorded anywhere in this repository, so they are left for the authors to
+% fill in the format the target venue requires.
 \author{%
   Hailay Kidu Teklehaymanot \\
-  % TODO: affiliations and e-mail addresses, in the venue's required format.
+  \texttt{AFFILIATION\_REQUIRED} \\
+  \texttt{EMAIL\_REQUIRED}
   \And
   Wolfgang Nejdl \\
+  \texttt{AFFILIATION\_REQUIRED} \\
+  \texttt{EMAIL\_REQUIRED}
   \And
   Gebrearegawi Gebremariam \\
+  \texttt{AFFILIATION\_REQUIRED} \\
+  \texttt{EMAIL\_REQUIRED}
 }
 
 \begin{document}
@@ -88,7 +97,12 @@ labelling, by under three points. On translation all eight models score at or
 below chrF 0.81, while NLLB-200-3.3B, which supports Tigrinya, reaches chrF
 16.05 on identical items with an identical scorer. We argue that low-resource
 evaluations without trivial baselines are uninterpretable, and release the
-lexicon, code, model outputs, and job logs.
+lexicon, code, model outputs, and job logs. Because the procedure we apply
+here --- report every matching rule, measure against baselines that use none
+of the target language, and quantify prompt echo --- requires no resources
+beyond those an evaluation already has, it transfers directly to other
+low-resource languages, where the same scoring choices determine whether a
+reported number reflects competence or an artefact of measurement.
 \end{abstract}
 
 \section{Introduction}
@@ -287,15 +301,10 @@ silently cleaning them.
 
 \subsection{Relation to the earlier version}
 
-An earlier version of this work, \emph{LLM Probe: Evaluating LLMs for
-Low-Resource Languages}~\citep{teklehaymanot-etal-2026-llmprobe}, introduced
-the lexicon and the four-task framework used here. It reported POS accuracies
-of 73.0--80.0 and morphosyntactic accuracies of 70.5--77.0 under a permissive
-matching rule with no baselines, assigned different model subsets to different
-tasks, and concluded that sequence-to-sequence models ``excel in
-morphosyntactic analysis and translation quality''.
-Section~\ref{sec:relation} states which of those claims survive re-scoring and
-which do not.
+An earlier version of this work~\citep{teklehaymanot-etal-2026-llmprobe}
+introduced the lexicon and the four-task framework used here.
+Section~\ref{sec:relation} states what it reported, which of its claims
+survive re-scoring, and the authors' request for its retraction.
 
 \section{Dataset}
 \label{sec:dataset}
@@ -306,58 +315,22 @@ which do not.
 The lexicon was digitised from the Swansea Tigrinya--English
 dictionary~\citep{swansea-dictionary}, with additional entries contributed by
 native-speaker linguists, and carries the source dictionary's own
-part-of-speech abbreviations. The digitised file,
-\texttt{Combined\_POS\_Lexicon.csv}, holds 7,234 rows in two blocks: 3,587
-English$\rightarrow$Tigrinya entries followed by 3,647
-Tigrinya$\rightarrow$English entries. The two blocks share column headers, so
-in the second block the column named \texttt{English} holds Ge'ez script and
-the column named \texttt{Tigrigna} holds English.
-
-\paragraph{Provenance.} That CSV is a flattening of
-\texttt{POS\_english\_to\_tigrigna\_Annotated.xlsx}, the working annotation
-workbook, whose eleven part-of-speech sheets hold the same 7,234 rows with the
-same per-category counts (3,929 noun, 1,784 verb, 993 adjective, 194 adverb,
-\ldots). The flattening concatenates those sheets in workbook order and lifts
-the inline gender/number markers that the workbook keeps inside the Tigrinya
-field --- \texttt{(nf)} \ti{ወካሲት}, \ti{ከሳሲት} --- out into the \texttt{POS\_CATEGORIES}
-column, which is where the finer labels \texttt{(nm) noun masculine},
-\texttt{(nf) noun feminine} and \texttt{(npl) noun plural} come from. The two
-files differ on exactly the 247 rows carrying such a marker. The column swap
-described above is present in the workbook as well: 3,635 of its 7,234 rows
-(50.2\%) carry Ge'ez script in the \texttt{English} column, so the defect
-originates in digitisation, not in the CSV export.
-
-\texttt{scripts/build\_merged\_eval\_set.py} detects the second block by
-script, reorients it, and merges both directions, writing \textbf{5,783 rows}
-to \texttt{data/gold\_labels/}. Expanding comma-separated senses gives 5,864
-atomic pairs across 4,331 English headwords and 3,767 Tigrinya forms.
-
-\paragraph{7,234 counts rows, not independent annotations.} Of the 3,646
-unique reverse-direction pairs, 1,448 (39.7\%) also occur in the forward
-block.
-
-\paragraph{Three counts appear in this paper, and they are not
-interchangeable.} The gold files hold \textbf{5,783 rows}; \texttt{--verify}
-confirms the script reproduces them exactly. Deduplication there keys on
-(English, Tigrinya, features) rather than the pair alone, so distinct senses
-of one form survive as separate items: \emph{estimate} $\rightarrow$
-\ti{ግምት} is kept as both noun and verb, and \emph{grocer} $\rightarrow$
-\ti{በዓል ድኳን} as both \texttt{noun} and \texttt{noun, masculine}.
-
-Each task script then applies its own pair-level deduplication at load time,
-dropping 7 duplicate (English, Tigrinya) pairs and 1 row with no English side,
-leaving \textbf{5,775 evaluated items} for translation and lexical alignment.
-POS tagging and morphosyntactic labelling were run against a further reduction
-in which a multi-sense entry is represented by its first sense ---
-(\emph{a little}, \ti{ንእሽቶይ}, \ti{ቁሩብ}, \ti{ውሕድ}) becomes (\emph{a little},
-\ti{ንእሽቶይ}) --- giving \textbf{5,701 items}.
-
-That sense-split file was an intermediate and was not originally committed, so
-the task scripts as they stand would evaluate 5,775 rather than the 5,701
-behind Sections~\ref{subsec:pos} and~\ref{subsec:morph}.
-\texttt{scripts/build\_sense\_split\_eval\_set.py} reconstructs it from the
-committed gold and verifies the result row-for-row against the saved model
-outputs: 5,701 items, no row missing, none extra, no label mismatch.
+part-of-speech abbreviations. The digitised source holds 7,234 rows
+concatenated from two directions, English$\rightarrow$Tigrinya followed by
+Tigrinya$\rightarrow$English, under a single pair of column headers; in the
+second block the column named \texttt{English} therefore holds Ge'ez script.
+We detect that block by script, reorient it, and merge both directions,
+keeping distinct senses of one form as separate items --- \emph{estimate}
+$\rightarrow$ \ti{ግምት} is retained as both noun and verb --- which yields
+\textbf{5,783 gold rows} over 4,331 English headwords and 3,767 Tigrinya
+forms. Three evaluation set sizes follow from this and are not
+interchangeable: 5,783 gold rows, \textbf{5,775 items} for translation and
+lexical alignment after each task drops duplicate pairs and rows with an
+empty side, and \textbf{5,701 items} for the two tagging tasks, which were
+run against a further reduction representing each multi-sense entry by its
+first sense. Appendix~\ref{app:dataset} gives the row-level derivation, the
+provenance of the source file, and the reconstruction of the 5,701-item set
+from the released gold.
 
 \subsection{What the annotations do and do not contain}
 \label{subsec:annotations}
@@ -413,8 +386,7 @@ Annotator 1 omits 32 gender, 32 number and 46 agreement labels that Annotator
 2 supplies, against 6, 4 and 3 in the other direction. Discarding those rows
 would hide the main source of divergence.
 
-Three properties of this subset bound what the coefficients support, and we
-state them rather than leave them to be discovered.
+Three properties of this subset bound what the coefficients support.
 
 \paragraph{The two columns are not independent of the adjudication.} On the 25
 part-of-speech items where the annotators differ, the adjudicated sheet
@@ -435,8 +407,8 @@ prepositions, all 10 pronouns and all 6 interjections, then 305 adjectives and
 150 nouns from the tops of those sheets. The corpus is 54\% noun and 25\%
 verb; this subset is 61\% adjective and contains \textbf{no verbs}. The
 coefficients therefore describe agreement on this subset and are not an
-estimate for the corpus. A stratified re-annotation covering verbs would be
-required for that, and we report it as future work rather than extrapolating
+estimate for the corpus. Establishing one requires a stratified
+re-annotation covering verbs, which we leave to future work
 (Section~\ref{sec:limitations}).
 
 The workbook also carries the annotators' free-text notes on 201 of the 500
@@ -655,9 +627,8 @@ We report this task for completeness but do not draw conclusions from it:
 2,208 of 5,783 alignment labels (38\%) are positional fallbacks
 (\texttt{AlignmentSource: auto}) rather than annotation. Format accuracy
 ranges from 0.0383 (mt5-large) to 0.5484 (gemma-2b); semantic accuracy from
-0.0012 (mt5-small) to 0.8876 (mistral-7b). The divergence between the two for
-individual models is large enough that we regard the task as not yet
-well-posed.
+0.0012 (mt5-small) to 0.8876 (mistral-7b). The two measures diverge widely for
+individual models, which makes the task ill-posed as currently scored.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -687,29 +658,36 @@ languages, model selection dominates model size.
 
 \paragraph{What we can claim about Tigrinya competence.} Three of eight models
 show above-baseline POS performance. Two exceed the English-only baseline on
-morphosyntactic labelling, by 3.02 and 1.75 points --- a margin small enough
-that we would not rest a claim on it without a held-out re-run. None can
-translate into Tigrinya. Even NLLB reaches only 16.24\% exact on a dictionary
-task, which indicates the difficulty is real rather than an artefact of our
-setup.
+morphosyntactic labelling, by 3.02 and 1.75 points; this margin is within the
+range a held-out re-run could move, and we therefore treat it as suggestive
+rather than established. None can translate into Tigrinya. Even NLLB reaches
+only 16.24\% exact on a dictionary task, which indicates the difficulty is
+real rather than an artefact of our setup.
 
 \section{Relation to an earlier version of this work}
 \label{sec:relation}
 
 An earlier version of this work was published as \emph{LLM Probe: Evaluating
 LLMs for Low-Resource Languages} at LLMs4SSH @ LREC 2026, pp. 224--234
-(2026.llms4ssh-1.24)~\citep{teklehaymanot-etal-2026-llmprobe}. Its POS tagging
-and morphosyntactic results were computed with a permissive matching rule,
-under which an answer counts as correct if any of its words matches a gold
-label word, and were reported without baselines. Re-scored under a first-token
-rule and measured against a constant-answer baseline and an English-only
-baseline, the central claims of that paper do not hold: only three of the
-eight systems exceed both baselines on part-of-speech tagging and two on
-morphosyntactic labelling, by a few points in each case, where the published
-version reported accuracies of 80--89\% against no reference point at all. The
-architectural conclusion it drew is confounded with instruction-tuning, since
-the sequence-to-sequence checkpoints evaluated were never instruction-tuned.
-The authors have requested that it be retracted.
+(2026.llms4ssh-1.24)~\citep{teklehaymanot-etal-2026-llmprobe}. It introduced
+the lexicon and the four-task framework used here, reported POS accuracies of
+73.0--80.0 and morphosyntactic accuracies of 70.5--77.0, assigned different
+model subsets to different tasks, and concluded that sequence-to-sequence
+models ``excel in morphosyntactic analysis and translation quality''. Those
+figures were computed with a permissive matching rule, under which an answer
+counts as correct if any of its words matches a gold label word, and were
+reported without baselines.
+
+Re-scored under a first-token rule and measured against a constant-answer
+baseline and an English-only baseline, the central claims of that paper do
+not hold. Only three of the eight systems exceed both baselines on
+part-of-speech tagging and two on morphosyntactic labelling, in each case by
+a few points; five and six respectively fall below the stronger baseline. The
+architectural conclusion is confounded with instruction-tuning, since the
+sequence-to-sequence checkpoints evaluated were never instruction-tuned, and
+the morphosyntactic task is not distinct from part-of-speech tagging, its
+gold labels being 96.8\% identical. The authors have requested that the
+paper be retracted.
 
 This paper reports the same model outputs, re-scored. It shares the lexicon
 and the saved generations with that version and supersedes it; no figure here
@@ -781,5 +759,57 @@ Raw model outputs for every item are in\\
 \end{itemize}
 
 \bibliography{references}
+
+\appendix
+
+\section{Dataset derivation}
+\label{app:dataset}
+
+This appendix records the row-level derivation summarised in
+Section~\ref{subsec:source}. Every count is reproducible from the released
+code: \texttt{build\_merged\_eval\_set.py --dry-run --verify} rebuilds the
+gold files from the source CSV and compares them against what is released,
+and \texttt{build\_sense\_split\_eval\_set.py --verify} does the same for the
+5,701-item set.
+
+\paragraph{Source and provenance.} The digitised file
+\texttt{Combined\_POS\_Lexicon.csv} holds 7,234 rows: 3,587
+English$\rightarrow$Tigrinya entries followed by 3,647
+Tigrinya$\rightarrow$English entries. It is a flattening of the working
+annotation workbook, whose eleven part-of-speech sheets hold the same 7,234
+rows with the same per-category counts (3,929 noun, 1,784 verb, 993
+adjective, 194 adverb, and so on). The flattening lifts the inline
+gender and number markers that the workbook keeps inside the Tigrinya field
+--- \texttt{(nf)} \ti{ወካሲት}, \ti{ከሳሲት} --- out into the label column, which
+is the origin of the finer categories \texttt{(nm) noun masculine},
+\texttt{(nf) noun feminine} and \texttt{(npl) noun plural}; the two files
+differ on exactly the 247 rows carrying such a marker. The direction swap is
+present in the workbook as well, in 3,635 of its 7,234 rows (50.2\%), so it
+originates in digitisation rather than in the export.
+
+\paragraph{7,234 counts rows, not independent annotations.} Of the 3,646
+unique reverse-direction pairs, 1,448 (39.7\%) also occur in the forward
+block.
+
+\paragraph{From 7,234 to 5,783.} Merging the two directions deduplicates on
+the (English, Tigrinya, features) triple rather than on the pair alone, so
+that distinct senses of one form survive: \emph{estimate} $\rightarrow$
+\ti{ግምት} is kept as both noun and verb, and \emph{grocer} $\rightarrow$
+\ti{በዓል ድኳን} as both \texttt{noun} and \texttt{noun, masculine}. Expanding
+comma-separated senses gives 5,864 atomic pairs.
+
+\paragraph{From 5,783 to 5,775.} Each task script applies its own pair-level
+deduplication when loading the gold, dropping 7 duplicate (English, Tigrinya)
+pairs and 1 row with no English side.
+
+\paragraph{From 5,775 to 5,701.} The two tagging tasks were run against a
+gold file in which each multi-sense entry is represented by its first sense:
+(\emph{a little}, \ti{ንእሽቶይ}, \ti{ቁሩብ}, \ti{ውሕድ}) was evaluated as
+(\emph{a little}, \ti{ንእሽቶይ}). That intermediate file was not originally
+released, so the task scripts as published would evaluate 5,775 items rather
+than the 5,701 behind Sections~\ref{subsec:pos} and~\ref{subsec:morph}. We
+reconstruct it from the released gold and verify the result row-for-row
+against the saved model outputs: 5,701 items, no row missing, none extra, and
+no label mismatch. The reconstructed file is released alongside the gold.
 
 \end{document}
