@@ -366,7 +366,9 @@ than an artefact of our setup.
 
 ## 6. Relation to an earlier version of this work
 
-An earlier version of this work was published at LLMs4SSH @ LREC 2026. Its
+An earlier version of this work was published as *LLM Probe: Evaluating LLMs
+for Low-Resource Languages* at LLMs4SSH @ LREC 2026, pp. 224–234
+(2026.llms4ssh-1.24). Its
 POS tagging and morphosyntactic results were computed with a permissive
 matching rule, under which an answer counts as correct if any of its words
 matches a gold label word, and were reported without baselines. Re-scored
