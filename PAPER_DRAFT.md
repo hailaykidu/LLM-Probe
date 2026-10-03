@@ -495,8 +495,8 @@ well-posed.
 
 **Trivial baselines are not optional.** Two baselines using no Tigrinya
 reach 53.7% and 60.4% on our POS task. Of eight models, five score below
-60.4% and two below 53.7%. A paper reporting only model accuracies would
-present several of these as successes.
+both. A paper reporting only model accuracies would present several of these
+as successes.
 
 **The matching rule is a result, not a detail.** Between exact and
 set-intersection, gemma-7b moves from 0.00 to 82.44 on the same outputs.
