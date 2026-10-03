@@ -1,62 +1,53 @@
 % How Far Can General-Purpose LLMs Go in Tigrinya?
 % A Lexicon-Grounded Evaluation with Trivial Baselines
 %
-% Build:
+% *ACL style, following the official acl_lualatex.tex template from
+% https://github.com/acl-org/acl-style-files (acl.sty and acl_natbib.bst are
+% bundled in this directory).
+%
+% Build (LuaLaTeX or XeLaTeX, not pdfLaTeX):
 %   lualatex main && bibtex main && lualatex main && lualatex main
 %
-% lualatex rather than pdflatex: the paper quotes Tigrinya forms in Ge'ez
-% script, which pdflatex cannot render. Set \geezfont below to a font your
-% system has (Noto Sans Ethiopic, Abyssinica SIL).
+% On Overleaf: set the compiler to LuaLaTeX under Menu > Compiler. pdfLaTeX
+% cannot render the Ge'ez-script Tigrinya examples this paper quotes.
 %
-% Document class. The ACL template (acl_latex.cls plus acl_natbib.bst) is not
-% bundled here; download it from the ACL website into this directory and set
-% \ACLSTYLEtrue. Without it the file falls back to article, which compiles
-% everywhere and keeps the content identical.
-\newif\ifACLSTYLE
-\IfFileExists{acl_latex.cls}{\ACLSTYLEtrue}{\ACLSTYLEfalse}
+% Submission state: change "review" below to "final" for the camera-ready
+% version, or to "preprint" for a non-anonymous version with page numbers.
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
 
-\ifACLSTYLE
-  \documentclass[11pt]{acl_latex}
-\else
-  \documentclass[11pt,a4paper]{article}
-  \usepackage[margin=1in]{geometry}
-  \usepackage{natbib}
-  \bibliographystyle{plainnat}
-  \setcitestyle{authoryear,round}
-\fi
-
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage{microtype}
 \usepackage{booktabs}
 \usepackage{amsmath}
-\usepackage{microtype}
 \usepackage{graphicx}
-\usepackage[hidelinks]{hyperref}
-\usepackage{url}
 
-% Long file and identifier names in \texttt{} are unbreakable and overflow the
-% column. \path-style breaking lets them wrap at punctuation instead.
+% Long file and identifier names set in \texttt{} are unbreakable and overflow
+% the column; \sloppy and xurl let them wrap instead.
 \usepackage{xurl}
-\newcommand{\pth}[1]{\texttt{\detokenize{#1}}}
 \sloppy
 
 % --- Ge'ez script -----------------------------------------------------------
-% Tigrinya examples need a font with Ethiopic coverage. Under lualatex or
-% xelatex this selects one; under pdflatex the macro degrades to a bracketed
-% transliteration placeholder so the document still builds.
+% Tigrinya examples are in Ge'ez script, which needs a font with Ethiopic
+% coverage. The ACL template's font commands require LuaLaTeX or XeLaTeX.
+% Under pdfLaTeX the \ti macro degrades to a placeholder so the document
+% still builds, but the glyphs will be absent -- compile with LuaLaTeX.
 \usepackage{iftex}
-\ifLuaTeX
+\ifTUTeX
   \usepackage{fontspec}
-  \newfontfamily\geezfont{Noto Sans Ethiopic}[Scale=MatchLowercase]
-  \newcommand{\ti}[1]{{\geezfont #1}}
-\else\ifXeTeX
-  \usepackage{fontspec}
+  \usepackage[english]{babel}
+  % The ACL template specifies TeXGyreTermesX. Some TeX installations ship
+  % only the unextended TeX Gyre Termes, so fall back to it rather than
+  % failing the build; both are Times-metric.
+  \IfFontExistsTF{TeXGyreTermesX}
+    {\babelfont{rm}{TeXGyreTermesX}}
+    {\babelfont{rm}{TeX Gyre Termes}}
   \newfontfamily\geezfont{Noto Sans Ethiopic}[Scale=MatchLowercase]
   \newcommand{\ti}[1]{{\geezfont #1}}
 \else
-  % pdflatex: no Ethiopic coverage. Build with lualatex for the real glyphs.
-  \newcommand{\ti}[1]{\texttt{[ti]}}
-\fi\fi
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \newcommand{\ti}[1]{\texttt{[ge'ez]}}
+\fi
 
 \title{How Far Can General-Purpose LLMs Go in Tigrinya?\\
 A Lexicon-Grounded Evaluation with Trivial Baselines}
@@ -426,7 +417,7 @@ interface~\citep{wolf-etal-2020-transformers} on an Ampere-class GPU node
 (4$\times$A100, 32 CPU cores, 128\,GB RAM) under SLURM
 (Table~\ref{tab:models}).
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \small
 \begin{tabular}{llll}
@@ -446,7 +437,7 @@ byt5        & \texttt{google/byt5-small}~\citep{xue-etal-2022-byt5}           & 
 \caption{Evaluated models. Architecture and instruction-tuning status are
 perfectly confounded in this set.}
 \label{tab:models}
-\end{table}
+\end{table*}
 
 \paragraph{We do not compare architectures.} All five causal models are
 instruction-tuned and all three sequence-to-sequence models are raw pretrained
@@ -500,6 +491,7 @@ knowledge:
 
 \begin{table}[t]
 \centering
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrr}
 \toprule
 Model & exact & \textbf{first-tok} & set-int \\
@@ -539,6 +531,7 @@ Because the gold is 96.8\% identical to the POS label
 
 \begin{table}[t]
 \centering
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrr}
 \toprule
 Model & \textbf{first-tok} & set-int & echo \\
@@ -581,6 +574,7 @@ near-undefined; we report chrF and character-level BLEU
 
 \begin{table}[t]
 \centering
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrrr}
 \toprule
 Model & chrF & BLEU$_c$ & BLEU$_w$ & exact \\
