@@ -19,8 +19,8 @@ appear to reach 80–89% accuracy, but the same outputs score 0–82% under a
 first-token rule, and a constant-answer baseline reaches 53.7% while an
 English-only tagger that never sees the Tigrinya reaches 60.4%. Measured
 against those baselines, three of eight models demonstrate above-trivial POS
-performance and none exceeds the English-only baseline on morphosyntactic
-labelling. On translation all eight models score at or below chrF 0.81,
+performance and two exceed the English-only baseline on morphosyntactic
+labelling, by under three points. On translation all eight models score at or below chrF 0.81,
 while NLLB-200-3.3B, which supports Tigrinya, reaches chrF 16.05 on identical
 items with an identical scorer. We argue that low-resource evaluations
 without trivial baselines are uninterpretable, and release the lexicon,
@@ -282,7 +282,9 @@ effectively a second POS task.
 | **Majority** | **52.38** | | |
 | **English-only tagger** | **61.57** | | |
 
-**No model exceeds the English-only baseline of 61.57.** Two approach it.
+**Only two models exceed the English-only baseline of 61.57**, by 3.02 and
+1.75 points; the remaining six fall below it, and five fall below the
+majority baseline of 52.38.
 
 The final column measures how often an answer contains the prompt's own
 example, `preposition, noun, singular`. Gemma-7b echoes it in 97.4% of
@@ -359,10 +361,12 @@ magnitude on chrF. For low-resource languages, model selection dominates
 model size.
 
 **What we can claim about Tigrinya competence.** Three of eight models show
-above-baseline POS performance. None shows above-baseline morphosyntactic
-performance. None can translate into Tigrinya. Even NLLB reaches only 16.24%
-exact on a dictionary task, which indicates the difficulty is real rather
-than an artefact of our setup.
+above-baseline POS performance. Two exceed the English-only baseline on
+morphosyntactic labelling, by 3.02 and 1.75 points — a margin small enough
+that we would not rest a claim on it without a held-out re-run. None can
+translate into Tigrinya. Even NLLB reaches only 16.24% exact on a dictionary
+task, which indicates the difficulty is real rather than an artefact of our
+setup.
 
 ## 6. Relation to an earlier version of this work
 
@@ -373,11 +377,13 @@ POS tagging and morphosyntactic results were computed with a permissive
 matching rule, under which an answer counts as correct if any of its words
 matches a gold label word, and were reported without baselines. Re-scored
 under a first-token rule and measured against a constant-answer baseline and
-an English-only baseline, the central claims of that paper do not hold: no
-model exceeds the English-only baseline on morphosyntactic labelling, and the
-architectural conclusion it drew is confounded with instruction-tuning, since
-the sequence-to-sequence checkpoints evaluated were never instruction-tuned.
-The authors have requested that it be retracted.
+an English-only baseline, the central claims of that paper do not hold: only
+three of the eight systems exceed both baselines on part-of-speech tagging
+and two on morphosyntactic labelling, by a few points in each case, where the
+published version reported accuracies of 80–89% against no reference point at
+all. The architectural conclusion it drew is confounded with
+instruction-tuning, since the sequence-to-sequence checkpoints evaluated were
+never instruction-tuned. The authors have requested that it be retracted.
 
 This paper reports the same model outputs, re-scored. It shares the lexicon
 and the saved generations with that version and supersedes it; no figure here
