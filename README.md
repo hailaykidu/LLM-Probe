@@ -9,49 +9,49 @@ via prompting only -- no fine-tuning happens in this project (that's what
 
 ## Status
 
-**Re-running (as of 2026-09-18)** after fixing a series of data-format,
-prompt, and pipeline bugs that made every prior run (including the one
-behind the published paper's Table 5 / thesis Table 5.9) unreliable. See
-"Fixes applied" below. The previous "complete" run (finished 2026-07-17,
-8,234-row dataset) is archived under `results/evaluation_reports_pre_fix_backup/`
-for reference and is superseded -- do not cite its numbers.
+Current results are in `results/evaluation_reports/<task>/`, and the analysis
+built on them is in [`PAPER_DRAFT.md`](PAPER_DRAFT.md). Every number in that
+draft is regenerable from this repository; §7 of it lists the command and the
+artifact behind each table.
+
+Earlier runs are archived under `results/evaluation_reports_pre_fix_backup/`
+and `results/evaluation_reports/translation_fidelity_pre_wordmatch_fix_backup_2026-09-21/`.
+They are kept so the current scoring can be checked against what preceded it,
+and their numbers should not be cited or mixed with current results.
 
 ## Data
 
-- **Source of truth**: `results/evaluation_reports/Combined_POS_Lexicon.csv`
-  (7,234 raw rows). This file turned out to have its `English`/`Tigrigna`
-  columns swapped for exactly its second half (rows 3587-7233, an artifact of
-  the bidirectional English->Tigrinya / Tigrinya->English construction never
-  being normalized back to one column convention), plus 8 rows with no
-  Tigrigna translation and 1,443 rows that were exact duplicates once the
-  swap was corrected. `data/lexicon_combined_fixed.csv` is the corrected
-  version: **5,783 rows**, 5,025 unique English headwords. Distinct senses of
-  the same headword (e.g. "abuse" as noun vs. verb, "administrator"
-  masculine vs. feminine noun) are preserved as separate rows rather than
-  deduplicated away.
-- **Source lexicon**: `data/lexicon.json` -- regenerated from the corrected
-  CSV (5,783 entries, superseding the old 3,561-entry file, which is archived
-  at `data/gold_labels/backup_pre_split/lexicon_original.json`).
-- **Gold labels** (`data/gold_labels/`), all regenerated from the corrected
-  CSV:
-  - `pos_tags_fixed.json` -- part-of-speech only (`noun`, `verb`, `adjective`, ...).
-  - `morpho_features_fixed.json` -- now genuinely encodes gender/number
-    (`feminine`, `masculine`, `plural`) where the source data provides it, no
-    longer a duplicate of the POS tag under a different name (see Fixes
-    below). Only ~3% of rows carry a feature beyond "none" -- the source
-    lexicon mostly doesn't encode gender/number, which limits what this task
-    can measure regardless of pipeline correctness.
-  - `translations.json` -- each row's Tigrigna form, losslessly regenerated.
-  - `lexical_alignment.json` -- word-to-word alignments. 3,575 of 5,783 rows
-    carry the original manually-verified alignment; the remaining 2,208 use a
-    naive positional fallback (flagged via `"AlignmentSource": "auto"`) and
-    should be prioritized for human review before being treated as gold.
-  - `statistics.json` -- regenerated corpus stats for the corrected dataset.
-  - Pre-correction versions of all four files are archived under
-    `data/gold_labels/backup_pre_split/`.
-- Each task loads its own already-corrected gold file directly (no more
-  fragile `English`-only merge against `lexicon.json`) and evaluates
-  **5,700-5,775 items per model**, depending on the task's own dedup key.
+- **Source lexicon**: `results/evaluation_reports/Combined_POS_Lexicon.csv`,
+  7,234 rows, digitised from a bilingual dictionary. It holds two
+  concatenated blocks, English→Tigrinya followed by Tigrinya→English, under
+  one pair of headers, so in the second block the `English` column carries
+  Ge'ez script. `scripts/build_merged_eval_set.py` detects that block by
+  script, reorients it and merges both directions; `--verify` checks the
+  output against the committed gold files.
+- **Gold labels** (`data/gold_labels/`), **5,783 rows**, all built by that
+  script. Deduplication keys on (English, Tigrinya, features), so distinct
+  senses of one form survive as separate items: `estimate → ግምት` is kept as
+  both noun and verb.
+  - `pos_tags_fixed.json` — part of speech only (`noun`, `verb`, `adjective`, …).
+  - `morpho_features_fixed.json` — part of speech plus the gender and number
+    the source encodes (`noun, masculine`, `noun, plural`). Only 185 of 5,783
+    rows carry a feature beyond the POS tag, which bounds what this task can
+    measure.
+  - `translations.json` — each row's Tigrinya form.
+  - `lexical_alignment.json` — word-to-word alignments. 3,575 rows carry a
+    manually verified alignment; the remaining 2,208 are a positional
+    fallback flagged `"AlignmentSource": "auto"` and are not verified gold.
+  - `statistics.json` — corpus statistics.
+  - `{pos_tagging,morphosyntax_probe}_sense_split.json` — the 5,701-item sets
+    the POS and morphosyntax runs used, in which a multi-sense entry is
+    represented by its first sense. Built and verified against the saved
+    model outputs by `scripts/build_sense_split_eval_set.py`.
+- Each task loads its own gold file directly and applies its own
+  deduplication at load time, evaluating **5,701–5,775 items per model**
+  depending on the task. The three counts are explained in §2.1 of
+  [`PAPER_DRAFT.md`](PAPER_DRAFT.md).
+- `data/gold_labels/backup_pre_split/` holds earlier versions of these files,
+  kept for reference.
 
 ## Models evaluated
 
@@ -61,13 +61,11 @@ returning a callable matching the `transformers` pipeline call contract:
 `qwen-7b`, `falcon-7b`.
 
 Two models are relabeled from earlier naming to match the checkpoint each
-loader actually loads (fixes #5 and #12 below): `falcon-10b` ->
-`falcon-7b` (`models/falcon_loader.py` loads `tiiuae/falcon-7b-instruct`,
-7B parameters) and `mt5-base` -> `mt5-small` (`models/mt5_loader.py` loads
-`google/mt5-small`). Historical result files under
-`results/evaluation_reports_pre_fix_backup/` still carry the old
-`falcon-10b`/`mt5-base` filenames/keys, since they document runs made under
-those mistaken labels.
+loader actually loads: `falcon-7b` (`models/falcon_loader.py` loads
+`tiiuae/falcon-7b-instruct`, 7B parameters) and `mt5-small`
+(`models/mt5_loader.py` loads `google/mt5-small`). Files under
+`results/evaluation_reports_pre_fix_backup/` carry the earlier
+`falcon-10b`/`mt5-base` keys, since they record runs made under those labels.
 
 Two models were configured but did **not** produce results:
 - `xlm-roberta`: errored on every task ("No mask_token (`<mask>`) found on the
@@ -95,133 +93,41 @@ Task scripts (`tasks/*.py`) strip common formatting noise before scoring
 `strip_special_tokens()`, then apply `clean_and_enforce_format()` (lexical
 alignment only) before comparing to gold.
 
-## Fixes applied (2026-09-18)
+## Scoring
 
-A discrepancy between this project's results and the published paper
-("LLM Probe: Evaluating LLMs for Low-Resource Languages", LLMs4SSH @ LREC
-2026 / thesis Table 5.9) led to a full pipeline audit. Every prior run,
-including the one behind the paper's Table 5, turned out to rest on a
-combination of the following bugs. All are fixed as of this run:
+Model answers are frequently verbose, so the matching rule changes the
+reported number substantially. `scripts/rescore_tasks.py` reports three rules
+side by side for POS tagging and morphosyntactic labelling:
 
-1. **Empty-output generation bug.** `models/base_loader.py`'s
-   text-generation pipeline had no `max_new_tokens`/`min_new_tokens`, so an
-   instruct model whose first generated token was EOS returned an empty
-   string once `return_full_text=False` stripped the prompt back out. This
-   silently zeroed out every output for several causal models in an earlier
-   run. Fixed: explicit `max_new_tokens=128`, `min_new_tokens=1`.
-2. **Tokenizer forced to the slow path.** `use_fast=False` forced every
-   model onto the slow, pure-Python tokenizer. Switched to `use_fast=True`
-   (the well-tested Rust-backed path) on general principle, though testing
-   afterward showed this was *not* the source of the mixed-script output
-   (`ገSitz`, `ገΑνα`) seen in earlier runs -- re-encoding/decoding `ገዛ`
-   through the fast tokenizer round-trips correctly. That output is real
-   greedy-decoded model generation (e.g. Gemma-2B-it inserting German
-   tokens like `Sitz`/`Besitzer` mid-response on a Tigrinya prompt), not a
-   tokenizer artifact, and is left as-is since it reflects actual model
-   behavior on out-of-distribution input rather than a pipeline bug --
-   changing decoding strategy to suppress it would also deviate from the
-   paper's stated greedy/temperature-0.0 methodology.
-3. **English/Tigrigna columns swapped for half the source data.**
-   `Combined_POS_Lexicon.csv`'s second half (rows 3587-7233) had English and
-   Tigrigna reversed -- a bidirectional-lexicon artifact never normalized
-   back to one column convention. Fixed at the data level (see "Data"
-   above); this was also present in every downstream gold-label file.
-4. **Many-to-many merges cross-multiplying/corrupting rows.** All four task
-   scripts merged the lexicon and gold tables `on="English"` without
-   deduplicating a non-unique key, silently cross-multiplying rows for any
-   headword with more than one sense. Fixed by regenerating each gold file
-   directly from the corrected source (no more merge against `lexicon.json`)
-   and deduplicating on `(English, Tigrigna)` -- not `English` alone -- so
-   distinct senses are preserved rather than discarded.
-5. **Falcon mislabeled as 10B.** `models/falcon_loader.py` loads
-   `tiiuae/falcon-7b-instruct` (7B). Relabeled `falcon-10b` -> `falcon-7b`
-   throughout.
-6. **Gold-label parenthetical format bug (POS tagging & morphosyntax
-   probing).** Gold values like `"(v) verb"` were normalized by stripping
-   spaces *before* splitting on commas, gluing the abbreviation onto the
-   word into one unmatchable token (`"(v)verb"`). This alone accounts for
-   the flat 0% these two tasks showed in every prior run, independent of
-   whether the model's answer was actually correct. Fixed: strip the
-   parenthetical, tokenize on words.
-7. **Unstripped "Output:" self-echo.** Every prompt's few-shot example ends
-   with a literal `Output: ...` line, and models routinely echo that label
-   back (`"Output: noun"`). None of the four tasks stripped it before
-   comparing to gold. Added a shared regex across all four task scripts.
-8. **Multi-word/multi-sense "item" in POS & morphosyntax prompts.** ~6-19%
-   of rows filled the prompt's single-word "Phrase:" slot with several
-   comma-separated Tigrinya forms at once (e.g. `"ንእሽቶይ, ቁሩብ, ውሕድ"`), asking
-   the model for one POS/feature answer covering all of them -- an ill-posed
-   question regardless of model quality. Fixed: use only the first form.
-9. **`morpho_features_fixed.json`'s "Expected" field duplicated the POS
-   tag** rather than encoding actual gender/number/agreement features, so no
-   model could ever score correctly on real morphosyntactic content. Fixed
-   by splitting the source CSV's compound tags (e.g. `"(nf) noun feminine"`)
-   into POS + feature components; `Expected` now reads e.g. `"noun,
-   feminine"` where the source data supports it.
-10. **SLURM script pointed at a venv that no longer exists.**
-    `submit_evaluation_job.sh` activated a venv under an old project path
-    that was never migrated when the project moved to `Project/LLM-Probe`.
-    Fixed the path and a `--time=272:00:00` typo (should be `72:00:00`).
-11. **`"text2text-generation"` pipeline task removed in transformers 5.17.**
-    The freshly-installed `transformers` version dropped the
-    `text2text-generation` pipeline task entirely (`pipeline()` now only
-    supports `text-generation`, hardcoded to `AutoModelForCausalLM`), so
-    `models/mt5_loader.py` and `models/byt5_loader.py` crashed at import
-    time -- and because every task script builds its `models` dict eagerly
-    at module load, this killed the *entire* task (all 8 models, not just
-    the two seq2seq ones) before any evaluation ran. This is what killed job
-    75151's first attempt. Fixed by adding `Seq2SeqPipeline` in
-    `models/base_loader.py`, a minimal wrapper around `model.generate()`
-    that reproduces the same call contract every task script expects,
-    bypassing the `pipeline()` factory for `mt5`/`byt5` entirely.
-12. **`mt5-base` was actually `google/mt5-small`.** Same class of bug as
-    Falcon (#5): `models/mt5_loader.py` loads `google/mt5-small`, but every
-    task script and result file labels it `"mt5-base"`. Relabeled to
-    `mt5-small` throughout.
-13. **Eager, unguarded model loading killed entire task scripts on any
-    single model's load failure.** Every task script built its `models`
-    dict as one literal with every `load_*()` call evaluated inline and
-    unguarded. `xlm-roberta`'s load failure (a version-dependent
-    `IndexError` in `accelerate`'s device-map inference, different from its
-    previously-documented prompting-time failure) raised an exception that
-    killed the whole module before the evaluation loop ran, silently
-    discarding every other model's results for that task -- this is what
-    caused job 75159 to print "All evaluations completed" while writing
-    zero result rows for all four tasks. Fixed: each model now loads in its
-    own `try/except`, with a failure logged and skipped rather than fatal.
-14. **`lexical_alignment.txt`'s prompt showed multiple untrimmed candidate
-    translations.** For 182 of 5,775 rows (~3.2%), the prompt's "Tigrigna:"
-    line listed every comma-separated candidate (e.g. "abandon" ->
-    "ገደፈ, ረጥረጠ"), but `ExpectedAlignment` is always annotated against only
-    the first one shown -- the model had no way to know which candidate the
-    gold answer expected. Fixed: the prompt now shows only the first
-    candidate; the stored `Tigrigna` field on each result row is unchanged
-    (full multi-value string), since `clean_and_enforce_format`'s fallback
-    already keys off the first candidate specifically. Applied while job
-    75167 was mid-run (after gemma-2b's lexical alignment had already
-    completed under the unfixed prompt) -- see the caveat on that run's
-    results below.
+- **exact** — the cleaned answer equals the gold label.
+- **first-token** — the answer's first word is a gold label word. This is the
+  answer the model commits to, and the rule the analysis leads with.
+- **set-intersection** — any word of the answer is a gold label word. This is
+  permissive: a long answer naming several parts of speech is correct as soon
+  as one fits. The per-task `*_accuracy_<model>.txt` files hold this rule.
 
-**Not fixed, flagged instead:** `lexical_alignment.json`'s word-level
-alignments are only manually verified for 3,575 of 5,783 rows; the remaining
-2,208 use a naive positional fallback (`"AlignmentSource": "auto"`) pending
-human review. `morpho_features_fixed.json` only carries a real feature
-beyond "none" for ~3% of rows, since the source lexicon mostly doesn't
-encode gender/number -- this limits what the morphosyntax task can measure
-regardless of pipeline correctness.
+It also reports two baselines a model must beat to demonstrate Tigrinya
+knowledge — always answering the majority label, and an English POS tagger
+given only the English gloss — and how often an answer merely echoes the
+prompt's own example.
 
-The previous run's results are archived at
-`results/evaluation_reports_pre_fix_backup/` and should not be cited; they
-reflect the bugs above, not model capability.
+Translation is scored with chrF and character-level BLEU
+(`scripts/compute_bleu.py`). Tigrinya references average 1.37 whitespace
+tokens, so word-level BLEU-4 is near-undefined at this scale.
 
-**Caveat on job 75167 specifically:** its lexical alignment result for
-`gemma-2b` was scored before fix #14 above landed, so ~3.2% of its rows were
-evaluated against the untrimmed, multi-candidate prompt. Every other
-model/task combination in that run used the fixed prompt. Re-run
-`gemma-2b`'s lexical alignment alone (delete
-`results/evaluation_reports/lexical_alignment/lexical_alignment_gemma-2b.json`
-and its accuracy `.txt`, then resubmit) before treating its lexical
-alignment number as directly comparable to the other seven models.
+## Known limitations
+
+- 2,208 of 5,783 lexical alignment labels are positional fallbacks, not
+  verified annotation, so that task is not well-posed as scored.
+- The morphosyntax gold is 96.8% identical to the POS gold, so the two tasks
+  measure nearly the same thing.
+- The prompt supplies the English gloss alongside the Tigrinya form, and an
+  English-only tagger scores 60.4% on POS, so the task is substantially
+  solvable without the Tigrinya.
+- The evaluated roster mixes instruction-tuned causal models with raw
+  span-denoising seq2seq checkpoints, so it cannot separate architecture from
+  instruction-tuning.
+- Entries are dictionary headwords, not running text.
 
 ## Reproducing
 
@@ -230,15 +136,27 @@ sbatch submit_evaluation_job.sh
 ```
 
 Runs `scripts/run_all_evaluations.sh` on the `ampere` partition (4 GPUs, 32
-CPUs, 128GB RAM). Each task script is resumable -- it loads any existing
-partial results file and skips already-completed `(English, Tigrigna)` pairs
-before continuing, so an interrupted run can restart without redoing
-completed work. Before resuming into `results/evaluation_reports/`, make
-sure any files there weren't produced by the pre-fix pipeline -- stale
-`(English, Tigrigna)` keys from an old run will be wrongly treated as
-"already done" and skipped. Move old results out of the way (as was done
-for this run, into `results/evaluation_reports_pre_fix_backup/`) before
-resubmitting after a data/prompt change.
+CPUs, 128GB RAM). Each task script is resumable: it loads any existing
+partial results file and skips already-completed `(English, Tigrigna)` pairs,
+so an interrupted run restarts without redoing finished work.
+
+That resume key is also a hazard. After a change to the gold data or a
+prompt, existing result files hold keys that look complete and will be
+skipped, so the run silently mixes old and new scoring. Move the affected
+files aside before resubmitting.
+
+To regenerate the analysis from saved outputs, without any inference:
+
+```bash
+python scripts/build_merged_eval_set.py --dry-run --verify   # gold files
+python scripts/build_sense_split_eval_set.py --verify        # 5,701-item sets
+python scripts/compute_iaa.py                                # annotation agreement
+python scripts/rescore_tasks.py --models <comma-separated>   # three rules + baselines
+python scripts/compute_bleu.py                               # chrF / char-BLEU
+```
+
+`--models` pins a table to a fixed roster; without it, every result file
+present is scored, so a later run changes the output.
 
 ## Environment
 
@@ -253,19 +171,26 @@ in `utils/metrics.py` but not currently wired into any task's scoring), `pandas`
 LLM_Probe/
 ├── data/
 │   ├── lexicon.json                      # corrected English-Tigrinya lexicon (5,783 entries)
-│   ├── lexicon_combined_fixed.csv        # corrected source (swap fixed, POS/features split)
+│   ├── lexicon_combined_fixed.csv        # merged, reoriented source lexicon
+│   ├── POS_english_to_tigrigna_Annotated.xlsx  # annotation workbook (§2.3)
 │   ├── prompts/*.txt                     # one prompt template per task
 │   └── gold_labels/
-│       ├── *.json                        # corrected gold answers + corpus stats
-│       └── backup_pre_split/             # pre-correction versions, for reference
+│       ├── *.json                        # gold answers + corpus stats
+│       └── backup_pre_split/             # earlier versions, for reference
 ├── models/*_loader.py                    # one HF pipeline loader per model
 ├── tasks/*.py                            # one evaluation script per task
 ├── utils/{logger,metrics}.py             # result logging + accuracy/BLEU helpers
-├── scripts/run_all_evaluations.sh        # runs all 4 tasks across all models
+├── scripts/
+│   ├── build_merged_eval_set.py          # source CSV -> gold files (--verify)
+│   ├── build_sense_split_eval_set.py     # the 5,701-item POS/morph sets
+│   ├── rescore_tasks.py                  # three matching rules + baselines
+│   ├── compute_bleu.py                   # chrF / character BLEU
+│   ├── compute_iaa.py                    # annotation agreement
+│   └── run_all_evaluations.sh            # runs all 4 tasks across all models
 ├── submit_evaluation_job.sh              # SLURM entry point
 ├── results/
-│   ├── evaluation_reports/               # per-model/per-task JSON + accuracy .txt, plus all_results.json
-│   │   └── Combined_POS_Lexicon.csv      # raw source lexicon, pre-correction (see Fixes)
-│   └── evaluation_reports_pre_fix_backup/ # archived pre-fix run -- do not cite
+│   ├── evaluation_reports/               # per-model/per-task JSON + accuracy .txt
+│   │   └── Combined_POS_Lexicon.csv      # source lexicon, as digitised
+│   └── evaluation_reports_pre_fix_backup/ # earlier run -- do not cite
 └── logs/                                 # SLURM stdout/stderr per job id
 ```
