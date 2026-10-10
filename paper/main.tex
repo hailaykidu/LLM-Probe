@@ -683,8 +683,11 @@ alternative measurements of the same quantity.
 \section{Reproducibility}
 \label{sec:reproducibility}
 
-Every number in this paper is recomputed from the released artifacts by the
-commands in Table~\ref{tab:repro}; none requires re-running a model.
+The lexicon, the gold label files, the saved model outputs, the annotation
+workbook and the scoring code accompany this submission as supplementary
+material, and will be released publicly on acceptance. Every number in this
+paper is recomputed from those artifacts by the commands in
+Table~\ref{tab:repro}; none requires re-running a model.
 \texttt{\$ROSTER} denotes the eight evaluated models, which the scoring
 script takes as an explicit argument so that a reported table is reproduced
 over exactly that set.
@@ -711,9 +714,10 @@ inference; all are computed from the saved generations.}
 \label{tab:repro}
 \end{table*}
 
-The released archive also contains the raw generation for every item, stored
-per task and per model, so any scoring rule other than the three reported
-here can be applied to the same outputs without re-running the models.
+The supplementary material also contains the raw generation for every item,
+stored per task and per model, so any scoring rule other than the three
+reported here can be applied to the same outputs without re-running the
+models.
 
 \section{Limitations}
 \label{sec:limitations}
