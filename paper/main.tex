@@ -78,9 +78,11 @@ We evaluate eight general-purpose large language models on three
 lexicon-grounded Tigrinya tasks --- part-of-speech tagging, morphosyntactic
 labelling, and English$\rightarrow$Tigrinya translation --- using a 5,783-row
 annotated bilingual lexicon. Our central methodological finding is that such
-evaluations are easy to over-read: with a permissive matching rule, models
-appear to reach 80--89\% accuracy, but the same outputs score 0--82\% under a
-first-token rule, and a constant-answer baseline reaches 53.7\% while an
+evaluations are easy to over-read: a permissive matching rule puts the best
+model at 85.9\% on part-of-speech tagging and 89.4\% on morphosyntactic
+labelling, but scoring the same saved outputs by the first word the model
+commits to costs up to 26 points, and a constant-answer baseline reaches
+53.7\% while an
 English-only tagger that never sees the Tigrinya reaches 60.4\%. Measured
 against those baselines, three of eight models demonstrate above-trivial POS
 performance and two exceed the English-only baseline on morphosyntactic
