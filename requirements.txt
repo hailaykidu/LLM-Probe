@@ -1,24 +1,19 @@
-# Core libraries
+# Data handling: gold-label construction and the task evaluation loops.
 pandas
 numpy
 
-# Hugging Face Transformers and dependencies
-# transformers>=5.17 is required for the 2026 model roster: gemma4,
-# gemma4_unified, mistral3, falcon_h1 and t5gemma2 model types are not
-# registered in earlier releases.
+# Model loading and generation.
+#
+# transformers>=5.17 is required because several checkpoint families used
+# here register model types that earlier releases do not know: gemma4,
+# gemma4_unified, mistral3, falcon_h1 and t5gemma2.
 transformers>=5.17.0
 torch>=2.6
 sentencepiece
 accelerate
 protobuf
 
-# Evaluation metrics
+# Scoring. NLTK supplies chrF and BLEU in utils/metrics.py, and the
+# English-only part-of-speech baseline in scripts/rescore_tasks.py.
+# Run `python setup_nltk.py` once after installing to fetch the tagger data.
 nltk
-
-# Utility and progress
-tqdm
-
-# Optional: for Jupyter notebooks and visualization
-jupyter
-matplotlib
-seaborn

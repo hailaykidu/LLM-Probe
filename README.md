@@ -97,6 +97,28 @@ which is the most permissive of the three.
   instruction-tuning.
 - Entries are dictionary headwords, not running text.
 
+## Provenance
+
+The lexicon is digitised from a Tigrinya–English dictionary, with additional
+entries contributed by native-speaker linguists. The source file
+`results/evaluation_reports/Combined_POS_Lexicon.csv` is included as
+received, before correction, so that the construction of the gold labels can
+be checked end to end: `scripts/build_merged_eval_set.py --verify` rebuilds
+the gold from it and reports any divergence from what is committed.
+
+Two defects in that source are corrected rather than silently cleaned, and
+both are documented in the paper. Its second block stores the two translation
+directions under one pair of column headers, so the column named `English`
+holds Ge'ez script for roughly half the rows; and gender and number markers
+are embedded inline in the Tigrinya field rather than in the label column.
+
+## Licence
+
+Code is released under the MIT License; data and evaluation records under
+CC BY 4.0. See [`LICENSE`](LICENSE), which also notes the terms attaching to
+the source dictionary, to the third-party model checkpoints whose outputs are
+recorded here, and to the ACL style files in `paper/`.
+
 ## Running a full evaluation
 
 ```bash
