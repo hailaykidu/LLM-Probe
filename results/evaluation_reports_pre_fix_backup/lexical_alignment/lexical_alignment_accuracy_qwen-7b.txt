@@ -1,2 +1,0 @@
-format_accuracy=0.0062
-semantic_accuracy=0.2429

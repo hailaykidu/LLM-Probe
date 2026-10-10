@@ -2,7 +2,7 @@
 
 The other loaders in this package pull a checkpoint from the Hugging Face
 Hub and run it locally on the cluster GPUs. These models are instead served
-remotely at inference.kbs.uni-hannover.de, so there is no checkpoint to
+remotely by an OpenAI-compatible inference service, so there is no checkpoint to
 download and no GPU to allocate: generation is an HTTP POST.
 
 `EndpointPipeline` reimplements the same call contract every task script
@@ -38,14 +38,12 @@ import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
-BASE_URL = os.environ.get(
-    "KBS_INFERENCE_BASE_URL", "https://inference.kbs.uni-hannover.de/v1"
-).rstrip("/")
-
-# The endpoint requires a key. It is read from the environment rather than
-# hardcoded so the token is not committed to the repository; see
-# .claude/Test_f/config.json for the value used during development.
+# Both the endpoint address and its key are read from the environment rather
+# than hardcoded, so that no site-specific host and no credential is committed
+# to the repository. Set both before running an endpoint-served model.
+BASE_URL_ENV = "KBS_INFERENCE_BASE_URL"
 API_KEY_ENV = "KBS_INFERENCE_API_KEY"
+BASE_URL = os.environ.get(BASE_URL_ENV, "").rstrip("/")
 
 # Routing prefixes used by the OpenCode client config but not by the
 # served model IDs themselves.
@@ -93,6 +91,15 @@ def _api_key():
     return key
 
 
+def _base_url():
+    if not BASE_URL:
+        raise RuntimeError(
+            f"{BASE_URL_ENV} is not set; export the endpoint address before "
+            "running an endpoint model."
+        )
+    return BASE_URL
+
+
 class EndpointPipeline:
     """Drop-in replacement for a transformers pipeline, backed by HTTP.
 
@@ -119,7 +126,7 @@ class EndpointPipeline:
             "max_tokens": self.max_tokens,
         }).encode("utf-8")
         request = urllib.request.Request(
-            f"{BASE_URL}/chat/completions",
+            f"{_base_url()}/chat/completions",
             data=body,
             headers={
                 "Authorization": f"Bearer {_api_key()}",
