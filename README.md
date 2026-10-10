@@ -14,16 +14,26 @@ requires re-running a model.
 
 ```
 data/
-  gold_labels/          gold answers per task, plus corpus statistics
-  prompts/              one prompt template per task
-  lexicon*.{csv,json}   merged source lexicon
   POS_english_to_tigrigna_Annotated.xlsx   annotation workbook (§3.3)
-models/                 one loader per model
+  lexicon_combined_fixed.csv               merged, reoriented source lexicon
+  lexicon.json                             the same lexicon as records
+  gold_labels/
+    pos_tags_fixed.json                    POS gold, 5,783 rows
+    morpho_features_fixed.json             morphosyntax gold
+    translations.json                      translation references
+    lexical_alignment.json                 word alignments
+    *_sense_split.json                     the 5,701-item tagging sets
+    statistics.json                        corpus statistics
+  prompts/                                 one template per task
+models/                 one loader per model, plus shared loading code
 tasks/                  one evaluation script per task
 scripts/                dataset construction, scoring and probes
 utils/                  metrics and logging helpers
 results/
-  evaluation_reports/   per-model, per-task outputs and accuracy files
+  evaluation_reports/
+    Combined_POS_Lexicon.csv               digitised source, as received
+    rescored_2026-09-28.json               three matching rules + baselines
+    <task>/                                per-model outputs and accuracies
 paper/                  LaTeX source, bibliography and compiled PDF
 ```
 
