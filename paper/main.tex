@@ -122,11 +122,10 @@ This paper makes three contributions.
     should be routine.
 \end{enumerate}
 
-The third contribution is the reason for this paper. An earlier version of
-this work reported results computed with a permissive matching rule and no
-baselines, and drew an architectural conclusion that does not survive either
-correction. The authors have requested its retraction;
-Section~\ref{sec:relation} states the relationship between the two.
+An earlier paper by the same authors used this lexicon and these four tasks,
+and its retraction has been requested. The results below come from new runs
+on a rebuilt gold set, not from re-scoring that paper's outputs;
+Section~\ref{sec:relation} gives the differences.
 
 \section{Related work}
 \label{sec:related}
@@ -292,10 +291,9 @@ silently cleaning them.
 
 \subsection{Relation to the earlier version}
 
-An earlier version of this work introduced the lexicon and the four-task
-framework used here. Section~\ref{sec:relation} states what it reported,
-which of its claims survive re-scoring, and the authors' request for its
-retraction.
+An earlier paper by the same authors introduced the lexicon and the four-task
+framework used here, and its retraction has been requested.
+Section~\ref{sec:relation} states how the two differ.
 
 \section{Dataset}
 \label{sec:dataset}
@@ -715,32 +713,24 @@ artefact of our setup.
 \section{Relation to an earlier version of this work}
 \label{sec:relation}
 
-An earlier version of this work, which introduced the lexicon and the
-four-task framework used here, has been withdrawn at the authors' request.
-Its part-of-speech and morphosyntactic results were computed with the
-permissive matching rule described in Section~\ref{subsec:scoring}, under
-which an answer counts as correct if any of its words matches a gold label
-word, and were reported without baselines; it also drew a conclusion about
-sequence-to-sequence architectures from a model set in which architecture and
-instruction-tuning are confounded.
+An earlier paper by the same authors used this lexicon and these four tasks.
+Its retraction has been requested.
 
-This paper re-scores the same saved model outputs under the three matching
-rules of Section~\ref{subsec:scoring} and against the references of
-Section~\ref{subsec:baselines}. Re-scoring alone changes the ordering and the
-magnitudes, but the more consequential point is that it cannot rescue the
-earlier claims: the two tagging tasks are bounded above at 96.49 and 95.86 by
-a system that sees only the English gloss, and no model approaches either
-bound. Those tasks could not have supported a claim about Tigrinya competence
-under any matching rule. The morphosyntactic task is additionally not
-distinct from part-of-speech tagging, its gold labels being 96.8\% identical,
-and the architectural conclusion is confounded with instruction-tuning. This
-is why the earlier version is withdrawn rather than corrected.
+The results reported here are not a re-scoring of that paper's outputs. They
+come from new runs carried out in September 2026, against a gold set rebuilt
+from the source lexicon, and the two differ in their inputs as well as in
+their scoring. The earlier runs evaluated 3,899 items per tagging task; these
+evaluate 5,701. The earlier gold carried the source dictionary's
+parenthetical notation, so an expected tag was stored as
+\texttt{(adv)~adverb} rather than \texttt{adverb}, and an entry was presented
+with all of its comma-separated Tigrinya senses rather than one. Prompts
+built from those entries differ, and so do the generations they elicit.
 
-Every figure in this paper is computed from the released lexicon, the saved
-generations and the scoring code listed in
-Section~\ref{sec:reproducibility}. No number is carried over from the
-withdrawn version, and the two sets of results should not be compared as
-alternative measurements of the same quantity.
+Every figure in this paper is computed from the lexicon, the saved
+generations and the scoring code released with it and listed in
+Section~\ref{sec:reproducibility}. No number is carried over from the earlier
+paper, and the two sets of results are not alternative measurements of the
+same quantity.
 
 \section{Reproducibility}
 \label{sec:reproducibility}
