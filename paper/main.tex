@@ -339,12 +339,24 @@ what it measures: a second POS task with a different prompt.
 \subsection{Inter-annotator agreement}
 \label{subsec:iaa}
 
-A 500-item subset of the lexicon was double-annotated for part of speech,
-gender, number, category agreement and lexical alignment. The records are
-released as \texttt{POS\_english\_to\_tigrigna\_Annotated.xlsx} --- two
-annotator sheets, an adjudicated sheet and the annotation guide that defines
-each value --- and \texttt{scripts/compute\_iaa.py} recomputes every figure
-below from them.
+% Camera-ready: replace "two of this paper's authors" with the authors'
+% names if the venue expects them. The substance -- that the annotators are
+% authors and that no third party adjudicated -- must stay either way.
+A 500-item subset of the lexicon was annotated independently by two of this
+paper's authors for part of speech, gender, number, category agreement and
+lexical alignment. Each assigned labels separately using the annotation
+guide, and the two sheets were then compared to locate disagreements. The
+final sheet was compiled from those two sheets: \textbf{no third annotator
+took part, and no party outside the author group adjudicated}. We state this
+because it bounds what the coefficients below can mean, and because the
+compiled sheet is sometimes read as an independent adjudication, which it is
+not.
+
+The records are released as
+\texttt{POS\_english\_to\_tigrigna\_Annotated.xlsx} --- the two annotation
+sheets, the compiled sheet and the annotation guide that defines each value
+--- and \texttt{scripts/compute\_iaa.py} recomputes every figure below from
+them.
 
 An annotator sometimes left a cell empty where the other assigned a label.
 Those are not matching judgements, so we count them as disagreements and
@@ -379,12 +391,13 @@ would hide the main source of divergence.
 
 Three properties of this subset bound what the coefficients support.
 
-\paragraph{The two columns are not independent of the adjudication.} On the 25
-part-of-speech items where the annotators differ, the adjudicated sheet
-reproduces Annotator 2 on all 25 and Annotator 1 on none; on the three gender,
-agreement and alignment disagreements it reproduces Annotator 1. The
-adjudication is assembled from the two columns rather than decided separately,
-so it cannot serve as an independent third judgement.
+\paragraph{The compiled sheet is not an independent third judgement.} This
+follows from how it was produced, and the records bear it out: on the 25
+part-of-speech items where the annotators differ, the compiled sheet
+reproduces Annotator 2 on all 25 and Annotator 1 on none; on the three
+gender, agreement and alignment disagreements it reproduces Annotator 1. It
+selects between the two existing columns rather than adding a third
+judgement, so agreement with it is not evidence about either annotator.
 
 \paragraph{Agreement on filled labels is near-total.} Where both annotators
 assigned a gender or number value, they never differ --- 0 disagreements
@@ -775,10 +788,11 @@ models.
 \begin{itemize}
   \item POS labels are the source dictionary's, not independently
     re-annotated. The agreement coefficients in Section~\ref{subsec:iaa}
-    describe a 500-item subset that is alphabetical and contains no verbs, and
-    whose adjudication is assembled from the two annotator columns rather than
-    decided separately. They are not an estimate for the corpus; a stratified
-    re-annotation covering verbs would be needed for that.
+    describe a 500-item subset that is alphabetical and contains no verbs,
+    annotated by two of this paper's authors rather than by annotators
+    external to the work, and compiled without a third adjudicator. They are
+    not an estimate for the corpus, and a stratified re-annotation covering
+    verbs, by annotators outside the author group, would be needed for that.
   \item Morphosyntactic features cover 185 of 5,783 gold rows.
   \item Lexical alignment gold is 38\% positional fallback;
     Section~\ref{subsec:alignment} is not a result.
