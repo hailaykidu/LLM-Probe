@@ -49,6 +49,7 @@ ROSTER=gemma-2b,gemma-7b,mistral-7b,falcon-7b,qwen-7b,mt5-small,mt5-large,byt5
 python scripts/build_merged_eval_set.py --dry-run --verify   # gold files, §3.1
 python scripts/build_sense_split_eval_set.py --verify        # 5,701-item sets
 python scripts/compute_iaa.py                                # agreement, §3.3
+python scripts/task_ceiling.py                               # ceiling, §4.2
 python scripts/rescore_tasks.py --models "$ROSTER"           # §5.1, §5.2
 python scripts/compute_bleu.py                               # §5.3
 ```

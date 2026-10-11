@@ -71,24 +71,25 @@ We evaluate eight general-purpose large language models on three
 lexicon-grounded Tigrinya tasks --- part-of-speech tagging, morphosyntactic
 labelling, and English$\rightarrow$Tigrinya translation --- using a 5,783-row
 annotated bilingual lexicon. Our central methodological finding is that such
-evaluations are easy to over-read: a permissive matching rule puts the best
-model at 85.9\% on part-of-speech tagging and 89.4\% on morphosyntactic
-labelling, but scoring the same saved outputs by the first word the model
-commits to costs up to 26 points, and a constant-answer baseline reaches
-53.7\% while an
-English-only tagger that never sees the Tigrinya reaches 60.4\%. Measured
-against those baselines, three of eight models demonstrate above-trivial POS
-performance and two exceed the English-only baseline on morphosyntactic
-labelling, by under three points. On translation all eight models score at or
+evaluations are easy to over-read, and that on these tasks the apparent
+competence is an artefact of measurement rather than a property of the
+models. A permissive matching rule puts the best model at 85.9\% on
+part-of-speech tagging and 89.4\% on morphosyntactic labelling, but scoring
+the same saved outputs by the first word the model commits to costs up to 26
+points. More decisively, the prompt supplies an English gloss beside the
+Tigrinya form, and an oracle that sees only that gloss scores 96.5\% and
+95.9\% on the two tasks: \emph{no model comes within 14 points of what the
+English alone makes available}, because fewer than one headword in twenty is
+ambiguous given the English. On translation all eight models score at or
 below chrF 0.81, while NLLB-200-3.3B, which supports Tigrinya, reaches chrF
-16.05 on identical items with an identical scorer. We argue that low-resource
-evaluations without trivial baselines are uninterpretable, and release the
-lexicon, the scoring code and the saved model outputs. Because the procedure we apply
-here --- report every matching rule, measure against baselines that use none
-of the target language, and quantify prompt echo --- requires no resources
-beyond those an evaluation already has, it transfers directly to other
-low-resource languages, where the same scoring choices determine whether a
-reported number reflects competence or an artefact of measurement.
+16.05 on identical items with an identical scorer. We therefore report a
+negative result: these tasks, as posed, do not measure Tigrinya competence,
+and published numbers on them should not be read as doing so. We release the
+lexicon, the scoring code and the saved model outputs, and argue that the
+procedure applied here --- report every matching rule, bound the task from
+above as well as below with references that use none of the target language,
+and quantify prompt echo --- requires no resources beyond those an evaluation
+already has, and should be standard in low-resource evaluation.
 \end{abstract}
 
 \section{Introduction}
@@ -110,11 +111,15 @@ This paper makes three contributions.
     dictionary~\citep{swansea-dictionary}.
   \item \textbf{An evaluation of eight LLMs} across POS tagging,
     morphosyntactic labelling and translation, reported under three matching
-    rules and against two trivial baselines.
-  \item \textbf{A methodological result}: on a lexicon-scale task, the choice
-    of matching rule moves reported accuracy by up to 26 points, and two
-    baselines that use no Tigrinya at all reach 53.7\% and 60.4\%. Papers in
-    this setting that report neither are not interpretable.
+    rules and against references that use no Tigrinya at all.
+  \item \textbf{A negative result about the task design.} The choice of
+    matching rule moves reported accuracy by up to 26 points on fixed
+    outputs, and an oracle restricted to the English gloss scores 96.5\% and
+    95.9\% on the two tagging tasks, which no model approaches. The tasks are
+    therefore substantially solvable without the target language, and the
+    numbers they produce --- including ours --- are not measurements of
+    Tigrinya competence. We give the procedure that exposes this and argue it
+    should be routine.
 \end{enumerate}
 
 The third contribution is the reason for this paper. An earlier version of
@@ -465,18 +470,35 @@ words. We report three rules.
 \subsection{Baselines}
 \label{subsec:baselines}
 
-Two reference points, both of which a model must beat to demonstrate Tigrinya
-knowledge:
+The prompt supplies the English gloss alongside the Tigrinya form
+(\texttt{Phrase: \{Tigrinya\} (\{English\})}), so a system can score well
+without using the Tigrinya at all. We therefore bound the two tagging tasks
+from below and from above with references that see no Tigrinya whatsoever.
 
 \begin{itemize}
   \item \textbf{Majority} --- always answer the most frequent gold label
     (\texttt{noun}).
-  \item \textbf{English-only} --- an NLTK~\citep{loper-bird-2002-nltk} English
-    POS tagger applied to the English gloss alone. The prompt format is
-    \texttt{Phrase: \{Tigrinya\} (\{English\})}, and a dictionary headword's
-    part of speech is largely recoverable from the English word, so this
-    baseline uses no Tigrinya whatsoever.
+  \item \textbf{English-only tagger} --- an NLTK~\citep{loper-bird-2002-nltk}
+    English POS tagger applied to the gloss alone. This is what one
+    off-the-shelf English system achieves, and is a lower bound on what the
+    gloss makes available.
+  \item \textbf{English-only ceiling} --- an oracle that sees only the
+    English string and answers with the most frequent gold label that
+    headword carries anywhere in the evaluation set. This is the best any
+    English-only system can reach, and we report it because the lower bound
+    alone understates how much of the task the gloss already determines.
 \end{itemize}
+
+The ceiling is high: 96.49 on part-of-speech tagging and 95.86 on
+morphosyntactic labelling. Only 189 of 5,025 headwords (3.8\%) carry more
+than one gold part-of-speech label, and 212 (4.2\%) more than one
+morphosyntactic label, so the Tigrinya form can supply information the gloss
+does not already give on fewer than one item in twenty. A model scoring below
+the ceiling has not shown that it used the Tigrinya.
+
+Differences against the tagger baseline are tested with a one-sided binomial
+test at $n = 5{,}701$; \texttt{scripts/task\_ceiling.py} computes the ceiling,
+the ambiguity counts and the tests.
 
 \section{Results}
 \label{sec:results}
@@ -502,18 +524,27 @@ mt5-small  &  0.00 &          0.00  &  0.00 \\
 \midrule
 \textbf{Majority (\texttt{noun})} & & \textbf{53.73} & \\
 \textbf{English-only tagger}      & & \textbf{60.38} & \\
+\textbf{English-only ceiling}     & & \textbf{96.49} & \\
 \bottomrule
 \end{tabular}
-\caption{POS tagging accuracy (\%) under three matching rules, with both
-trivial baselines.}
+\caption{POS tagging accuracy (\%) under three matching rules, against the
+two English-only references. No model reaches the ceiling.}
 \label{tab:pos}
 \end{table}
 
-Three models exceed both baselines: mistral-7b, gemma-7b, gemma-2b. Falcon-7b
-and qwen-7b fall below the majority baseline; all three seq2seq checkpoints
-are at or near zero.
+Three models exceed the tagger baseline, each significantly
+($p < 10^{-4}$): mistral-7b by 21.19 points, gemma-7b by 19.01 and gemma-2b
+by 12.49. Falcon-7b and qwen-7b fall below the majority baseline; all three
+seq2seq checkpoints are at or near zero.
 
-The exact column shows how brittle these numbers are. Gemma-7B scores 0.00\%
+\textbf{No model reaches the English-only ceiling.} The best, mistral-7b,
+falls 14.93 points short of it; gemma-7b 17.10 and gemma-2b 23.63. Since the
+ceiling is what a system achieves from the gloss alone, the ordering above is
+not evidence that any model used the Tigrinya form. It is consistent with
+every model using the gloss and using it worse than an English-only oracle
+would.
+
+The exact column shows how brittle these numbers are. Gemma-7b scores 0.00\%
 exact and 79.39\% first-token: it always answers in a sentence, never a bare
 label. A reader given only one of these columns would draw opposite
 conclusions.
@@ -540,18 +571,26 @@ mt5-small  &          0.86  &  2.49 & 0.0\% \\
 mt5-large  &          0.11  &  0.74 & 0.0\% \\
 byt5       &          0.00  & 38.55 & 69.7\% \\
 \midrule
-\textbf{Majority}            & \textbf{52.38} & & \\
-\textbf{English-only tagger} & \textbf{61.57} & & \\
+\textbf{Majority}             & \textbf{52.38} & & \\
+\textbf{English-only tagger}  & \textbf{61.57} & & \\
+\textbf{English-only ceiling} & \textbf{95.86} & & \\
 \bottomrule
 \end{tabular}
 \caption{Morphosyntactic labelling accuracy (\%). The final column is how
-often an answer contains the prompt's own example.}
+often an answer contains the prompt's own example. No model reaches the
+ceiling.}
 \label{tab:morph}
 \end{table}
 
-\textbf{Only two models exceed the English-only baseline of 61.57}, by 3.02
-and 1.75 points; the remaining six fall below it, and five fall below the
-majority baseline of 52.38.
+Only two models exceed the tagger baseline of 61.57: gemma-2b by 3.02 points
+($p < 10^{-4}$) and gemma-7b by 1.75 ($p = 0.003$). Both margins are
+statistically significant at $n = 5{,}701$, and both are small. The remaining
+six fall below the baseline, and five below the majority baseline of 52.38.
+
+Against the ceiling the picture is uniform: \textbf{the best model is 31.28
+points below what the English gloss alone makes available}, and the eight
+models span 31 to 96 points below it. Whatever separates gemma-2b from
+mistral-7b here, it is not evidence of morphosyntactic analysis of Tigrinya.
 
 The final column measures how often an answer contains the prompt's own
 example, \texttt{preposition, noun, singular}. Gemma-7b echoes it in 97.4\% of
@@ -628,12 +667,15 @@ costs gemma-7b 3.05 points on POS and 26.10 on morphosyntax; moving to exact
 match costs it everything. A paper that reports one number without naming the
 rule has not reported a result.
 
-\paragraph{Trivial baselines are not optional.} Two baselines using no
-Tigrinya at all --- a constant answer and an English tagger --- reach 53.73
-and 60.38 on POS and 52.38 and 61.57 on morphosyntax. Five of eight models
-fall below the stronger baseline on POS and six of eight on morphosyntax.
-Without those reference points, the same table reads as evidence of
-cross-lingual competence.
+\paragraph{Bound the task from above, not only from below.} A lower-bound
+baseline tells you whether a model beats a weak system; it does not tell you
+whether the task needs the target language. On POS the majority answer scores
+53.73 and an English tagger 60.38, and three models clear both --- which
+reads as cross-lingual competence until the upper bound is added. An oracle
+restricted to the English gloss reaches 96.49, and the best model is 14.93
+points below it. The same holds on morphosyntax, where the gap is 31.28.
+Reporting only the lower bounds would have let this paper claim a result it
+does not have.
 
 \paragraph{Prompt echo is a measurable confound.} Gemma-7b reproduces the
 prompt's example in 97.4\% of its morphosyntax answers, and because the
@@ -645,13 +687,17 @@ checkpoints reach chrF 14.11--16.05 where the best general-purpose model
 reaches 0.81 --- more than an order of magnitude on chrF. For low-resource
 languages, model selection dominates model size.
 
-\paragraph{What we can claim about Tigrinya competence.} Three of eight models
-show above-baseline POS performance. Two exceed the English-only baseline on
-morphosyntactic labelling, by 3.02 and 1.75 points; this margin is within the
-range a held-out re-run could move, and we therefore treat it as suggestive
-rather than established. None can translate into Tigrinya. Even NLLB reaches
-only 16.24\% exact on a dictionary task, which indicates the difficulty is
-real rather than an artefact of our setup.
+\paragraph{What we can claim about Tigrinya competence.} On the two tagging
+tasks, nothing. Three models beat the English tagger on POS and two on
+morphosyntax, each significantly at $n = 5{,}701$, but all eight sit well
+below what the English gloss alone affords, and fewer than one headword in
+twenty is ambiguous given that gloss. These tasks cannot separate a model
+that reads Tigrinya from one that reads the English and answers worse than an
+oracle would. Translation is the one task here that cannot be solved from the
+prompt's English, and there the result is unambiguous: no model translates
+into Tigrinya. Even NLLB, which supports the language, reaches only 16.24\%
+exact on dictionary headwords, so the difficulty is real rather than an
+artefact of our setup.
 
 \section{Relation to an earlier version of this work}
 \label{sec:relation}
@@ -702,6 +748,7 @@ Reported in & Command (in \texttt{scripts/}) & Artifact read \\
 \S\ref{subsec:source} counts    & \texttt{build\_merged\_eval\_set.py --dry-run --verify} & \texttt{Combined\_POS\_Lexicon.csv} \\
 \S\ref{subsec:source} 5,701 set & \texttt{build\_sense\_split\_eval\_set.py --verify}     & \texttt{*\_sense\_split.json} \\
 \S\ref{subsec:iaa} agreement    & \texttt{compute\_iaa.py}                                & \texttt{*\_Annotated.xlsx} \\
+\S\ref{subsec:baselines} ceiling & \texttt{task\_ceiling.py}                              & \texttt{*\_sense\_split.json} \\
 \S\ref{subsec:pos}, \S\ref{subsec:morph} & \texttt{rescore\_tasks.py --models \$ROSTER}   & \texttt{rescored\_scores.json} \\
 \S\ref{subsec:translation} LLMs & \texttt{compute\_bleu.py}                               & \texttt{translation\_fidelity\_bleu.json} \\
 \S\ref{subsec:translation} NLLB & \texttt{probe\_nllb\_translation.py}                    & \texttt{nllb\_probe\_*.json} \\
@@ -737,8 +784,17 @@ models.
   \item The model set cannot separate architecture from instruction-tuning. An
     instruction-tuned seq2seq model (\texttt{flan-t5}, \texttt{mt0}) would be
     needed.
-  \item The English-only baseline shows the POS task is substantially solvable
-    without Tigrinya. A harder task would withhold the English gloss.
+  \item Both tagging tasks are substantially solvable without Tigrinya: an
+    English-only oracle reaches 96.49 and 95.86, and under 5\% of headwords
+    are ambiguous given the gloss. This is a property of the task design, not
+    of the models, and it bounds what any result on these tasks can mean. A
+    task that withheld the gloss, or that drew its items from the ambiguous
+    subset, would measure something the English does not already determine;
+    we have not run that experiment.
+  \item The ceiling is computed from the evaluation set itself, so it is an
+    oracle rather than a system: it knows the label distribution of each
+    headword. It bounds what the English makes available on these items, not
+    what an English-only system would achieve on unseen data.
 \end{itemize}
 
 \bibliography{references}
