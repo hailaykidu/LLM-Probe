@@ -98,6 +98,27 @@ which is the most permissive of the three.
   instruction-tuning.
 - Entries are dictionary headwords, not running text.
 
+## The annotation workbook
+
+`data/POS_english_to_tigrigna_Annotated.xlsx` holds the annotation records
+behind §3.3 of the paper. It is not an input to any model run; it documents
+how a 500-item subset of the lexicon was annotated.
+
+A 500-item subset was annotated independently by two of the paper's authors
+for part of speech, gender, number, category agreement and lexical alignment.
+Each assigned labels separately using the `Guide` sheet, which defines every
+permitted value. The two sheets were then compared to locate disagreements,
+and the final sheet was compiled from them. **No third annotator took part,
+and nobody outside the author group adjudicated**, so the sheet named
+`Sheet1` is a compilation of the two annotation columns rather than an
+independent third judgement.
+
+`python scripts/compute_iaa.py` recomputes every agreement figure from the
+workbook and reports three things: Cohen's κ per dimension under both blank
+conventions, which annotator the compiled sheet follows wherever the two
+disagree, and how the 500 items were drawn. The paper reports no single
+agreement coefficient for the dataset, and §3.3 states the three reasons.
+
 ## Provenance
 
 The lexicon is digitised from a Tigrinya–English dictionary, with additional

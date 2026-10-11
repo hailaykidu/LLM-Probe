@@ -2,11 +2,22 @@
 
 No inference and no new annotation: every number here is read out of
 `data/POS_english_to_tigrigna_Annotated.xlsx`, which holds the 500-item
-sample, both annotators' sheets and the adjudicated version.
+sample, the two annotation sheets and the compiled sheet.
+
+How the workbook was produced
+-----------------------------
+A 500-item subset of the lexicon was annotated independently by two of the
+paper's authors, each assigning labels separately using the annotation guide
+that the workbook also contains. The two sheets were then compared to locate
+disagreements, and the final sheet was compiled from them. No third annotator
+took part, and nobody outside the author group adjudicated. The sheet named
+"Sheet1" is therefore a compilation of the two annotation columns, not an
+independent third judgement, and the figures below should be read with that
+in mind.
 
 Why this script exists
 ----------------------
-Section 2.3 of the paper reports no inter-annotator agreement coefficient for
+Section 3.3 of the paper reports no inter-annotator agreement coefficient for
 this dataset. That is a claim about what the records support, so this script
 derives it from them rather than asserting it. It reports three things:
 
@@ -15,14 +26,13 @@ derives it from them rather than asserting it. It reports three things:
    label. The two conventions disagree by up to 0.39 on the same records,
    so no single coefficient is well defined.
 
-2. **Each annotator against the adjudicated sheet.** Where the annotators
-   differ on POS, the adjudication reproduces Annotator 2 on every row and
+2. **Each annotator against the compiled sheet.** Where the annotators
+   differ on POS, the compiled sheet reproduces Annotator 2 on every row and
    Annotator 1 on none; on the handful of Gender/Agreement/Alignment
-   disagreements it reproduces Annotator 1. The adjudication is assembled
-   from the two columns rather than decided separately, so agreement with it
-   is not evidence about either. Gender and Number show zero disagreements
-   across 420+ jointly-labelled items, which independent annotation does not
-   produce.
+   disagreements it reproduces Annotator 1. It selects between the two
+   existing columns rather than adding a third judgement, so agreement with
+   it is not evidence about either. Gender and Number show zero
+   disagreements across 420+ jointly-labelled items.
 
 3. **How the 500 items were drawn.** Each sampled row is traced back to the
    POS sheet it came from. The sample is alphabetical from the top of each
@@ -199,11 +209,12 @@ def report_kappa(a, b):
 
 def report_adjudication(a, b, adjudicated):
     print()
-    print("## 2. Each annotator against the adjudicated sheet (%s)" % ADJUDICATED)
+    print("## 2. Each annotator against the compiled sheet (%s)" % ADJUDICATED)
     print()
-    print("Where the annotators disagree, a separately-decided adjudication")
-    print("would side with each of them sometimes. One assembled from their")
-    print("columns reproduces one or the other wholesale.")
+    print("The compiled sheet was assembled from the two annotation columns")
+    print("by the annotators themselves, with no third adjudicator. A sheet")
+    print("decided separately would side with each annotator sometimes; one")
+    print("compiled from their columns reproduces one or the other wholesale.")
     print()
     print("%-12s %7s %10s %10s %9s" % (
         "dimension", "disagr", "adj = A1", "adj = A2", "neither"))
@@ -326,7 +337,7 @@ def main():
         print("Inter-annotator agreement, computed from %s" % WORKBOOK)
         print("=" * 62)
         print()
-        print("Items with an Item_ID: A1=%d  A2=%d  adjudicated=%d"
+        print("Items with an Item_ID: A1=%d  A2=%d  compiled=%d"
               % (len(a), len(b), len(adjudicated)))
         print()
 
@@ -337,10 +348,10 @@ def main():
         print()
         print("## Conclusion")
         print()
-        print("Section 2.3 reports the blank=label column, counting a cell")
+        print("Section 3.3 reports the blank=label column, counting a cell")
         print("one annotator left empty as a disagreement. Three properties")
         print("bound what those figures support: the columns are not")
-        print("independent of the adjudication, agreement on filled labels")
+        print("independent of the compiled sheet, agreement on filled labels")
         print("is near-total so the divergence is in coverage rather than")
         print("label choice, and the subset is alphabetical and verb-free,")
         print("so it is not an estimate for the corpus.")
