@@ -712,13 +712,16 @@ sequence-to-sequence architectures from a model set in which architecture and
 instruction-tuning are confounded.
 
 This paper re-scores the same saved model outputs under the three matching
-rules of Section~\ref{subsec:scoring} and against the two baselines of
-Section~\ref{subsec:baselines}. Measured that way, only three of the eight
-systems exceed both baselines on part-of-speech tagging and two on
-morphosyntactic labelling, in each case by a few points, while five and six
-respectively fall below the stronger baseline; and the morphosyntactic task
-is not distinct from part-of-speech tagging, its gold labels being 96.8\%
-identical.
+rules of Section~\ref{subsec:scoring} and against the references of
+Section~\ref{subsec:baselines}. Re-scoring alone changes the ordering and the
+magnitudes, but the more consequential point is that it cannot rescue the
+earlier claims: the two tagging tasks are bounded above at 96.49 and 95.86 by
+a system that sees only the English gloss, and no model approaches either
+bound. Those tasks could not have supported a claim about Tigrinya competence
+under any matching rule. The morphosyntactic task is additionally not
+distinct from part-of-speech tagging, its gold labels being 96.8\% identical,
+and the architectural conclusion is confounded with instruction-tuning. This
+is why the earlier version is withdrawn rather than corrected.
 
 Every figure in this paper is computed from the released lexicon, the saved
 generations and the scoring code listed in
