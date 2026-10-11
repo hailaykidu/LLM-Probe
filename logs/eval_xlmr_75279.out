@@ -1,0 +1,24 @@
+==========================================
+SLURM_JOB_ID = 75279
+SLURM_NODELIST = gpunode03
+==========================================
+🔁 Starting LLM Evaluation for Tigrinya Lexicon...
+🔍 Lexical Alignment
+
+🚀 Lexical Alignment with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+🧠 POS Tagging
+
+🔤 Pos Tagging with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+🧬 Morphosyntactic Probing
+
+🔍 Morphosyntax Probe with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+🌍 Translation Fidelity
+
+🌍 Translation Fidelity with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+✅ All evaluations completed.
+📊 Merging all evaluation reports into one JSON...
+✅ Consolidated results written to results/evaluation_reports/all_results.json

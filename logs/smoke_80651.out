@@ -1,0 +1,14 @@
+==========================================
+SLURM_JOB_ID = 80651
+SLURM_NODELIST = gpunode06
+==========================================
+model               ti tok/wd  am tok/wd  generation
+------------------------------------------------------------------------------
+gemma-4-e2b                --         --  FAILED TypeError: list indices must be integers or slices, not str
+gemma-4-12b                --         --  FAILED TypeError: list indices must be integers or slices, not str
+ministral-3-8b             --         --  FAILED TypeError: list indices must be integers or slices, not str
+falcon-h1r-7b              --         --  FAILED TypeError: list indices must be integers or slices, not str
+qwen3.6-27b                --         --  FAILED TypeError: list indices must be integers or slices, not str
+t5gemma-2-270m           3.17       1.50  'Currently in the USA, a child is born ev'
+t5gemma-2-1b             3.17       1.50  'a child noun (animate)\n\nIdentify the par'
+byt5                    10.00       9.50  'ዚ እዩ (child)\nOutput: ኣብ ገዛ ዝነብር ቆውዓ ንእሽቶ'

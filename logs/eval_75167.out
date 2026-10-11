@@ -1,0 +1,150 @@
+==========================================
+SLURM_JOB_ID = 75167
+SLURM_NODELIST = gpunode06
+==========================================
+🔁 Starting LLM Evaluation for Tigrinya Lexicon...
+🔍 Lexical Alignment
+❌ Skipping xlm-roberta: failed to load (❌ Failed to load model 'xlm-roberta-base': list index out of range)
+
+🚀 Lexical Alignment with gemma-2b
+✅ Format accuracy: 54.84% | 🔎 Semantic accuracy: 65.04%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': 'Output: a little→ንእሽቶይ, ቁሩብ,ውሕድ...', 'ModelOutput': 'a little→ንእሽቶይ, ቁሩብ,ውሕድ', 'Match': False, 'SemanticMatch': True}
+
+🚀 Lexical Alignment with gemma-7b
+✅ Format accuracy: 11.50% | 🔎 Semantic accuracy: 39.17%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': 'Output: a little→ንእ Christendom, <!--[insert Tigrinya word for "little"]], ውሕድ\n\n**Answer:**\n\na little→ንእ Christendom,  n...', 'ModelOutput': 'a little→ንእ Christendom, <!--[insert Tigrinya word for "little"]], ውሕድ **Answer:** a little→ንእ Christendom, niewiel, ውሕድ **Word-to-word mappings:** a little→ንእ Christendom, niewiel, ውሕድ', 'Match': False, 'SemanticMatch': False}
+
+🚀 Lexical Alignment with mistral-7b
+✅ Format accuracy: 10.86% | 🔎 Semantic accuracy: 88.76%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': 'Output: a little→ ንእሽቶይ, ቁሩብ,ውሕድ...', 'ModelOutput': 'a little→ ንእሽቶይ, ቁሩብ,ውሕድ', 'Match': False, 'SemanticMatch': True}
+
+🚀 Lexical Alignment with mt5-small
+✅ Format accuracy: 19.97% | 🔎 Semantic accuracy: 0.12%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': '<extra_id_0>....', 'ModelOutput': 'a little→.', 'Match': False, 'SemanticMatch': False}
+
+🚀 Lexical Alignment with mt5-large
+✅ Format accuracy: 3.83% | 🔎 Semantic accuracy: 38.86%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': '<extra_id_0>word mappings. English: cat Tigrigna: ድሙ <extra_id_1>ድሙ English: a little→ድሙ <extra_id_2>ድሙ English: a littl...', 'ModelOutput': 'word mappings. English: cat Tigrigna: ድሙ ድሙ English: a little→ድሙ ድሙ English: a little→ድሙ ድሙ English: a little→ድሙ ድሙ English: a little→ድሙ ድሙ English: a little ድሙ English: a little English: a little a little a little a little a little a little a little a little a little→ድሙ English: a little rinya', 'Match': False, 'SemanticMatch': False}
+
+🚀 Lexical Alignment with byt5
+✅ Format accuracy: 18.75% | 🔎 Semantic accuracy: 24.88%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': 'ሙ ድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድሙ\nድ...', 'ModelOutput': 'a little→ሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድሙ ድ', 'Match': False, 'SemanticMatch': False}
+
+🚀 Lexical Alignment with qwen-7b
+✅ Format accuracy: 33.30% | 🔎 Semantic accuracy: 24.83%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': 'Output: a little→ነዕሠት, ኁርብ, ምግድ...', 'ModelOutput': 'a little→ነዕሠት, ኁርብ, ምግድ', 'Match': False, 'SemanticMatch': False}
+
+🚀 Lexical Alignment with falcon-7b
+✅ Format accuracy: 44.83% | 🔎 Semantic accuracy: 41.77%
+📌 Sample: {'English': 'a little', 'ExpectedAlignment': 'a→ንእሽቶይ, little→ቁሩብ', 'ModelOutputRaw': 'Output: a littleእሽቶይ, ၩብ,ይ...', 'ModelOutput': 'a little→a littleእሽቶይ, ၩብ,ይ', 'Match': False, 'SemanticMatch': False}
+🧠 POS Tagging
+
+🔤 Pos Tagging with gemma-2b
+✅ Accuracy: 73.29%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: adverb...', 'ModelOutput': 'adverb', 'Match': True}
+
+🔤 Pos Tagging with gemma-7b
+✅ Accuracy: 81.88%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: adverb\n\nThe answer is:\n**Adverb**\n\nThe word "a little" is an adverb....', 'ModelOutput': 'adverb The answer is: **Adverb** The word "a little" is an adverb.', 'Match': True}
+
+🔤 Pos Tagging with mistral-7b
+✅ Accuracy: 78.76%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: determiner/adjective (depends on context)...', 'ModelOutput': 'determiner/adjective (depends on context)', 'Match': False}
+
+🔤 Pos Tagging with mt5-small
+✅ Accuracy: 0.00%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': '<extra_id_0>....', 'ModelOutput': '.', 'Match': False}
+
+🔤 Pos Tagging with mt5-large
+✅ Accuracy: 0.09%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': '<extra_id_0> ንእሽቶይ (a little) Input: preposition <extra_id_1> ንእሽቶይ (a little) <extra_id_2> ንእሽቶይ (a little) <extra_id_3...', 'ModelOutput': 'ንእሽቶይ (a little) Input: preposition ንእሽቶይ (a little) ንእሽቶይ (a little) (a little) Input: preposition (a little) (a little) Input: preposition (little) (little) (little) (little) (little) Input: (little) Input: (little) (little) Input: preposition (little) Input: preposition (little) Input: preposition (', 'Match': False}
+
+🔤 Pos Tagging with byt5
+✅ Accuracy: 0.05%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'ሽቶይ (a little)\nPhrase: ንእሽቶይ (a little)\nPhrase: ንእሽቶይ (a little)\nPhrase: ንእሽቶይ (a little)\nP...', 'ModelOutput': 'ሽቶይ (a little) Phrase: ንእሽቶይ (a little) Phrase: ንእሽቶይ (a little) Phrase: ንእሽቶይ (a little) P', 'Match': False}
+
+🔤 Pos Tagging with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+
+🔤 Pos Tagging with qwen-7b
+✅ Accuracy: 17.07%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output:...', 'ModelOutput': '', 'Match': False}
+
+🔤 Pos Tagging with falcon-7b
+✅ Accuracy: 43.96%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: adverb...', 'ModelOutput': 'adverb', 'Match': True}
+🧬 Morphosyntactic Probing
+
+🔍 Morphosyntax Probe with gemma-2b
+✅ Accuracy: 75.60%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: adverb, plural, possessive\n\nHere are the morphosyntactic features of the phrase:\n\n- Noun: ንእሽቶይ\n- Adverb: ልእሽቶይ\n...', 'ModelOutput': 'adverb, plural, possessive Here are the morphosyntactic features of the phrase: - Noun: ንእሽቶይ - Adverb: ልእሽቶይ - Plural: ንእሽቶይ', 'Match': True}
+
+🔍 Morphosyntax Probe with gemma-7b
+✅ Accuracy: 88.16%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: determiner, adjective, singular\n\n**Answer:**\npreposition, noun, singular, determiner, adjective, singular\n\nThe p...', 'ModelOutput': 'determiner, adjective, singular **Answer:** preposition, noun, singular, determiner, adjective, singular The phrase " sedan ገ Installing" is composed of the following morphosyntactic features: - Preposition - Noun - Singular - Determiner - Adjective - Singular', 'Match': False}
+
+🔍 Morphosyntax Probe with mistral-7b
+✅ Accuracy: 79.56%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: determiner, quantifier, diminutive, noun, singular.\n\nNow analyze:\nPhrase: መዋድያዊ ወዱድያዊ\nOutput: adjective, compara...', 'ModelOutput': 'determiner, quantifier, diminutive, noun, singular. Now analyze: Phrase: መዋድያዊ ወዱድያዊ Output: adjective, comparative, adjective, comparative. Now analyze: Phrase: መጠዋያዊ ወዱድያዊ ኢወድ', 'Match': False}
+
+🔍 Morphosyntax Probe with mt5-small
+✅ Accuracy: 2.44%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': '<extra_id_0> <extra_id_1> Output: a little larger Output: a little larger...', 'ModelOutput': 'a little larger Output: a little larger', 'Match': False}
+
+🔍 Morphosyntax Probe with mt5-large
+✅ Accuracy: 0.72%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': '<extra_id_0> Output: preposition, singular...', 'ModelOutput': 'preposition, singular', 'Match': False}
+
+🔍 Morphosyntax Probe with byt5
+✅ Accuracy: 37.41%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': ' ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ...', 'ModelOutput': 'ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ ኣብ', 'Match': False}
+
+🔍 Morphosyntax Probe with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+
+🔍 Morphosyntax Probe with qwen-7b
+✅ Accuracy: 53.96%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: adverb, adjective, singular...', 'ModelOutput': 'adverb, adjective, singular', 'Match': True}
+
+🔍 Morphosyntax Probe with falcon-7b
+✅ Accuracy: 74.27%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': "Output: verb, preposition, masculine\n\nExplanation:\nIn Tigrigna, the preposition 'ᐣ' is used with the noun 'እ' to form a ...", 'ModelOutput': "verb, preposition, masculine Explanation: In Tigrigna, the preposition 'ᐣ' is used with the noun 'እ' to form a sentence that expresses a little amount or quantity. The verb 'ሽ' is used to express a negative or small amount. The adjective 'a little' in English is used to downplay the amount, and it is placed after the preposition. For example, in English, we would say 'I'm a little tired', while in Tigrigna, the phrase would be 'ሽ", 'Match': False}
+🌍 Translation Fidelity
+
+🌍 Translation Fidelity with gemma-2b
+✅ Accuracy: 0.03%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output: ገዛ...', 'ModelOutput': 'ገዛ', 'Match': False}
+
+🌍 Translation Fidelity with gemma-7b
+✅ Accuracy: 0.00%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output: ህልል\n\n**Answer:**\n\n**Tigrigna:** ህልል\n\n**Note:**\n\nThe translation is in accordance with the Tigrigna language and ...', 'ModelOutput': 'ህልል **Answer:** **Tigrigna:** ህልል **Note:** The translation is in accordance with the Tigrigna language and its grammar.', 'Match': False}
+
+🌍 Translation Fidelity with mistral-7b
+✅ Accuracy: 0.00%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': "Output: ይሁድያዩዊ (yede'wy)\n\nEnglish: I am happy\nOutput: ወይድያዩዊ (w'edeyw'al)\n\nEnglish: please bring me\nOutput: መዋድያዘው ዘውድያዩ...", 'ModelOutput': "ይሁድያዩዊ (yede'wy) English: I am happy Output: ወይድያዩዊ (w'edeyw'al) English: please bring me Output: መዋድያዘው ዘውድያዩዊ (mik'adawzyow) English: I will", 'Match': False}
+
+🌍 Translation Fidelity with mt5-small
+✅ Accuracy: 0.05%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': '<extra_id_0> enough...', 'ModelOutput': 'enough', 'Match': False}
+
+🌍 Translation Fidelity with mt5-large
+✅ Accuracy: 0.02%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': '<extra_id_0> Output: a little...', 'ModelOutput': 'a little', 'Match': False}
+
+🌍 Translation Fidelity with byt5
+✅ Accuracy: 0.00%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'ያን ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ...', 'ModelOutput': 'ያን ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ ገዛ', 'Match': False}
+
+🌍 Translation Fidelity with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+
+🌍 Translation Fidelity with qwen-7b
+✅ Accuracy: 0.28%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n...', 'ModelOutput': '', 'Match': False}
+
+🌍 Translation Fidelity with falcon-7b
+✅ Accuracy: 0.02%
+📌 Sample: {'English': 'a little', 'ExpectedTigrigna': 'ንእሽቶይ, ቁሩብ,ውሕድ', 'ModelOutputRaw': 'Output: ሠ\n\nEnglish: a lot\nOutput: \u193f...', 'ModelOutput': 'ሠ English: a lot Output: \u193f', 'Match': False}
+✅ All evaluations completed.
+📊 Merging all evaluation reports into one JSON...
+✅ Consolidated results written to results/evaluation_reports/all_results.json

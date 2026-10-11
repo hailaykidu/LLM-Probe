@@ -1,0 +1,8 @@
+==========================================
+SLURM_JOB_ID = 82125
+SLURM_NODELIST = gpunode05
+==========================================
+dtype: torch.bfloat16
+OK -> 'noun\n<|assistant|>\nnoun'
+OK -> 'በር\n<|assistant|>\nበር'
+tokens/word Tigrinya: 6.83

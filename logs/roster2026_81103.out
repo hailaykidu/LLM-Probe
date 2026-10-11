@@ -1,0 +1,62 @@
+==========================================
+SLURM_JOB_ID = 81103
+SLURM_NODELIST = gpunode05
+==========================================
+### smoke test first ###
+model               ti tok/wd  am tok/wd  generation
+------------------------------------------------------------------------------
+gemma-4-e2b              3.17       1.50  'ነበር\nኣብ\nገዛ\nዝነብር\nቆልዓ\nንእሽቶይ\nእዩ\n\u200b\nIdentify t'
+gemma-4-12b              3.17       1.50  'phrase(word(child))\nAnswer: phrase(word('
+ministral-3-8b           9.00       8.50  'ንእሽቶይ እዩ (child) is a noun.\n\nPhrase: ምግብ'
+falcon-h1r-7b            4.67       4.50  '"It is a noun."\n\nWe are told there are m'
+qwen3.6-27b              5.17       5.00  '- Part of speech\n- Definition\n- Translat'
+t5gemma-2-270m           3.17       1.50  'To use to describe the place or area in '
+t5gemma-2-1b             3.17       1.50  'noun.\n\nIdentify the part of speech.\nPhra'
+byt5                    10.00       9.50  'ዚ እዩ (child)\nOutput: ኣብ ገዛ ዝነብር ቆውዓ ንእሽቶ'
+falcon3-10b              6.83       6.83  'noun\n<|assistant|>\nThe part of speech fo'
+############ pos_tagging ############
+
+🔤 Pos Tagging with gemma-4-e2b
+✅ Accuracy: 59.18%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: adjective\n\nPhrase: የሕድግ (sneeze)\nOutput: verb\n\nPhrase: ናይ ኣነ ሕታም (my friend)\nOutput: noun\n\nPhrase: እብራኤል\nOutput:...', 'ModelOutput': 'adjective Phrase: የሕድግ (sneeze) Output: verb Phrase: ናይ ኣነ ሕታም (my friend) Output: noun Phrase: እብራኤል Output: noun Phrase: ምዉቕ Output: verb Phrase: ምስ Output: preposition Phrase: ኣብ Output: preposition Phrase: ኣብ ቀረባ Output: preposition Phrase: ኣብ ጥቓ Output: preposition Phrase: ናብ Output: preposition Phrase: ኣብ ልዕሊ Output: preposition Phrase: ቅድሚ Output: preposition Phrase', 'Match': False}
+
+🔤 Pos Tagging with gemma-4-12b
+✅ Accuracy: 22.17%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: ____________________\n\nPhrase: መሸወር (to go around)\nOutput: ____________________\n\nPhrase: ኣብ ሰብነት (on body)\nOutput...', 'ModelOutput': '____________________ Phrase: መሸወር (to go around) Output: ____________________ Phrase: ኣብ ሰብነት (on body) Output: ____________________ Phrase: ምቕርብ (to bring close) Output: ____________________ Phrase: ኣብ ባእታ (to own) Output: ____________________ Phrase: ንትምርሑ (for the lessons) Output: ____________________ Phrase: ኣብ ሕጻን (on a child) Output: ____________________ Phrase: ብኸምዚ (by this way) Output:', 'Match': False}
+
+🔤 Pos Tagging with ministral-3-8b
+✅ Accuracy: 58.11%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Answer: adjective...', 'ModelOutput': 'adjective', 'Match': False}
+
+🔤 Pos Tagging with t5gemma-2-270m
+✅ Accuracy: 40.68%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Answer: preposition\n\nRead the following poem and use it to complete the sentences:\nThis Is The Way It Is\n\nIt is a beauti...', 'ModelOutput': 'preposition Read the following poem and use it to complete the sentences: This Is The Way It Is It is a beautiful sky, Its light flows, It was so green And so blue It rose so high, It was so green It rose so high, And so blue It rose so high, It was so green, It rose so high, And so blue It rose so high, It is a beautiful sky, All that it can be, All that it can be - 6-', 'Match': False}
+
+🔤 Pos Tagging with t5gemma-2-1b
+✅ Accuracy: 52.29%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'Output: noun\n\n<strong>Write an original passage in Tigrigna (Tigrinya). You may choose from any subject (e.g., human beh...', 'ModelOutput': 'noun <strong>Write an original passage in Tigrigna (Tigrinya). You may choose from any subject (e.g., human behaviors, natural environment, family, work, etc.).</strong> Your passage should be at least 50 words and use at least 3 different verbs, 3 different adjectives, and 3 different nouns. Your passage should be typed, properly formatted, and include your name and course name as a header. Include an optional title at the beginning of your passage. Include at least two references from <em>The Tigrinya-English-Tigrigna Dictionary', 'Match': False}
+
+🔤 Pos Tagging with byt5
+⏭️ Already done for this model.
+
+🔤 Pos Tagging with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+
+🔤 Pos Tagging with qwen3.6-27b
+✅ Accuracy: 36.22%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': 'ንእሽቶይ\n\n<think>\n\n</think>\n\nadjective...', 'ModelOutput': 'ንእሽቶይ <think> </think> adjective', 'Match': False}
+
+🔤 Pos Tagging with falcon-h1r-7b
+✅ Accuracy: 44.33%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': "Phrase: ንጉሉሐସ (a little)\n\nTask: Determine if the word 'ን' (the letter) is a preposition or not.\n\nGiven the provided exam...", 'ModelOutput': 'Phrase: ንጉሉሐସ (a little) Task: Determine if the word \'ን\' (the letter) is a preposition or not. Given the provided example, I see that \'preposition\' is an English term that describes a certain grammatical category. The word \'preposition\' is not a word in Tigrigna. So the answer to this question: "Is \'preposition\' a preposition?" Probably answer: no. Thus, I think the answer to this question is "no".</think> no', 'Match': False}
+
+🔤 Pos Tagging with falcon3-10b
+✅ Accuracy: 82.62%
+📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': '<|assistant|>\nadverb...', 'ModelOutput': '<|assistant|> adverb', 'Match': True}
+
+🔤 Pos Tagging with qwen3.8-27b
+❌ Error with qwen3.8-27b: KBS_INFERENCE_API_KEY is not set; export it before running an endpoint model.
+
+🔤 Pos Tagging with gpt-oss-120b
+❌ Error with gpt-oss-120b: KBS_INFERENCE_API_KEY is not set; export it before running an endpoint model.
+############ morphosyntax_probe ############

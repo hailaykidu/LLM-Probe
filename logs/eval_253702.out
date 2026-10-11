@@ -1,0 +1,70 @@
+==========================================
+SLURM_JOB_ID = 253702
+SLURM_NODELIST = gpunode04
+==========================================
+🔁 Starting LLM Evaluation for Tigrinya Lexicon...
+🔍 Lexical Alignment
+
+🚀 Lexical Alignment with gemma-2b
+⏭️ Already done.
+
+🚀 Lexical Alignment with gemma-7b
+⏭️ Already done.
+
+🚀 Lexical Alignment with mistral-7b
+⏭️ Already done.
+
+🚀 Lexical Alignment with mt5-base
+⏭️ Already done.
+
+🚀 Lexical Alignment with mt5-large
+⏭️ Already done.
+
+🚀 Lexical Alignment with byt5
+⏭️ Already done.
+
+🚀 Lexical Alignment with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+
+🚀 Lexical Alignment with qwen-7b
+⏭️ Already done.
+
+🚀 Lexical Alignment with falcon-10b
+⏭️ Already done.
+
+🚀 Lexical Alignment with apertus-8b
+❌ Error with apertus-8b: expected mat1 and mat2 to have the same dtype, but got: float != c10::Half
+🧠 POS Tagging
+🧬 Morphosyntactic Probing
+🌍 Translation Fidelity
+
+🌍 Translation Fidelity with gemma-2b
+⏭️ Already done.
+
+🌍 Translation Fidelity with gemma-7b
+⏭️ Already done.
+
+🌍 Translation Fidelity with mistral-7b
+⏭️ Already done.
+
+🌍 Translation Fidelity with mt5-base
+⏭️ Already done.
+
+🌍 Translation Fidelity with mt5-large
+⏭️ Already done.
+
+🌍 Translation Fidelity with byt5
+⏭️ Already done.
+
+🌍 Translation Fidelity with xlm-roberta
+❌ Error with xlm-roberta: No mask_token (<mask>) found on the input
+
+🌍 Translation Fidelity with qwen-7b
+⏭️ Already done.
+
+🌍 Translation Fidelity with falcon-10b
+⏭️ Already done.
+
+🌍 Translation Fidelity with apertus-8b
+❌ Error with apertus-8b: expected mat1 and mat2 to have the same dtype, but got: float != c10::Half
+✅ All evaluations completed.

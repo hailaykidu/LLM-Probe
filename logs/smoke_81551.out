@@ -1,0 +1,15 @@
+==========================================
+SLURM_JOB_ID = 81551
+SLURM_NODELIST = gpunode02
+==========================================
+model               ti tok/wd  am tok/wd  generation
+------------------------------------------------------------------------------
+gemma-4-e2b              3.17       1.50  'noun\nPhrase: ኣቶ መብራህተ ፍልጠረኛ (mural)\nOutp'
+gemma-4-12b              3.17       1.50  '- Part of Speech: noun\n- Phrase Category'
+ministral-3-8b           9.00       8.50  'ቆልዓ ንእሽቶይ (adjective)\n```\n\n**Example 2:*'
+falcon-h1r-7b            4.67       4.50  '{ "lang": "somali", "pos": "Noun" }\n\nExa'
+qwen3.6-27b              5.17       5.00  '-\n\n<think>\n\n</think>\n\nnoun'
+t5gemma-2-270m           3.17       1.50  'Now you know the main parts of speech.\nP'
+t5gemma-2-1b             3.17       1.50  'noun\nPhrase: ኣብ ገዛ ዝነብር ቆልዓ ንእሽቶይ እዩ (ch'
+byt5                    10.00       9.50  'ዚ እዩ (child)\nOutput: ኣብ ገዛ ዝነብር ቆውዓ ንእሽቶ'
+falcon3-10b              6.83       6.83  'noun\n<|assistant|>\nnoun'

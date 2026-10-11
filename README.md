@@ -81,8 +81,15 @@ that use no Tigrinya at all (a constant majority answer, and an English POS
 tagger given only the English gloss), and the rate at which an answer merely
 echoes the prompt's own example.
 
-The per-task `*_accuracy_<model>.txt` files hold the set-intersection rule,
-which is the most permissive of the three.
+The per-task `*_accuracy_<model>.txt` files hold the value computed by the
+task script's own scorer at run time, which is not any of the three rules
+above. It also intersects the gold and answer token sets, but it splits on
+commas and whitespace only, so punctuation stays attached to a word and
+`noun.` does not match `noun`; `rescore_tasks.py` tokenises on word
+characters and so matches more. For mistral-7b on POS the two give 78.76 and
+85.91 respectively. The paper reports the `rescore_tasks.py` values
+throughout; the accuracy files are kept as the record of what each run
+produced.
 
 ## Known limitations
 
