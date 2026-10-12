@@ -127,12 +127,27 @@ column arrived pre-filled from the source dictionary and was *verified*: an
 annotator who disagreed with it overruled the dictionary. Annotator 1
 corrected it on 25 of 500 items; Annotator 2 corrected none.
 
-**No edit history survives for the annotation.** The annotators exchanged
-their sheets as messaging attachments, and those attachments have since
-expired, so the files that would carry a version history are no longer
+**No edit history survives for the original annotation.** The annotators
+exchanged their sheets as messaging attachments, and those attachments have
+since expired, so the files that would carry a version history are no longer
 retrievable. The labels themselves are intact and are what this workbook
 contains; what is missing is the order and timing in which they were
 entered.
+
+After that was discovered, each annotation sheet was re-entered into Google
+Sheets, where an edit history is kept, and exported back to xlsx as
+`PoS_English-Tigriyna_Annotation_.xlsx` (Annotator 1) and
+`PoS_English-Tigriyna_Annotation2_.xlsx` (Annotator 2). These are October
+2026 transcriptions of the same labels, not a fresh annotation, and they are
+released for inspection rather than used in any computation —
+`compute_iaa.py` reads the original workbook.
+
+Two things to know about them. **An xlsx export carries no version history**;
+that record exists only on the online documents, so these files show the
+labels and not the editing. And the transcription was not perfect: Annotator
+1's file reproduces the original exactly apart from collapsed double spaces,
+while Annotator 2's differs on 25 POS cells, where the transcription picked
+up Annotator 1's labels instead. The original workbook remains authoritative.
 
 `python scripts/compute_iaa.py` recomputes every agreement figure from the
 workbook and reports three things: Cohen's κ per dimension under both blank
