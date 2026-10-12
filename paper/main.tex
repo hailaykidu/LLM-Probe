@@ -58,9 +58,19 @@ A Lexicon-Grounded Evaluation with Trivial Baselines}
 % without revealing identity.
 %
 % For the camera-ready version, switch the acl option above from "review" to
-% "final" and replace this block with the real byline:
+% "final" and replace this block with the real byline, in this order:
 %
-%   \author{Author One \\ Affiliation \\ \texttt{email} \And ...}
+%   1. Hailay Kidu Teklehaymanot
+%   2. Gebrearegawi Gebremariam
+%   3. Wolfgang Nejdl
+%
+%   \author{Hailay Kidu Teklehaymanot \\ Affiliation \\ \texttt{email}
+%           \And Gebrearegawi Gebremariam \\ Affiliation \\ \texttt{email}
+%           \And Wolfgang Nejdl \\ Affiliation \\ \texttt{email}}
+%
+% The order matters: Section 3.3 attributes the annotation to the first and
+% second authors. If the byline order changes, that sentence must change with
+% it.
 \author{Anonymous ARR submission}
 
 \begin{document}
@@ -333,15 +343,17 @@ what it measures: a second POS task with a different prompt.
 \subsection{Inter-annotator agreement}
 \label{subsec:iaa}
 
-% Camera-ready: replace "two of this paper's authors" with the authors'
-% names if the venue expects them. The substance -- that the annotators are
-% authors and that no third party adjudicated -- must stay either way.
-A 500-item subset of the lexicon was annotated independently by two of this
-paper's authors for part of speech, gender, number, category agreement and
-lexical alignment. Each assigned labels separately using the annotation
-guide, and the two sheets were then compared to locate disagreements. The
-final sheet was compiled from those two sheets: \textbf{no third annotator
-took part, and no party outside the author group adjudicated}. We state this
+% "the first and second authors" is anonymous under the review option and
+% stays correct at camera-ready, provided the byline order above is kept.
+% The substance -- that the annotators are authors of this paper, that both
+% are native speakers, and that no third party adjudicated -- must stay.
+A 500-item subset of the lexicon was annotated independently by the first and
+second authors for part of speech, gender, number, category agreement and
+lexical alignment. Both are native speakers of Tigrinya. Each assigned labels
+separately using the annotation guide, and the two sheets were then compared
+to locate disagreements. The final sheet was compiled from those two sheets:
+\textbf{no third annotator took part, and no party outside the author group
+adjudicated}. We state this
 because it bounds what the coefficients below can mean, and because the
 compiled sheet is sometimes read as an independent adjudication, which it is
 not.
@@ -386,12 +398,26 @@ would hide the main source of divergence.
 Three properties of this subset bound what the coefficients support.
 
 \paragraph{The compiled sheet is not an independent third judgement.} This
-follows from how it was produced, and the records bear it out: on the 25
-part-of-speech items where the annotators differ, the compiled sheet
-reproduces Annotator 2 on all 25 and Annotator 1 on none; on the three
-gender, agreement and alignment disagreements it reproduces Annotator 1. It
-selects between the two existing columns rather than adding a third
-judgement, so agreement with it is not evidence about either annotator.
+follows from how it was produced, and the records bear it out. The two
+annotators differ on 28 cells in total: 25 part-of-speech, one category
+agreement and two lexical alignment. On the 25 part-of-speech items the
+compiled sheet reproduces Annotator 2 on all 25 and Annotator 1 on none; on
+the other three it reproduces Annotator 1. \textbf{On none of the 28 does it
+record a label that neither annotator assigned.} It selects between the two
+existing columns rather than adding a judgement of its own, so agreement with
+it is not evidence about either annotator, and it cannot serve as an
+adjudicated gold standard.
+
+A third annotator would not repair this. The coefficients in
+Table~\ref{tab:iaa} are computed between the two annotation columns and would
+be unchanged by a third. The divergence between those columns is in any case
+not a matter of conflicting labels: on gender and number the annotators never
+differ on an item both labelled, and what separates them is how often each
+left a cell empty. What the subset would need is a fresh annotation,
+stratified over the categories and including verbs, by annotators outside the
+author group; we report that as future work in
+Section~\ref{sec:limitations} rather than adjudicating the present records
+after the fact.
 
 \paragraph{Agreement on filled labels is near-total.} Where both annotators
 assigned a gender or number value, they never differ --- 0 disagreements
@@ -775,7 +801,7 @@ models.
   \item POS labels are the source dictionary's, not independently
     re-annotated. The agreement coefficients in Section~\ref{subsec:iaa}
     describe a 500-item subset that is alphabetical and contains no verbs,
-    annotated by two of this paper's authors rather than by annotators
+    annotated by the first and second authors rather than by annotators
     external to the work, and compiled without a third adjudicator. They are
     not an estimate for the corpus, and a stratified re-annotation covering
     verbs, by annotators outside the author group, would be needed for that.
