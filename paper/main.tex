@@ -78,8 +78,8 @@ A Lexicon-Grounded Evaluation with Trivial Baselines}
 
 \begin{abstract}
 We evaluate eight general-purpose large language models on three
-lexicon-grounded Tigrinya tasks --- part-of-speech tagging, morphosyntactic
-labelling, and English$\rightarrow$Tigrinya translation --- using a 5,783-row
+lexicon-grounded Tigrinya tasks (part-of-speech tagging, morphosyntactic
+labelling, and English$\rightarrow$Tigrinya translation) using a 5,783-row
 annotated bilingual lexicon. Our central methodological finding is that such
 evaluations are easy to over-read, and that on these tasks the apparent
 competence is an artefact of measurement rather than a property of the
@@ -96,9 +96,9 @@ below chrF 0.81, while NLLB-200-3.3B, which supports Tigrinya, reaches chrF
 negative result: these tasks, as posed, do not measure Tigrinya competence,
 and published numbers on them should not be read as doing so. We release the
 lexicon, the scoring code and the saved model outputs, and argue that the
-procedure applied here --- report every matching rule, bound the task from
+procedure applied here (report every matching rule, bound the task from
 above as well as below with references that use none of the target language,
-and quantify prompt echo --- requires no resources beyond those an evaluation
+and quantify prompt echo) requires no resources beyond those an evaluation
 already has, and should be standard in low-resource evaluation.
 \end{abstract}
 
@@ -107,15 +107,14 @@ already has, and should be standard in low-resource evaluation.
 
 Tigrinya is a Semitic language of Eritrea and northern Ethiopia with
 approximately 9--10 million speakers and very little machine-readable
-linguistic infrastructure. This scarcity makes it a natural test of whether
-general-purpose LLMs generalise beyond high-resource languages, and a
+linguistic infrastructure. This scarcity makes it a natural test of whether general-purpose LLMs generalise beyond high-resource languages, and a
 difficult one to measure: without established benchmarks it is easy to
 produce numbers that look like competence.
 
 This paper makes three contributions.
 
 \begin{enumerate}
-  \item \textbf{A lexicon-grounded benchmark} of 5,783 English--Tigrinya rows
+  \item \textbf{A lexicon-grounded benchmark} of 5,783 English-Tigrinya rows
     (4,331 English headwords, 3,767 Tigrinya forms), each carrying a
     part-of-speech label, derived from a digitised bilingual
     dictionary~\citep{swansea-dictionary}.
@@ -123,19 +122,14 @@ This paper makes three contributions.
     morphosyntactic labelling and translation, reported under three matching
     rules and against references that use no Tigrinya at all.
   \item \textbf{A negative result about the task design.} The choice of
-    matching rule moves reported accuracy by up to 26 points on fixed
-    outputs, and an oracle restricted to the English gloss scores 96.5\% and
-    95.9\% on the two tagging tasks, which no model approaches. The tasks are
-    therefore substantially solvable without the target language, and the
-    numbers they produce --- including ours --- are not measurements of
+    matching rule moves reported accuracy by up to 26 points on fixed outputs, and an oracle restricted to the English gloss scores 96.5\% and     95.9\% on the two tagging tasks, which no model approaches. The tasks are
+    therefore substantially solvable without the target language, and the numbers they produce, including ours, are not measurements of
     Tigrinya competence. We give the procedure that exposes this and argue it
     should be routine.
 \end{enumerate}
 
 This lexicon and these four tasks were introduced by
-\citet{llmprobe-2026}, whose retraction has been requested. The results below
-come from new runs on a rebuilt gold set, not from re-scoring that paper's
-outputs; Section~\ref{sec:relation} gives the differences.
+\citet{llmprobe-2026}, whose retraction has been requested. The results below come from new runs on a rebuilt gold set, not from re-scoring that paper's outputs; Section~\ref{sec:relation} gives the differences.
 
 \section{Related work}
 \label{sec:related}
@@ -155,14 +149,17 @@ English XLNet fine-tuned on 10k examples reaches 78.88 F1 on Tigrinya
 sentiment, outperforming mBERT by 7 points; TiGQA contributed 2,685
 expert-annotated question--answer pairs from 537 context
 paragraphs~\citep{teklehaymanot-etal-2024-tigqa}. Tigrinya also appears as
-one slice of multilingual benchmarks --- MasakhaPOS, the largest POS dataset
+one slice of multilingual benchmarks  MasakhaPOS, the largest POS dataset
 for African languages, covering 20 typologically diverse languages under UD
 guidelines~\citep{dione-etal-2023-masakhapos}, and Belebele, a parallel
 multiple-choice reading-comprehension set in 122 language
-variants~\citep{bandarkar-etal-2024-belebele}. Our lexicon complements these:
-it is not running text, and it tests the dictionary-headword level that sits
+variants~\citep{bandarkar-etal-2024-belebele}. The lexicon and the four tasks
+used here were introduced by \citet{llmprobe-2026}, whose retraction has been
+requested; Section~\ref{sec:relation} states what this paper takes from that
+work and how the two differ. The lexicon complements the benchmarks above: it
+is not running text, and it tests the dictionary-headword level that sits
 beneath all of them. The structural reason such resources are scarce at all is
-the one \citet{joshi-etal-2020-state} documented --- representation in NLP
+the one \citet{joshi-etal-2020-state} documented representation in NLP
 venues tracks resource availability, calling into question the ``language
 agnostic'' status of current systems.
 
@@ -182,13 +179,13 @@ five-shot prompting improved on zero-shot by only 0.88 chrF on average across
 203 directions, which is consistent with our own few-shot probe moving
 gemma-7b from chrF 0.16 to 0.66 with exact match unchanged.
 \citet{hendy-etal-2023-gpt} reach the same conclusion for GPT models across
-eighteen directions --- competitive for high-resource, limited for
-low-resource --- and \citet{zhu-etal-2023-multilingual} find GPT-4 beating
+eighteen directions: competitive for high-resource, limited for
+low-resource and \citet{zhu-etal-2023-multilingual} find GPT-4 beating
 NLLB in 40.91\% of directions overall while still trailing badly on the long
 tail. \citet{adebara-etal-2025-where} extend this to a continent-scale African
 benchmark and attribute the residual disparities to data inequities rather
-than model scale. Our Section~\ref{subsec:translation} result --- three NLLB
-checkpoints at chrF 14.1--16.1 against eight LLMs at $\leq$ 0.81 --- is this
+than model scale. Our Section~\ref{subsec:translation} result, three NLLB
+checkpoints at chrF 14.1--16.1 against eight LLMs at $\leq$ 0.81  is this
 finding at lexicon granularity, where the LLM floor is not merely lower but
 absolute.
 
@@ -204,8 +201,8 @@ Section~\ref{sec:results} shows why.
 
 The methodological core of this paper has a direct precedent in natural
 language inference. \citet{poliak-etal-2018-hypothesis} showed that a
-hypothesis-only model --- one that never sees the premise, a degenerate
-solution by construction --- significantly outperforms a majority-class
+hypothesis-only model (one that never sees the premise, a degenerate
+solution by construction) significantly outperforms a majority-class
 baseline on a number of NLI datasets;
 \citet{gururangan-etal-2018-annotation} showed the same artefacts let a simple
 text classifier label the hypothesis alone correctly in about 67\% of SNLI and
@@ -225,7 +222,7 @@ well as supervised ones'' were evaluated on languages unlike truly
 low-resource ones, and on 15 genuinely low-resource languages the best model
 gets fewer than half the words right, with a strongest baseline macro-average
 of 39.11\%. They also note that such methods presuppose ``high-coverage and
-almost error-free dictionaries'' --- precisely the assumption our
+almost error-free dictionaries''  precisely the assumption our
 Section~\ref{subsec:iaa} annotator notes undermine, where the source
 dictionary contains mislabelled parts of speech and outright mistranslations.
 At the level of benchmark design, \citeauthor{reuel-etal-2024-betterbench}'s
@@ -240,7 +237,7 @@ on fixed outputs belongs to a growing literature on evaluation mechanics.
 \citet{tam-etal-2024-speak} show that constraining LLMs to structured output
 formats significantly degrades measured reasoning, and disentangle format
 errors from content by using an LLM as a ``perfect parser'' rather than a
-regex --- the mirror image of our problem, where permissive parsing
+regex the mirror image of our problem, where permissive parsing
 manufactures competence instead of destroying it.
 \citet{kirouane-petrocheilos-2026-thinking} document the same failure mode
 concretely in a low-resource setting: a scorer that scanned the whole response
@@ -258,48 +255,34 @@ or common in pretraining, varying ``from near chance to near
 state-of-the-art'' with prompt format alone. When the gold distribution is
 53.7\% \texttt{noun} and the prompt example contains the word \texttt{noun}, a
 model that copies the example is scored correct by construction under
-set-intersection --- gemma-7b does this on 97.4\% of answers. We therefore
+set-intersection gemma-7b does this on 97.4\% of answers. We therefore
 treat echo rate as a reportable diagnostic rather than a footnote.
 
 \subsection{Metrics and agreement statistics}
 
-We report chrF~\citep{popovic-2015-chrf} because character $n$-gram F-score is
-tokenisation-independent and therefore appropriate for Ge'ez-script targets
-averaging 1.37 whitespace tokens, where word-level
+We report chrF~\citep{popovic-2015-chrf} because character $n$-gram F-score is tokenisation-independent and therefore appropriate for Ge'ez-script targets averaging 1.37 whitespace tokens, where word-level
 BLEU~\citep{papineni-etal-2002-bleu} is near-undefined; we follow
 \citeauthor{post-2018-call}'s argument that BLEU is a parameterised family
-whose configurations are not comparable across papers unless the scheme is
-pinned down~\citep{post-2018-call}, and report character-level BLEU alongside
-chrF for this reason. Agreement is reported as Cohen's
+whose configurations are not comparable across papers unless the scheme is pinned down~\citep{post-2018-call}, and report character-level BLEU alongside chrF for this reason. Agreement is reported as Cohen's
 $\kappa$~\citep{cohen-1960-coefficient}. We note the standard caveat that
-$\kappa$ is hard to interpret under class imbalance --- the ``kappa paradox''
---- and that absolute thresholds are not meaningful without a contextual
+$\kappa$ is hard to interpret under class imbalance, the ``kappa paradox'',
+and that absolute thresholds are not meaningful without a contextual
 reference~\citep{wong-etal-2021-cross}; this is why
-Section~\ref{subsec:iaa} reports $\kappa$ beside raw observed agreement and
-beside the filled-label-only variant, rather than reporting a single
+Section~\ref{subsec:iaa} reports $\kappa$ beside raw observed agreement and beside the filled-label-only variant, rather than reporting a single
 coefficient.
 
 \subsection{Dictionaries as evaluation resources}
 
 Digitised bilingual dictionaries are a standard bottom-up resource for
 languages lacking parallel corpora:
-\citet{wickramasinghe-desilva-2023-sinhala} argue that for low-resource pairs
-it is ``more feasible to move in the bottom-up direction where finer granular
-pairs such as dictionary datasets are developed first'', and
-\citeauthor{alnajjar-etal-2020-verdd}'s Ve'rdd addresses the complementary
-problem of grassroots paper dictionaries edited by many hands, which require
+\citet{wickramasinghe-desilva-2023-sinhala} argue that for low-resource pairs it is ``more feasible to move in the bottom-up direction where finer granular pairs such as dictionary datasets are developed first'', and
+\citeauthor{alnajjar-etal-2020-verdd}'s Ve'rdd addresses the complementary problem of grassroots paper dictionaries edited by many hands, which require
 re-evaluation rather than direct ingestion~\citep{alnajjar-etal-2020-verdd}.
-Our source exhibits exactly the defects that motivate that work --- a
+Our source exhibits exactly the defects that motivate that work: a
 direction-swapped second block, inline gender markers embedded in the target
-field, and annotator-flagged mistranslations --- and
-Sections~\ref{subsec:source}--\ref{subsec:iaa} document them rather than
+field, and annotator-flagged mistranslations, and
+Sections~\ref{subsec:source}\ref{subsec:iaa} document them rather than
 silently cleaning them.
-
-\subsection{Relation to the earlier version}
-
-\citet{llmprobe-2026} introduced the lexicon and the four-task framework used
-here; its retraction has been requested. Section~\ref{sec:relation} states
-how the two differ.
 
 \section{Dataset}
 \label{sec:dataset}
@@ -315,8 +298,8 @@ concatenated from two directions, English$\rightarrow$Tigrinya followed by
 Tigrinya$\rightarrow$English, under a single pair of column headers; in the
 second block the column named \texttt{English} therefore holds Ge'ez script.
 We detect that block by script, reorient it, and merge both directions,
-keeping distinct senses of one form as separate items --- \emph{estimate}
-$\rightarrow$ \ti{ግምት} is retained as both noun and verb --- which yields
+keeping distinct senses of one form as separate items  \emph{estimate}
+$\rightarrow$ \ti{ግምት} is retained as both noun and verb, which yields
 \textbf{5,783 gold rows} over 4,331 English headwords and 3,767 Tigrinya
 forms. Three evaluation set sizes follow from this and are not
 interchangeable: 5,783 gold rows, \textbf{5,775 items} for translation and
@@ -359,9 +342,8 @@ compiled sheet is sometimes read as an independent adjudication, which it is
 not.
 
 The records are released as
-\texttt{POS\_english\_to\_tigrigna\_Annotated.xlsx} --- the two annotation
-sheets, the compiled sheet and the annotation guide that defines each value
---- and \texttt{scripts/compute\_iaa.py} recomputes every figure below from
+\texttt{POS\_english\_to\_tigrigna\_Annotated.xlsx} the two annotation
+sheets, the compiled sheet and the annotation guide that defines each value and \texttt{scripts/compute\_iaa.py} recomputes every figure below from
 them.
 
 What the released workbook does not carry is the history of how it was
@@ -446,7 +428,7 @@ Section~\ref{sec:limitations} rather than adjudicating the present records
 after the fact.
 
 \paragraph{Agreement on filled labels is near-total.} Where both annotators
-assigned a gender or number value, they never differ --- 0 disagreements
+assigned a gender or number value, they never differ  0 disagreements
 across 420 and 428 items. The divergence between them is entirely in coverage,
 not in choice of label, which is why $\kappa$ falls as far as it does once
 blanks count.
@@ -510,8 +492,8 @@ those checkpoints on this task rather than of their architecture.
 
 Generation is greedy with \texttt{max\_new\_tokens=128},
 \texttt{min\_new\_tokens=1}. \texttt{xlm-roberta-base}~\citep{conneau-etal-2020-unsupervised}
-was included initially but fails on all tasks --- its prompts contain no
-\texttt{<mask>} token --- and is excluded.
+was included initially but fails on all tasks (its prompts contain no
+\texttt{<mask>} token) and is excluded.
 
 \subsection{Scoring}
 \label{subsec:scoring}
@@ -520,10 +502,10 @@ Model answers are frequently verbose: gemma-7b's median POS answer is 14
 words. We report three rules.
 
 \begin{itemize}
-  \item \textbf{exact} --- the cleaned answer equals the gold label.
-  \item \textbf{first-token} --- the model's first word is a gold label word.
+  \item \textbf{exact}  the cleaned answer equals the gold label.
+  \item \textbf{first-token}  the model's first word is a gold label word.
     This is the answer the model commits to, and is our headline rule.
-  \item \textbf{set-intersection} --- any word of the answer is a gold label
+  \item \textbf{set-intersection}  any word of the answer is a gold label
     word. This is permissive: an answer naming several parts of speech is
     correct as soon as one fits. We report it only to show the gap.
 \end{itemize}
@@ -537,13 +519,13 @@ without using the Tigrinya at all. We therefore bound the two tagging tasks
 from below and from above with references that see no Tigrinya whatsoever.
 
 \begin{itemize}
-  \item \textbf{Majority} --- always answer the most frequent gold label
+  \item \textbf{Majority}  always answer the most frequent gold label
     (\texttt{noun}).
-  \item \textbf{English-only tagger} --- an NLTK~\citep{loper-bird-2002-nltk}
+  \item \textbf{English-only tagger}  an NLTK~\citep{loper-bird-2002-nltk}
     English POS tagger applied to the gloss alone. This is what one
     off-the-shelf English system achieves, and is a lower bound on what the
     gloss makes available.
-  \item \textbf{English-only ceiling} --- an oracle that sees only the
+  \item \textbf{English-only ceiling}  an oracle that sees only the
     English string and answers with the most frequent gold label that
     headword carries anywhere in the evaluation set. This is the best any
     English-only system can reach, and we report it because the lower bound
@@ -694,7 +676,7 @@ qwen-7b    & 0.04 & 0.00 & 0.00 & 0.28 \\
 
 All eight general-purpose models are at the floor. NLLB-200, for which
 Tigrinya (\texttt{tir\_Ethi}) is a supported target language, reaches chrF
-16.05 on identical items with an identical scorer --- roughly twenty times the
+16.05 on identical items with an identical scorer, roughly twenty times the
 best LLM.
 
 Note that word-level BLEU-4 is 0.24 for NLLB-3.3B, which translates 16.24\% of
@@ -731,7 +713,7 @@ rule has not reported a result.
 \paragraph{Bound the task from above, not only from below.} A lower-bound
 baseline tells you whether a model beats a weak system; it does not tell you
 whether the task needs the target language. On POS the majority answer scores
-53.73 and an English tagger 60.38, and three models clear both --- which
+53.73 and an English tagger 60.38, and three models clear both, which
 reads as cross-lingual competence until the upper bound is added. An oracle
 restricted to the English gloss reaches 96.49, and the best model is 14.93
 points below it. The same holds on morphosyntax, where the gap is 31.28.
@@ -744,8 +726,8 @@ example contains the majority gold label, a permissive scorer rewards it. We
 recommend reporting echo rate wherever a prompt contains a worked example.
 
 \paragraph{Purpose-built MT still dominates at the lexicon level.} NLLB-200
-checkpoints reach chrF 14.11--16.05 where the best general-purpose model
-reaches 0.81 --- more than an order of magnitude on chrF. For low-resource
+checkpoints reach chrF 14.11-16.05 where the best general-purpose model
+reaches 0.81  more than an order of magnitude on chrF. For low-resource
 languages, model selection dominates model size.
 
 \paragraph{What we can claim about Tigrinya competence.} On the two tagging
@@ -883,8 +865,7 @@ Tigrinya$\rightarrow$English entries. It is a flattening of the working
 annotation workbook, whose eleven part-of-speech sheets hold the same 7,234
 rows with the same per-category counts (3,929 noun, 1,784 verb, 993
 adjective, 194 adverb, and so on). The flattening lifts the inline
-gender and number markers that the workbook keeps inside the Tigrinya field
---- \texttt{(nf)} \ti{ወካሲት}, \ti{ከሳሲት} --- out into the label column, which
+gender and number markers that the workbook keeps inside the Tigrinya field \texttt{(nf)} \ti{ወካሲት}, \ti{ከሳሲት} out into the label column, which
 is the origin of the finer categories \texttt{(nm) noun masculine},
 \texttt{(nf) noun feminine} and \texttt{(npl) noun plural}; the two files
 differ on exactly the 247 rows carrying such a marker. The direction swap is
