@@ -121,6 +121,19 @@ and nobody outside the author group adjudicated**, so the sheet named
 `Sheet1` is a compilation of the two annotation columns rather than an
 independent third judgement.
 
+The five columns are not of one kind. Gender, Number, Agreement and
+Alignment were assigned from scratch against the `Guide` sheet. The POS
+column arrived pre-filled from the source dictionary and was *verified*: an
+annotator who disagreed with it overruled the dictionary. Annotator 1
+corrected it on 25 of 500 items; Annotator 2 corrected none.
+
+**No edit history survives for the annotation.** The annotators exchanged
+their sheets as messaging attachments, and those attachments have since
+expired, so the files that would carry a version history are no longer
+retrievable. The labels themselves are intact and are what this workbook
+contains; what is missing is the order and timing in which they were
+entered.
+
 `python scripts/compute_iaa.py` recomputes every agreement figure from the
 workbook and reports three things: Cohen's κ per dimension under both blank
 conventions, which annotator the compiled sheet follows wherever the two

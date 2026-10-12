@@ -364,6 +364,15 @@ sheets, the compiled sheet and the annotation guide that defines each value
 --- and \texttt{scripts/compute\_iaa.py} recomputes every figure below from
 them.
 
+What the released workbook does not carry is the history of how it was
+filled. The annotators exchanged their sheets as messaging attachments, and
+those attachments have since expired, so the files that would carry an edit
+history are no longer retrievable. The labels themselves are intact and are
+what the workbook contains; what is missing is the order and timing in which
+they were entered. We note this because the guide was applied unevenly in
+ways the figures below expose, and a record of the process would have shown
+whether that reflects a change of convention partway through.
+
 The five dimensions are not of one kind. Gender, number, category agreement
 and lexical alignment are assigned from scratch against the guide. Part of
 speech arrives pre-filled from the source dictionary and is \emph{verified}:
@@ -812,13 +821,19 @@ models.
 \label{sec:limitations}
 
 \begin{itemize}
-  \item POS labels are the source dictionary's, not independently
-    re-annotated. The agreement coefficients in Section~\ref{subsec:iaa}
-    describe a 500-item subset that is alphabetical and contains no verbs,
-    annotated by the first and second authors rather than by annotators
-    external to the work, and compiled without a third adjudicator. They are
-    not an estimate for the corpus, and a stratified re-annotation covering
-    verbs, by annotators outside the author group, would be needed for that.
+  \item POS labels are the source dictionary's, verified but not
+    independently re-annotated. The agreement coefficients in
+    Section~\ref{subsec:iaa} describe a 500-item subset that is alphabetical
+    and drawn from no verb entries, annotated by the first and second authors
+    rather than by annotators external to the work, and compiled without a
+    third adjudicator. They are not an estimate for the corpus, and a
+    stratified re-annotation covering verbs, by annotators outside the author
+    group, would be needed for that.
+  \item No edit history survives for the annotation. The annotators exchanged
+    their sheets as messaging attachments, and those attachments have since
+    expired, so the files that would carry a version history are no longer
+    retrievable. The labels are intact in the released workbook; what cannot
+    be evidenced is the order and timing in which they were entered.
   \item Morphosyntactic features cover 185 of 5,783 gold rows.
   \item Lexical alignment gold is 38\% positional fallback;
     Section~\ref{subsec:alignment} is not a result.
