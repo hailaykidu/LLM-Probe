@@ -80,7 +80,8 @@ A Lexicon-Grounded Evaluation with Trivial Baselines}
 We evaluate eight general-purpose large language models on three
 lexicon-grounded Tigrinya tasks (part-of-speech tagging, morphosyntactic
 labelling, and English$\rightarrow$Tigrinya translation) using a 5,783-row
-annotated bilingual lexicon. Our central methodological finding is that such
+annotated bilingual lexicon; a fourth task, lexical alignment, is released
+with the data but is not well enough posed to carry a result. Our central methodological finding is that such
 evaluations are easy to over-read, and that on these tasks the apparent
 competence is an artefact of measurement rather than a property of the
 models. A permissive matching rule puts the best model at 85.9\% on
@@ -120,7 +121,10 @@ This paper makes three contributions.
     dictionary~\citep{swansea-dictionary}.
   \item \textbf{An evaluation of eight LLMs} across POS tagging,
     morphosyntactic labelling and translation, reported under three matching
-    rules and against references that use no Tigrinya at all.
+    rules and against references that use no Tigrinya at all. A fourth task
+    in the benchmark, lexical alignment, is reported for completeness but not
+    claimed as a result: 38\% of its gold labels are positional fallbacks
+    rather than annotation (Section~\ref{subsec:alignment}).
   \item \textbf{A negative result about the task design.} The choice of
     matching rule moves reported accuracy by up to 26 points on fixed outputs, and an oracle restricted to the English gloss scores 96.5\% and     95.9\% on the two tagging tasks, which no model approaches. The tasks are
     therefore substantially solvable without the target language, and the numbers they produce, including ours, are not measurements of
@@ -545,6 +549,10 @@ the ambiguity counts and the tests.
 
 \section{Results}
 \label{sec:results}
+
+Three tasks carry results. The fourth, lexical alignment, is reported in
+Section~\ref{subsec:alignment} so that its outputs are on the record, but its
+gold labels are too unreliable to support a conclusion.
 
 \subsection{POS tagging ($n = 5{,}701$)}
 \label{subsec:pos}
