@@ -59,6 +59,12 @@ NS = {"m": MAIN[1:-1]}
 WORKBOOK = "data/POS_english_to_tigrigna_Annotated.xlsx"
 
 # Column letter -> dimension, shared by both annotator sheets and Sheet1.
+# The five dimensions the annotators worked on. The part-of-speech column
+# arrives pre-filled from the source dictionary and the annotators verify it,
+# correcting where they judge the dictionary wrong; the other four they
+# assign from scratch using the Guide sheet. POS therefore belongs here: a
+# difference between the two sheets is one annotator accepting the source
+# label and the other rejecting it, which is an annotation decision.
 DIMENSIONS = {
     "POS": "D",
     "Gender": "E",
@@ -66,6 +72,13 @@ DIMENSIONS = {
     "Agreement": "G",
     "Alignment": "H",
 }
+
+# Where the pre-filled part-of-speech labels came from, so the report can say
+# how often each annotator let the dictionary stand.
+SOURCE_POS_SHEETS = [
+    "Masculine", "Feminine", "Adjective", "Noun", "Verb", "Adverb",
+    "Preposition", "Pronoun", "Conjunction", "Interjection", "Uncategorized",
+]
 
 # The eleven part-of-speech sheets that make up the source corpus, in the
 # order the workbook lists them.
@@ -256,6 +269,52 @@ def report_adjudication(a, b, adjudicated):
     return {"differences": results, "blanks_a": blanks_a, "blanks_b": blanks_b}
 
 
+def report_source_pos(workbook):
+    """How often did each annotator let the dictionary's own label stand?
+
+    The part-of-speech column arrives pre-filled from the eleven category
+    sheets of the source workbook, and the annotators verify it, correcting
+    where they judge the dictionary wrong. A row that differs from the source
+    is an annotator overruling it, which is worth counting separately from
+    the four dimensions they assign from scratch.
+    """
+    source = {}
+    for sheet in SOURCE_POS_SHEETS:
+        for row in workbook.rows(sheet)[1:]:
+            english, tigrinya = cell(row, "A"), cell(row, "B")
+            if english:
+                source.setdefault((english, tigrinya), sheet)
+
+    print()
+    print("## 2a. Part of speech against the source dictionary")
+    print()
+    print("POS arrives pre-filled and the annotators verify it, so a row that")
+    print("differs from the source is an annotator overruling the dictionary.")
+    print()
+    print("%-14s %8s %12s %10s" % ("", "kept", "corrected", "untraced"))
+    print("-" * 46)
+    out = {}
+    for label, sheet in (("Annotator 1", ANNOTATOR_A),
+                         ("Annotator 2", ANNOTATOR_B),
+                         ("compiled", ADJUDICATED)):
+        kept = corrected = untraced = 0
+        for row in workbook.rows(sheet)[1:]:
+            if not cell(row, "A"):
+                continue
+            key = (cell(row, "B"), cell(row, "C"))
+            origin = source.get(key)
+            if origin is None:
+                untraced += 1
+            elif cell(row, "D").lower() == origin.lower():
+                kept += 1
+            else:
+                corrected += 1
+        print("%-14s %8d %12d %10d" % (label, kept, corrected, untraced))
+        out[label] = {"kept": kept, "corrected": corrected,
+                      "untraced": untraced}
+    return out
+
+
 def report_sample(workbook, adjudicated):
     print()
     print("## 3. How the 500 sampled items were drawn")
@@ -343,6 +402,7 @@ def main():
 
         kappa = report_kappa(a, b)
         adjudication = report_adjudication(a, b, adjudicated)
+        source_pos = report_source_pos(workbook)
         sample = report_sample(workbook, adjudicated)
 
         print()
@@ -362,6 +422,7 @@ def main():
                 "workbook": WORKBOOK,
                 "kappa": kappa,
                 "adjudication": adjudication,
+                "source_pos": source_pos,
                 "sample": sample,
             }
             with open(args.json, "w", encoding="utf-8") as handle:

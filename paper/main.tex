@@ -364,6 +364,15 @@ sheets, the compiled sheet and the annotation guide that defines each value
 --- and \texttt{scripts/compute\_iaa.py} recomputes every figure below from
 them.
 
+The five dimensions are not of one kind. Gender, number, category agreement
+and lexical alignment are assigned from scratch against the guide. Part of
+speech arrives pre-filled from the source dictionary and is \emph{verified}:
+an annotator who disagrees with it overrules the dictionary. The two used
+that latitude very differently. Annotator 1 corrected the dictionary on 25 of
+500 items; Annotator 2 corrected it on none, letting the source label stand
+everywhere. All 25 part-of-speech disagreements are therefore of one shape:
+one annotator proposing a correction that the other did not.
+
 An annotator sometimes left a cell empty where the other assigned a label.
 Those are not matching judgements, so we count them as disagreements and
 report Cohen's $\kappa$ over all 500 items, with a blank treated as its own
@@ -388,8 +397,8 @@ disagreements. All five dimensions are computed over all 500 items.}
 \end{table}
 
 Restricting instead to the items both annotators labelled raises every
-dimension --- 0.9076, 1.0000, 1.0000, 0.9815, 0.9850 on 500, 420, 428, 445 and
-474 items. We report the stricter figures because the difference between the
+dimension --- 0.9076, 1.0000, 1.0000, 0.9815 and 0.9850 on 500, 420, 428, 445
+and 474 items. We report the stricter figures because the difference between the
 two columns is largely a difference in what each annotator left blank:
 Annotator 1 omits 32 gender, 32 number and 46 agreement labels that Annotator
 2 supplies, against 6, 4 and 3 in the other direction. Discarding those rows
@@ -399,11 +408,14 @@ Three properties of this subset bound what the coefficients support.
 
 \paragraph{The compiled sheet is not an independent third judgement.} This
 follows from how it was produced, and the records bear it out. The two
-annotators differ on 28 cells in total: 25 part-of-speech, one category
+annotators differ on 28 cells in total: 25 part of speech, one category
 agreement and two lexical alignment. On the 25 part-of-speech items the
 compiled sheet reproduces Annotator 2 on all 25 and Annotator 1 on none; on
 the other three it reproduces Annotator 1. \textbf{On none of the 28 does it
-record a label that neither annotator assigned.} It selects between the two
+record a label that neither annotator assigned.} Since Annotator 2's
+part-of-speech column is the source dictionary's throughout, the compilation
+rejected all 25 of Annotator 1's proposed corrections and deferred to the
+dictionary in every case. It selects between the two
 existing columns rather than adding a judgement of its own, so agreement with
 it is not evidence about either annotator, and it cannot serve as an
 adjudicated gold standard.
@@ -429,7 +441,9 @@ blanks count.
 sheet shows the 500 are the alphabetical head of each category: all 9
 prepositions, all 10 pronouns and all 6 interjections, then 305 adjectives and
 150 nouns from the tops of those sheets. The corpus is 54\% noun and 25\%
-verb; this subset is 61\% adjective and contains \textbf{no verbs}. The
+verb; this subset is 61\% adjective and \textbf{is drawn from no verb
+entries at all}. The only part-of-speech cells reading \texttt{Verb} anywhere
+in the records are seven of Annotator 1's corrections to noun headwords. The
 coefficients therefore describe agreement on this subset and are not an
 estimate for the corpus. Establishing one requires a stratified
 re-annotation covering verbs, which we leave to future work
