@@ -134,20 +134,11 @@ retrievable. The labels themselves are intact and are what this workbook
 contains; what is missing is the order and timing in which they were
 entered.
 
-After that was discovered, each annotation sheet was re-entered into Google
-Sheets, where an edit history is kept, and exported back to xlsx as
-`PoS_English-Tigriyna_Annotation_.xlsx` (Annotator 1) and
-`PoS_English-Tigriyna_Annotation2_.xlsx` (Annotator 2). These are October
-2026 transcriptions of the same labels, not a fresh annotation, and they are
-released for inspection rather than used in any computation —
-`compute_iaa.py` reads the original workbook.
-
-Two things to know about them. **An xlsx export carries no version history**;
-that record exists only on the online documents, so these files show the
-labels and not the editing. And the transcription was not perfect: Annotator
-1's file reproduces the original exactly apart from collapsed double spaces,
-while Annotator 2's differs on 25 POS cells, where the transcription picked
-up Annotator 1's labels instead. The original workbook remains authoritative.
+Each sheet was later re-entered into Google Sheets in an attempt to recover
+a usable history. Those copies are not released: an xlsx export carries no
+version history, so the only record they hold is of the copying itself, and
+the Annotator 2 copy diverges from the original on the 25 disputed POS cells.
+This workbook is the authoritative record and is what `compute_iaa.py` reads.
 
 `python scripts/compute_iaa.py` recomputes every agreement figure from the
 workbook and reports three things: Cohen's κ per dimension under both blank
