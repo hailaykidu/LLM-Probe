@@ -69,10 +69,26 @@ printf '  .git in supplementary:          %s\n' \
     "$([ -d "$out/supplementary/.git" ] && echo PRESENT || echo absent)"
 
 # The bibliography must cite the earlier paper by its real authors, and that
-# paper shares an author with this one. Those three names are therefore
-# expected in references.bib and in the \citet that reads it, and nowhere
-# else. Anything outside those two files is a leak.
-for pattern in teklehaymanot KBS Nejdl Gebremariam; do
+# paper shares an author with this one. Those names are therefore expected in
+# references.bib and in the \citet that reads it, and nowhere else. Anything
+# outside those two files is a leak.
+#
+# The strings to search for are taken from the bibliography entry rather than
+# written here, so this script does not itself carry the names into the
+# anonymous bundle it produces.
+# Every name token in that entry's author field, "and" dropped.
+patterns=$(
+    sed -n '/@inproceedings{llmprobe-2026/,/^}/p' paper/references.bib \
+    | sed -n 's/.*author *= *{\(.*\)}.*/\1/p' \
+    | tr -d '{},' | tr ' ' '\n' \
+    | grep -E '^[A-Za-z]{3,}$' | grep -vx 'and' | sort -u
+)
+# The serving institution's prefix, if the local environment still sets it,
+# so a bundle built on a configured machine is checked for it too.
+[ -n "${LLM_ENDPOINT_LEGACY_PREFIX:-}" ] &&
+    patterns="$patterns ${LLM_ENDPOINT_LEGACY_PREFIX%%_*}"
+
+for pattern in $patterns; do
     hits=$(grep -rli "$pattern" "$out" 2>/dev/null \
         | grep -v 'paper/references.bib' | grep -v 'paper/main.tex' || true)
     n=$([ -z "$hits" ] && echo 0 || echo "$hits" | wc -l)
