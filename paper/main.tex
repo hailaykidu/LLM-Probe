@@ -673,7 +673,7 @@ mt5-small  & 0.20 & 0.04 & 0.02 & 0.05 \\
 gemma-7b   & 0.16 & 0.00 & 0.00 & 0.03 \\
 mt5-large  & 0.13 & 0.04 & 0.01 & 0.02 \\
 falcon-7b  & 0.13 & 0.00 & 0.00 & 0.03 \\
-qwen-7b    & 0.04 & 0.00 & 0.00 & 0.28 \\
+qwen-7b    & 0.04 & 0.00 & 0.00 & 0.00 \\
 \bottomrule
 \end{tabular}
 \caption{Translation quality. All values on a 0--100 scale.}
@@ -688,6 +688,17 @@ best LLM.
 Note that word-level BLEU-4 is 0.24 for NLLB-3.3B, which translates 16.24\% of
 items exactly. \textbf{Word-level BLEU is not usable at lexicon scale}, and a
 paper reporting it would show a working system as scoring zero.
+
+Our own scorer supplied a further instance of the effect this paper reports.
+Many gold entries end in a trailing comma, and splitting them on commas
+without discarding the empty final field admitted the empty string as a valid
+answer, so a model that generated nothing scored an exact match. This gave
+qwen-7b an exact-match rate of 0.28, the highest of the eight models and all
+16 of its apparent successes empty generations. The released scorer drops
+empty candidates and the table reports 0.00; no other model was affected and
+no chrF or BLEU value changes. We report the defect rather than silently
+correcting it because a one-line omission in a scorer, not any property of a
+model, produced the best exact-match score in the table.
 
 We verified the LLM failure is not one of output format. Few-shot prompting
 with eight exemplars and an explicit format constraint moved gemma-7b from

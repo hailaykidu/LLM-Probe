@@ -200,9 +200,18 @@ for model_name, model in models.items():
         raw_output = extract_text(tagged["response"])
         cleaned_output = strip_special_tokens(raw_output)
 
-        # Normalize both output and expected candidates
+        # Normalize both output and expected candidates.
+        #
+        # Empty candidates must be dropped. Many references end in a trailing
+        # comma ("ምኽፋል ዕዳ,"), which splits to ["ምኽፋል ዕዳ", ""]; keeping the ""
+        # makes an empty model output an exact match, so a model that answered
+        # nothing scored correct. That is what inflated qwen-7b's exact-match
+        # column: all 16 of its apparent hits were empty generations. The
+        # shared helper utils.metrics.split_references already filters these.
         output_norm = normalize(cleaned_output)
-        expected_candidates = [normalize(c) for c in row["ExpectedTigrigna"].split(",")]
+        expected_candidates = [
+            c for c in (normalize(c) for c in row["ExpectedTigrigna"].split(",")) if c
+        ]
 
         # Exact match on the full cleaned output, or a match on any single
         # word within it -- credits a correct one-word translation even

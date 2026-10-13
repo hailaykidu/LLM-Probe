@@ -483,7 +483,7 @@
     "ExpectedTigrigna": "ምኽፋል ዕዳ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -609,7 +609,7 @@
     "ExpectedTigrigna": "ተቖጻጸረ, ምልዋጥ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -735,7 +735,7 @@
     "ExpectedTigrigna": "ኣምለኸ, ምድናቕ,",
     "ModelOutputRaw": "Output:\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -1176,7 +1176,7 @@
     "ExpectedTigrigna": "መጠንቀቕታ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -1401,7 +1401,7 @@
     "ExpectedTigrigna": "ምዝንጋዕ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -1734,7 +1734,7 @@
     "ExpectedTigrigna": "ኣሰንባዲ, ኣገራሚ,",
     "ModelOutputRaw": "Output:\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -2499,7 +2499,7 @@
     "ExpectedTigrigna": "ጥንቁቕ, ኣድሃቢ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -5334,7 +5334,7 @@
     "ExpectedTigrigna": "ካውሎ ፍዮሪ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -5676,7 +5676,7 @@
     "ExpectedTigrigna": "ኑንጪ, ምዕጉርቲ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -11607,7 +11607,7 @@
     "ExpectedTigrigna": "ሸፋሽፍቲ ዓይኒ,",
     "ModelOutputRaw": "Output:\n\n\n\n\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -14631,7 +14631,7 @@
     "ExpectedTigrigna": "ዳይረክቶር,",
     "ModelOutputRaw": "Output:\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -16620,7 +16620,7 @@
     "ExpectedTigrigna": "ኣንፈት, ፍርዲ,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -20301,7 +20301,7 @@
     "ExpectedTigrigna": "መስኮት ኣፍንጫ,",
     "ModelOutputRaw": "Output:\n\n\n\n\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -20652,7 +20652,7 @@
     "ExpectedTigrigna": "ኣረጊት,",
     "ModelOutputRaw": "Output:\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -31614,7 +31614,7 @@
     "ExpectedTigrigna": "ሰበይቱ ዝመተቶ,",
     "ModelOutputRaw": "Output:\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
@@ -31623,7 +31623,7 @@
     "ExpectedTigrigna": "ሰበይቱ ዝመተቶ,",
     "ModelOutputRaw": "Output:\n\n\n\n\n\n",
     "ModelOutput": "",
-    "Match": true
+    "Match": false
   },
   {
     "Task": "translation_fidelity",
