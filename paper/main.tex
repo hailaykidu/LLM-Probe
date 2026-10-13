@@ -81,7 +81,8 @@ commits to costs up to 26 points, and requiring an exact answer costs up to
 89. More decisively, the prompt supplies an English gloss beside the
 Tigrinya form, and an oracle that sees only that gloss scores 96.5\% and
 95.9\% on the two tasks, which \emph{no model comes within 14 points of},
-because only about one headword in twenty is ambiguous given the English.
+because fewer than one item in twelve has a headword the English leaves
+ambiguous at all.
 What a model's score on these tasks therefore bounds is what the English
 already determines, not what the model knows about Tigrinya. On translation all eight models score at or
 below 0.81 chrF on a 0--100 scale, which is effectively no Tigrinya output at
@@ -110,7 +111,7 @@ This paper makes three contributions.
 
 \begin{enumerate}
   \item \textbf{A rebuilt and documented version of an existing
-    lexicon-grounded evaluation set}: 5,783 English-Tigrinya rows (5,022
+    lexicon-grounded evaluation set}: 5,783 English-Tigrinya rows (5,026
     distinct English headwords, 3,926 Tigrinya forms), each carrying a
     part-of-speech label, derived from a digitised bilingual
     dictionary~\citep{swansea-dictionary}. The lexicon and the four tasks
@@ -310,12 +311,13 @@ second block the column named \texttt{English} therefore holds Ge'ez script.
 We detect that block by script, reorient it, and merge both directions,
 keeping distinct senses of one form as separate items --- \emph{estimate}
 $\rightarrow$ \ti{ግምት} is retained as both noun and verb, which yields
-\textbf{5,783 gold rows} over 5,022 distinct English headwords and 3,926
+\textbf{5,783 gold rows} over 5,026 distinct English headwords and 3,926
 distinct Tigrinya forms. Counts of headwords are sensitive to the
 definition: splitting the comma-separated variants that some entries carry
 in the English field gives 4,327 single-word glosses instead. We count whole
-field values throughout, which is what the baselines and the ceiling in
-Section~\ref{subsec:baselines} key on. Three evaluation set sizes follow
+field values throughout, exactly as written, which is what the baselines and
+the ceiling in Section~\ref{subsec:baselines} key on; the 5,701-item tagging
+set carries 5,025 of these headwords. Three evaluation set sizes follow
 from this and are not
 interchangeable: 5,783 gold rows, \textbf{5,775 items} for translation and
 lexical alignment after each task drops duplicate pairs and rows with an
@@ -374,7 +376,6 @@ assigned a label, that is not a matching judgement, so we count it as a
 disagreement and report Cohen's $\kappa$ over all 500 items with a blank as
 its own category (Table~\ref{tab:iaa}, in Appendix~\ref{app:iaa}).
 
-
 Restricting instead to the items both annotators labelled raises every
 dimension --- 0.9076, 1.0000, 1.0000, 0.9815 and 0.9850 on 500, 420, 428, 445
 and 474 items. We report the stricter figures because the difference between the
@@ -391,7 +392,7 @@ filled labels is near-total: where both annotators assigned a gender or
 number value they never differ, so the divergence is in coverage rather than
 in choice of label, which is why $\kappa$ falls once blanks count. And the
 subset is not a random sample but the alphabetical head of each category:
-61\% adjective against a corpus that is 54\% noun and 25\% verb, and
+61\% adjective against a corpus that is 53.8\% noun and 26.7\% verb, and
 \textbf{drawn from no verb entries at all}. The coefficients therefore
 describe this subset and are not an estimate for the corpus; establishing one
 needs a stratified re-annotation covering verbs, by annotators outside the
@@ -623,9 +624,9 @@ marginal, and would not survive a correction for testing eight models. The
 remaining six fall below the baseline, and five below the majority baseline
 of 52.38.
 
-Against the ceiling the picture is uniform: \textbf{the best model is 31.28
+Against the ceiling the picture is uniform: \textbf{the best model is 31.27
 points below what the English gloss alone makes available}, and the eight
-models span 31 to 96 points below it. Whatever separates gemma-2b from
+models span 31.27 to 95.86 points below it, the last being byt5 at zero. Whatever separates gemma-2b from
 mistral-7b here, it is not evidence of morphosyntactic analysis of Tigrinya.
 
 The final column measures how often an answer contains the prompt's own
@@ -733,16 +734,17 @@ verified rows are marked, so restricting to them or annotating the other
 detail.} The swings in Section~\ref{subsec:pos} are not a property of the
 weaker models: the largest belong to the models that answer in fluent
 sentences, because a sentence contains the gold label without equalling it.
-Scoring the same saved outputs three ways costs gemma-7b everything it
-scored. A paper that reports one number without naming the rule has not
-reported a result, and reporting the triple costs nothing once the
-generations are saved.
+On one set of gemma-7b generations the three rules return 82.44, 79.39 and
+0.00 on POS, and 89.42, 63.32 and 0.00 on morphosyntax --- a span of 82 and
+89 points with not one token of output changed. A paper that reports one
+number without naming the rule has not reported a result, and reporting the
+triple costs nothing once the generations are saved.
 
 \paragraph{Bound the task from above, not only from below.} A lower-bound
 baseline tells you whether a model beats a weak system; it does not tell you
 whether the task needs the target language. Three models clear both lower
 baselines on POS, which reads as cross-lingual competence until the oracle is
-added and the best of them sits 14.93 points beneath it (31.28 on
+added and the best of them sits 14.93 points beneath it (31.27 on
 morphosyntax). Reporting only the lower bounds would have let this paper
 claim a result it does not have. The oracle costs one pass over the gold
 labels, and we recommend it wherever a prompt carries a cue in a
@@ -767,16 +769,11 @@ than an artefact of our setup.
 \label{sec:relation}
 \label{sec:reproducibility}
 
-This lexicon and these four tasks were introduced by \citet{llmprobe-2026},
-whose retraction has been requested. The results here are not a re-scoring
-of that paper's outputs: they come from new runs in September 2026 against a
-gold set rebuilt from the source lexicon, and differ in inputs as well as
-scoring. The earlier runs evaluated 3,899 items per tagging task against
-these 5,701, and the earlier gold stored an expected tag as
-\texttt{(adv)~adverb} rather than \texttt{adverb} and presented all
-comma-separated senses rather than one, so the prompts and the generations
-they elicit both differ. No number is carried over, and the two sets of
-results are not alternative measurements of the same quantity.
+The results here are not a re-scoring of \citeauthor{llmprobe-2026}'s
+outputs: they come from new runs against a rebuilt gold set, differing in
+inputs as well as scoring (Appendix~\ref{app:dataset}). Of the 20,400 shared
+item-level comparisons, exactly one generation is identical, where a
+re-scoring would reproduce all of them.
 
 \section{Limitations}
 \label{sec:limitations}
@@ -814,8 +811,9 @@ results are not alternative measurements of the same quantity.
     template was applied to the instruction-tuned models. Single run, no
     seed averaging.
   \item Both tagging tasks are substantially solvable without Tigrinya: an
-    English-only oracle reaches 96.49 and 95.86, and under 5\% of headwords
-    are ambiguous given the gloss. This is a property of the task design, not
+    English-only oracle reaches 96.49 and 95.86, and only 7.7\% and 8.8\% of
+    items have a headword the gloss leaves ambiguous. This is a property of
+    the task design, not
     of the models, and it bounds what any result on these tasks can mean. A
     task that withheld the gloss, or that drew its items from the ambiguous
     subset, would measure something the English does not already determine;
@@ -945,15 +943,14 @@ blanks count.
 \paragraph{The subset is not a random sample.} Tracing each item to its source
 sheet shows the 500 are the alphabetical head of each category: all 9
 prepositions, all 10 pronouns and all 6 interjections, then 305 adjectives,
-150 nouns and 20 adverbs from the tops of those sheets. The corpus is 54\% noun and 25\%
-verb; this subset is 61\% adjective and \textbf{is drawn from no verb
-entries at all}. The only part-of-speech cells reading \texttt{Verb} anywhere
+150 nouns and 20 adverbs from the tops of those sheets. The corpus is
+53.8\% noun and 26.7\% verb; this subset is 61\% adjective and \textbf{is
+drawn from no verb entries at all}. The only part-of-speech cells reading \texttt{Verb} anywhere
 in the records are seven of Annotator 1's corrections to noun headwords. The
 coefficients therefore describe agreement on this subset and are not an
 estimate for the corpus. Establishing one requires a stratified
 re-annotation covering verbs, which we leave to future work
 (Section~\ref{sec:limitations}).
-
 
 \section{Reproducing each table}
 \label{app:repro}
@@ -973,6 +970,7 @@ Reported in & Command (in \texttt{scripts/}) & Artifact read \\
 \S\ref{subsec:translation} LLMs & \texttt{compute\_bleu.py}                               & \texttt{translation\_fidelity\_bleu.json} \\
 \S\ref{subsec:translation} NLLB$^\dagger$ & \texttt{probe\_nllb\_translation.py}          & \texttt{nllb\_probe\_*.json} \\
 \S\ref{subsec:translation} few-shot$^\dagger$ & \texttt{probe\_fewshot\_translation.py}   & \texttt{fewshot\_probe\_*.json} \\
+\S\ref{sec:relation} new runs   & \texttt{compare\_archived\_outputs.py}                  & archived \& current outputs \\
 \bottomrule
 \end{tabular}
 \caption{Each reported table, the command that regenerates it from the
@@ -987,7 +985,6 @@ The supplementary material also contains the raw generation for every item,
 stored per task and per model, so any scoring rule other than the three
 reported here can be applied to the same outputs without re-running the
 models.
-
 
 \texttt{\$ROSTER} denotes the eight evaluated models, which the scoring
 script takes as an explicit argument so that a reported table is reproduced
@@ -1049,5 +1046,22 @@ than the 5,701 behind Sections~\ref{subsec:pos} and~\ref{subsec:morph}. We
 reconstruct it from the released gold and verify the result row-for-row
 against the saved model outputs: 5,701 items, no row missing, none extra, and
 no label mismatch. The reconstructed file is released alongside the gold.
+
+\paragraph{What differs from the earlier gold.} The runs reported by
+\citet{llmprobe-2026} used 3,899 items per tagging task against the 5,701
+here. Two differences in the gold account for the prompts differing, and so
+for the generations being new rather than re-scored. First, that gold
+carried the source dictionary's parenthetical notation into the expected
+label, storing \texttt{(adv)~adverb} where this one stores
+\texttt{adverb}; a scorer comparing whole strings therefore failed on every
+such row, which is why the archived part-of-speech and morphosyntax
+accuracies are 0.0000 against the figures in
+Sections~\ref{subsec:pos} and~\ref{subsec:morph}. Second, an entry was
+presented with all of its comma-separated Tigrinya senses rather than the
+first alone, so the prompt text itself differs for every multi-sense entry.
+The two evaluations share 3,400 English headwords, and across the six models
+present in both sets --- 20,400 item-level comparisons --- exactly one saved
+generation is identical. That is what a prompt change predicts; a re-scoring
+of the same outputs would have reproduced them all.
 
 \end{document}
