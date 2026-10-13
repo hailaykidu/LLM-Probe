@@ -73,8 +73,10 @@ A Lexicon-Grounded Evaluation with Trivial Baselines}
 We evaluate eight general-purpose large language models on three
 lexicon-grounded Tigrinya tasks (part-of-speech tagging, morphosyntactic
 labelling, and English$\rightarrow$Tigrinya translation) using a 5,783-row
-annotated bilingual lexicon; a fourth task, lexical alignment, is released
-with the data but is not well enough posed to carry a result. Our central methodological finding is that such
+annotated bilingual lexicon. A fourth task, lexical alignment, is not well
+enough posed to carry a result, and we release its data and outputs as a
+resource for reposing it rather than as a benchmark.
+Our central methodological finding is that such
 evaluations are easy to over-read, and that on these tasks the apparent
 competence is an artefact of measurement rather than a property of the
 models. A permissive matching rule puts the best model at 85.9\% on
@@ -85,8 +87,9 @@ Tigrinya form, and an oracle that sees only that gloss scores 96.5\% and
 95.9\% on the two tasks: \emph{no model comes within 14 points of what the
 English alone makes available}, because fewer than one headword in twenty is
 ambiguous given the English. On translation all eight models score at or
-below chrF 0.81, while NLLB-200-3.3B, which supports Tigrinya, reaches chrF
-16.05 on identical items with an identical scorer. We therefore report a
+below 0.81 chrF on a 0--100 scale, which is effectively no Tigrinya output at
+all, while NLLB-200-3.3B, which supports the language, reaches 16.05 on
+identical items with the same scorer: a factor of twenty. We therefore report a
 negative result: these tasks, as posed, do not measure Tigrinya competence,
 and published numbers on them should not be read as doing so. We release the
 lexicon, the scoring code and the saved model outputs, and argue that the
@@ -546,9 +549,8 @@ the ambiguity counts and the tests.
 \section{Results}
 \label{sec:results}
 
-Three tasks carry results. The fourth, lexical alignment, is reported in
-Section~\ref{subsec:alignment} so that its outputs are on the record, but its
-gold labels are too unreliable to support a conclusion.
+Three tasks carry results; Section~\ref{subsec:alignment} reports the fourth,
+whose gold labels are too unreliable to support a conclusion.
 
 \subsection{POS tagging ($n = 5{,}701$)}
 \label{subsec:pos}
@@ -704,6 +706,12 @@ We report this task for completeness but do not draw conclusions from it:
 ranges from 0.0383 (mt5-large) to 0.5484 (gemma-2b); semantic accuracy from
 0.0012 (mt5-small) to 0.8876 (mistral-7b). The two measures diverge widely for
 individual models, which makes the task ill-posed as currently scored.
+
+We release its data and outputs nonetheless: the 3,575 manually verified rows
+are marked as such, so restricting to them or annotating the remaining 2,208
+would give a task this one cannot, and the divergence is itself another
+instance of the paper's point, two defensible scorers disagreeing on fixed
+outputs by more than the models differ.
 
 \section{Discussion}
 \label{sec:discussion}
