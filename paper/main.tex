@@ -57,9 +57,13 @@ A Lexicon-Grounded Evaluation with Trivial Baselines}
 % that the LaTeX source can accompany the submission.
 %
 % At camera-ready: switch the acl option above from "review" to "final" and
-% substitute the real byline. Section 3.3 attributes the annotation to the
-% first and second authors, so if the byline order differs from the one the
-% annotation followed, that sentence must change with it.
+% substitute the real byline, with the supervising author last. Section 3.3
+% attributes the annotation to two of the authors without naming them; name
+% them there once the byline is in place, since not every author annotated
+% and an ordinal reference would otherwise credit the wrong person.
+%
+% Note that the byline order here differs from the order in the earlier
+% paper's Anthology record, which the bibliography reproduces as published.
 \author{Anonymous ARR submission}
 
 \begin{document}
@@ -319,13 +323,16 @@ what it measures: a second POS task with a different prompt.
 \subsection{Inter-annotator agreement}
 \label{subsec:iaa}
 
-% "the first and second authors" is anonymous under the review option and
-% stays correct at camera-ready, provided the byline order above is kept.
-% The substance -- that the annotators are authors of this paper, that both
-% are native speakers, and that no third party adjudicated -- must stay.
-A 500-item subset of the lexicon was annotated independently by the first and
-second authors for part of speech, gender, number, category agreement and
-lexical alignment. Both are native speakers of Tigrinya. Each assigned labels
+% "two of the authors" is anonymous under the review option and stays true
+% whatever the byline order. At camera-ready, name the two annotators
+% explicitly rather than by byline position: one author did not annotate, so
+% an ordinal reference would attribute the work to the wrong person if the
+% order changed. The substance -- that the annotators are authors of this
+% paper, that both are native speakers, and that no third party adjudicated
+% -- must stay.
+A 500-item subset of the lexicon was annotated independently by two of the
+authors for part of speech, gender, number, category agreement and lexical
+alignment. Both are native speakers of Tigrinya. Each assigned labels
 separately using the annotation guide, and the two sheets were then compared
 to locate disagreements. The final sheet was compiled from those two sheets:
 \textbf{no third annotator took part, and no party outside the author group
@@ -808,9 +815,9 @@ models.
   \item POS labels are the source dictionary's, verified but not
     independently re-annotated. The agreement coefficients in
     Section~\ref{subsec:iaa} describe a 500-item subset that is alphabetical
-    and drawn from no verb entries, annotated by the first and second authors
-    rather than by annotators external to the work, and compiled without a
-    third adjudicator. They are not an estimate for the corpus, and a
+    and drawn from no verb entries, annotated by two of the authors rather
+    than by annotators external to the work, and compiled without a third
+    adjudicator. They are not an estimate for the corpus, and a
     stratified re-annotation covering verbs, by annotators outside the author
     group, would be needed for that.
   \item No edit history survives for the annotation. The annotators exchanged

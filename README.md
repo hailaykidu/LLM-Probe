@@ -111,9 +111,9 @@ produced.
 behind §3.3 of the paper. It is not an input to any model run; it documents
 how a 500-item subset of the lexicon was annotated.
 
-A 500-item subset was annotated independently by the paper's first and second
-authors, both native speakers of Tigrinya,
-for part of speech, gender, number, category agreement and lexical alignment.
+A 500-item subset was annotated independently by two of the paper's authors,
+both native speakers of Tigrinya, for part of speech, gender, number,
+category agreement and lexical alignment.
 Each assigned labels separately using the `Guide` sheet, which defines every
 permitted value. The two sheets were then compared to locate disagreements,
 and the final sheet was compiled from them. **No third annotator took part,
