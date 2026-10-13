@@ -1,4 +1,4 @@
-# LLM-Probe
+# Tigrinya LLM evaluation
 
 Code, data and evaluation records for a lexicon-grounded evaluation of eight
 general-purpose LLMs on Tigrinya, across part-of-speech tagging,
@@ -7,8 +7,10 @@ alignment. All models are evaluated zero-shot, by prompting only; nothing is
 fine-tuned here.
 
 The paper is in [`paper/`](paper/). Every number it reports is recomputed
-from the artifacts in this repository by the commands below, none of which
-requires re-running a model.
+from the artifacts in this repository by the commands below. Only the two
+translation probes (NLLB-200 and the gemma-7b few-shot arm) call a model,
+and their generations are released too, so every reported number can be
+checked without inference.
 
 ## Layout
 
@@ -163,23 +165,44 @@ are embedded inline in the Tigrinya field rather than in the label column.
 
 ## Licence
 
-Code is released under the MIT License; data and evaluation records under
-CC BY 4.0. See [`LICENSE`](LICENSE), which also notes the terms attaching to
-the source dictionary, to the third-party model checkpoints whose outputs are
-recorded here, and to the ACL style files in `paper/`.
+Code is released under the MIT License. The CC BY 4.0 grant covers what this
+repository contributes to the data — the corrections, the derived evaluation
+set, the gold labels, the annotation records and the saved model outputs —
+and not the underlying dictionary entries, which carry no licence statement
+of their own and whose source URL no longer serves the file. See
+[`LICENSE`](LICENSE), which sets this out and also notes the terms attaching
+to the third-party model checkpoints whose outputs are recorded here and to
+the ACL style files in `paper/`.
 
 ## Running a full evaluation
 
 ```bash
-./scripts/run_all_evaluations.sh
+./scripts/run_all_evaluations.sh                  # the eight models of the paper
+EVAL_ROSTER=2026 ./scripts/run_all_evaluations.sh  # the newer checkpoints
 ```
+
+`EVAL_ROSTER` selects which labels a run uses, and defaults to `paper`, so
+the command above reproduces the roster the paper reports. The task scripts
+were later extended with newer and larger checkpoints under new labels
+against the same loaders; `EVAL_ROSTER=2026` selects those instead, and
+`all` takes every entry a task defines. `EVAL_ONLY_MODELS=gemma-7b,byt5`
+narrows whichever roster is selected. See [`models/roster.py`](models/roster.py).
+
+One partial run on the newer roster is included: job 81103
+(`logs/roster2026_81103.out`) completed POS tagging on nine checkpoints
+before reaching its time limit. Its best, `falcon3-10b`, scores 82.62 under
+the task script's own scorer against mistral-7b's 78.76, and 0.00 under the
+paper's first-token rule, because it emits `<|assistant|>` before every
+answer. Section 4 of the paper discusses it; it is not in the tables because
+it covers one task of four.
 
 Each task script is resumable: it loads any existing partial result file and
 skips completed (English, Tigrinya) pairs. That resume key is also a hazard —
 after a change to the gold data or a prompt, existing files look complete and
 are skipped, silently mixing old and new scoring. Move the affected files
-aside before resubmitting.
+aside before resubmitting. Changing `EVAL_ROSTER` changes the result
+filenames, so a `paper` run and a `2026` run do not collide.
 
 Models served over HTTP rather than loaded locally read their endpoint
-address and key from `KBS_INFERENCE_BASE_URL` and `KBS_INFERENCE_API_KEY`;
+address and key from `LLM_ENDPOINT_BASE_URL` and `LLM_ENDPOINT_API_KEY`;
 neither is stored in this repository.

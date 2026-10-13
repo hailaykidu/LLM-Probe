@@ -143,14 +143,21 @@ def ceiling(root, gold_file, label_field):
         for head, labels in labels_by_headword.items()
     }
     correct = sum(1 for row in rows if oracle[row["English"]] == row[label_field])
-    ambiguous = sum(
-        1 for labels in labels_by_headword.values() if len(set(labels)) > 1
-    )
+    ambiguous_heads = {
+        head for head, labels in labels_by_headword.items() if len(set(labels)) > 1
+    }
+    # Per headword and per item are different quantities and the paper needs
+    # both: a headword carrying two labels contributes every row that shares
+    # it, so the share of affected items is about twice the share of
+    # affected headwords.
+    ambiguous_items = sum(1 for row in rows if row["English"] in ambiguous_heads)
     return {
         "n": len(rows),
         "headwords": len(labels_by_headword),
-        "ambiguous_headwords": ambiguous,
-        "ambiguous_share": ambiguous / len(labels_by_headword) * 100,
+        "ambiguous_headwords": len(ambiguous_heads),
+        "ambiguous_share": len(ambiguous_heads) / len(labels_by_headword) * 100,
+        "ambiguous_items": ambiguous_items,
+        "ambiguous_item_share": ambiguous_items / len(rows) * 100,
         "ceiling": correct / len(rows) * 100,
     }
 
@@ -174,6 +181,8 @@ def main():
         print(f"items {n}, distinct English headwords {stats['headwords']}")
         print(f"headwords with more than one gold label: "
               f"{stats['ambiguous_headwords']} ({stats['ambiguous_share']:.1f}%)")
+        print(f"items whose headword is ambiguous:       "
+              f"{stats['ambiguous_items']} ({stats['ambiguous_item_share']:.1f}%)")
         print()
         print(f"  majority-label baseline            {baselines['majority']:6.2f}%")
         print(f"  English-only tagger (NLTK)         {nltk_baseline:6.2f}%")

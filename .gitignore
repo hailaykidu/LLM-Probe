@@ -8,6 +8,11 @@ __pycache__/
 CORRECTIONS.md
 results_overview.md
 RETRACTION_NOTICE.md
+# Names the authors and their roles, which is what anonymity has to hide.
+CAMERA_READY.md
+
+# Generated submission bundle.
+dist/
 
 # Overleaf upload bundle, regenerate as needed.
 llmprobe-overleaf.zip

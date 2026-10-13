@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.logger import log_result
 from models.span_infilling import to_span_infilling_prompts
+from models.roster import select as select_roster
 
 # === Load models ===
 from models.gemma_loader import load_model as load_gemma_2b
@@ -23,7 +24,7 @@ from models.falcon_loader import load_model as load_falcon_7b
 from models.falcon3_loader import load_model as load_falcon3_10b
 from models.apertus_loader import load_model as load_apertus_8b  # ✅ NEW
 
-# Models served over the KBS OpenAI-compatible HTTP endpoint rather than
+# Models served over an OpenAI-compatible HTTP endpoint rather than
 # loaded locally from a checkpoint (see models/endpoint_loader.py).
 from models.qwen38_endpoint_loader import load_model as load_qwen38_endpoint
 from models.deepseek_endpoint_loader import load_model as load_deepseek_endpoint
@@ -122,14 +123,11 @@ _MODEL_LOADERS = [
     # ("deepseek-v4-flash-284b", load_deepseek_endpoint),
 ]
 
-# Optional scoping for follow-up/re-runs of just one or a few models (e.g.
-# after fixing a loader bug for a model that was skipped in the main run)
-# without re-running every other model's already-completed work. Unset by
-# default, so normal full-sweep invocations are unaffected.
-_only = os.environ.get("EVAL_ONLY_MODELS")
-if _only:
-    _wanted = {m.strip() for m in _only.split(",") if m.strip()}
-    _MODEL_LOADERS = [(n, l) for n, l in _MODEL_LOADERS if n in _wanted]
+# Which labels this run uses, and any narrowing to a few models. The default
+# roster is the paper's eight, so the documented full-evaluation command
+# reproduces the published tables; EVAL_ROSTER=2026 selects the newer
+# checkpoints instead. See models/roster.py.
+_MODEL_LOADERS = select_roster(_MODEL_LOADERS)
 
 models = {}
 for _name, _loader in _MODEL_LOADERS:

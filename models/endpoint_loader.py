@@ -1,4 +1,4 @@
-"""Loader for models served over the KBS OpenAI-compatible HTTP endpoint.
+"""Loader for models served over an OpenAI-compatible HTTP endpoint.
 
 The other loaders in this package pull a checkpoint from the Hugging Face
 Hub and run it locally on the cluster GPUs. These models are instead served
@@ -41,9 +41,35 @@ from concurrent.futures import ThreadPoolExecutor
 # Both the endpoint address and its key are read from the environment rather
 # than hardcoded, so that no site-specific host and no credential is committed
 # to the repository. Set both before running an endpoint-served model.
-BASE_URL_ENV = "KBS_INFERENCE_BASE_URL"
-API_KEY_ENV = "KBS_INFERENCE_API_KEY"
-BASE_URL = os.environ.get(BASE_URL_ENV, "").rstrip("/")
+#
+# The names are deliberately generic. An environment variable named after the
+# serving institution identifies the authors of an anonymous submission, so
+# the site-specific prefix this project used is read from LLM_ENDPOINT_LEGACY_PREFIX
+# rather than written here; set it to keep an existing shell setup working.
+BASE_URL_ENV = "LLM_ENDPOINT_BASE_URL"
+API_KEY_ENV = "LLM_ENDPOINT_API_KEY"
+CONCURRENCY_ENV = "LLM_ENDPOINT_CONCURRENCY"
+
+
+def _endpoint_env(name, default=""):
+    """Value of an endpoint variable.
+
+    Falls back to <prefix>_<suffix> when LLM_ENDPOINT_LEGACY_PREFIX is set,
+    so a site that exported the older variable names needs no change.
+    """
+    value = os.environ.get(name)
+    if value:
+        return value
+    prefix = os.environ.get("LLM_ENDPOINT_LEGACY_PREFIX", "").strip()
+    if prefix:
+        suffix = name[len("LLM_ENDPOINT_"):]
+        value = os.environ.get(f"{prefix}_{suffix}")
+        if value:
+            return value
+    return default
+
+
+BASE_URL = _endpoint_env(BASE_URL_ENV).rstrip("/")
 
 # Routing prefixes used by the OpenCode client config but not by the
 # served model IDs themselves.
@@ -71,7 +97,7 @@ TIMEOUT_SECONDS = 180
 # Requests are independent and the endpoint serves them concurrently, so
 # prompts are issued in parallel -- at ~1-40s per call, a 5775-row task is
 # impractical serially. Order is preserved by the executor's map().
-CONCURRENCY = int(os.environ.get("KBS_INFERENCE_CONCURRENCY", "8"))
+CONCURRENCY = int(_endpoint_env(CONCURRENCY_ENV, "8") or "8")
 
 
 def normalize_model_id(model_id: str) -> str:
@@ -83,7 +109,7 @@ def normalize_model_id(model_id: str) -> str:
 
 
 def _api_key():
-    key = os.environ.get(API_KEY_ENV)
+    key = _endpoint_env(API_KEY_ENV)
     if not key:
         raise RuntimeError(
             f"{API_KEY_ENV} is not set; export it before running an endpoint model."
@@ -180,5 +206,5 @@ class EndpointPipeline:
 
 
 def load_model(model_id):
-    """Return an EndpointPipeline for a model served by the KBS endpoint."""
+    """Return an EndpointPipeline for a model served by the endpoint."""
     return EndpointPipeline(model_id)

@@ -1,7 +1,7 @@
-"""Scoring metrics for LLM Probe.
+"""Scoring metrics for the Tigrinya evaluation tasks.
 
 Translation quality is reported with chrF and character-level BLEU rather
-than word-level BLEU-4. Tigrinya references in this lexicon average ~1.37
+than word-level BLEU-4. The evaluated Tigrinya references average 1.18
 whitespace tokens, so word-level 4-grams are largely undefined: a dedicated
 MT system scoring 16.24% exact match on this data still yields
 BLEU-4(word) = 0.24. Character-level metrics are the meaningful signal at

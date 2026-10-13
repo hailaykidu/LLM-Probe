@@ -55,8 +55,8 @@ falcon3-10b              6.83       6.83  'noun\n<|assistant|>\nThe part of spee
 📌 Sample: {'English': 'a little', 'ExpectedTags': 'adverb', 'ModelOutputRaw': '<|assistant|>\nadverb...', 'ModelOutput': '<|assistant|> adverb', 'Match': True}
 
 🔤 Pos Tagging with qwen3.8-27b
-❌ Error with qwen3.8-27b: KBS_INFERENCE_API_KEY is not set; export it before running an endpoint model.
+❌ Error with qwen3.8-27b: LLM_ENDPOINT_API_KEY is not set; export it before running an endpoint model.
 
 🔤 Pos Tagging with gpt-oss-120b
-❌ Error with gpt-oss-120b: KBS_INFERENCE_API_KEY is not set; export it before running an endpoint model.
+❌ Error with gpt-oss-120b: LLM_ENDPOINT_API_KEY is not set; export it before running an endpoint model.
 ############ morphosyntax_probe ############

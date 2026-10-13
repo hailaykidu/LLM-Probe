@@ -1,4 +1,4 @@
-"""The KBS endpoint model roster, as configured in .claude/Test_f/config.py.
+"""The endpoint-served model roster.
 
 That file lists six models with "vllm/" or "ollama/" routing prefixes. Only
 three of them are actually served by the endpoint; the other three return a
