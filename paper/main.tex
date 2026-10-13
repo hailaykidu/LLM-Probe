@@ -542,9 +542,16 @@ morphosyntactic label, so the Tigrinya form can supply information the gloss
 does not already give on fewer than one item in twenty. A model scoring below
 the ceiling has not shown that it used the Tigrinya.
 
-Differences against the tagger baseline are tested with a one-sided binomial
-test at $n = 5{,}701$; \texttt{scripts/task\_ceiling.py} computes the ceiling,
-the ambiguity counts and the tests.
+Differences against the tagger baseline are tested with a one-sided McNemar
+test at $n = 5{,}701$. The test must be paired: the baseline is a system
+scored on the same items as the model, so the two sets of outcomes are
+correlated and only the discordant items carry information. Treating the
+baseline rate as a known constant and applying a binomial test, as is
+sometimes done, understates the variance of the difference and so overstates
+significance; on our data it moves the smallest margin by an order of
+magnitude ($p = 0.003$ against $p = 0.032$ for gemma-7b on morphosyntax).
+\texttt{scripts/task\_ceiling.py} computes the ceiling, the ambiguity counts
+and both tests.
 
 \section{Results}
 \label{sec:results}
@@ -581,9 +588,9 @@ two English-only references. No model reaches the ceiling.}
 \label{tab:pos}
 \end{table}
 
-Three models exceed the tagger baseline, each significantly
-($p < 10^{-4}$): mistral-7b by 21.19 points, gemma-7b by 19.01 and gemma-2b
-by 12.49. Falcon-7b and qwen-7b fall below the majority baseline; all three
+Three models exceed the tagger baseline, each by a margin that is
+unambiguous ($p < 10^{-50}$): mistral-7b by 21.19 points, gemma-7b by 19.01
+and gemma-2b by 12.49. Falcon-7b and qwen-7b fall below the majority baseline; all three
 seq2seq checkpoints are at or near zero.
 
 \textbf{No model reaches the English-only ceiling.} The best, mistral-7b,
@@ -632,9 +639,11 @@ ceiling.}
 \end{table}
 
 Only two models exceed the tagger baseline of 61.57: gemma-2b by 3.02 points
-($p < 10^{-4}$) and gemma-7b by 1.75 ($p = 0.003$). Both margins are
-statistically significant at $n = 5{,}701$, and both are small. The remaining
-six fall below the baseline, and five below the majority baseline of 52.38.
+($p = 1.6 \times 10^{-4}$) and gemma-7b by 1.75 ($p = 0.032$). Both margins
+reach significance at $n = 5{,}701$, and both are small; gemma-7b's is
+marginal, and would not survive a correction for testing eight models. The
+remaining six fall below the baseline, and five below the majority baseline
+of 52.38.
 
 Against the ceiling the picture is uniform: \textbf{the best model is 31.28
 points below what the English gloss alone makes available}, and the eight
@@ -754,8 +763,8 @@ reaches 0.81  more than an order of magnitude on chrF. For low-resource
 languages, model selection dominates model size.
 
 \paragraph{What we can claim about Tigrinya competence.} On the two tagging
-tasks, nothing. Three models beat the English tagger on POS and two on
-morphosyntax, each significantly at $n = 5{,}701$, but all eight sit well
+tasks, nothing. Three models beat the English tagger on POS decisively and
+two on morphosyntax by margins of 3.02 and 1.75 points, but all eight sit well
 below what the English gloss alone affords, and fewer than one headword in
 twenty is ambiguous given that gloss. These tasks cannot separate a model
 that reads Tigrinya from one that reads the English and answers worse than an

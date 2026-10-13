@@ -35,6 +35,16 @@ import collections
 import json
 import math
 import os
+import re
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from scripts.rescore_tasks import NLTK_TO_GOLD  # noqa: E402
+
+# Same tokenisation as the reported scoring, so the paired test scores the
+# rule the tables report.
+WORD_RE = re.compile(r"[a-z]+")
 
 # Task -> (sense-split gold file, label field). These are the 5,701-item sets
 # the two tagging tasks were actually scored against.
@@ -49,8 +59,12 @@ RESCORED = os.path.join("results", "evaluation_reports", "rescored_2026-09-28.js
 def one_sided_binomial(successes, n, p0):
     """P(X >= successes) under Binomial(n, p0), normal approximation.
 
-    n is 5,701 here, far into the regime where the approximation is accurate,
-    and an exact sum overflows a float. A continuity correction is applied.
+    Retained only for comparison with the paired test below. It treats the
+    baseline rate as a known constant, which it is not: the baseline is a
+    system scored on the same items, so the two sets of outcomes are paired
+    and correlated. Ignoring that correlation understates the variance of the
+    difference and so overstates significance. McNemar's test is the correct
+    one; see mcnemar().
     """
     mean = n * p0
     sd = math.sqrt(n * p0 * (1.0 - p0))
@@ -58,6 +72,60 @@ def one_sided_binomial(successes, n, p0):
         return float("nan"), 1.0
     z = (successes - 0.5 - mean) / sd
     return z, 0.5 * math.erfc(z / math.sqrt(2))
+
+
+def mcnemar(model_only, baseline_only):
+    """One-sided McNemar test that the model beats the baseline.
+
+    Both predictors are scored on the same items, so only the discordant
+    pairs carry information: model_only is the count of items the model got
+    right and the baseline wrong, baseline_only the reverse. Under the null
+    each discordant item falls either way with probability one half.
+
+    Uses the continuity-corrected normal approximation, valid here because
+    the discordant counts run to the hundreds or thousands.
+    """
+    n = model_only + baseline_only
+    if n == 0:
+        return float("nan"), 1.0
+    z = (abs(model_only - baseline_only) - 1) / math.sqrt(n)
+    p = 0.5 * math.erfc(z / math.sqrt(2))
+    # One-sided in the direction of the model: a model behind the baseline
+    # gets the complement rather than a small p-value.
+    return z, p if model_only >= baseline_only else 1.0 - p
+
+
+def paired_outcomes(root, task, model):
+    """Per-item correctness of the model and the English-only baseline.
+
+    Returns (model_correct, baseline_correct) as equal-length lists of bools
+    over the saved generations, or None if the result file is absent. The
+    model is scored by the first-token rule, the same one the reported table
+    uses; the baseline is the NLTK tagger reading only the English gloss.
+    """
+    path = os.path.join(root, "results", "evaluation_reports", task,
+                        f"{task}_{model}.json")
+    if not os.path.exists(path):
+        return None
+    rows = json.load(open(path, encoding="utf-8"))
+
+    try:
+        import nltk
+    except ImportError:
+        return None
+
+    model_ok, base_ok = [], []
+    for row in rows:
+        gold = set(WORD_RE.findall(str(row["ExpectedTags"]).lower()))
+        words = WORD_RE.findall(str(row.get("ModelOutput", "")).lower())
+        model_ok.append(bool(words) and words[0] in gold)
+
+        english = str(row.get("English", "")).split(",")[0].strip()
+        tagged = nltk.pos_tag(nltk.word_tokenize(english)) if english else []
+        predicted = NLTK_TO_GOLD.get(tagged[-1][1], "") if tagged else ""
+        base_ok.append(predicted in gold if predicted else False)
+
+    return model_ok, base_ok
 
 
 def ceiling(root, gold_file, label_field):
@@ -111,8 +179,9 @@ def main():
         print(f"  English-only tagger (NLTK)         {nltk_baseline:6.2f}%")
         print(f"  English-only CEILING (oracle)      {stats['ceiling']:6.2f}%")
         print()
-        print("  model          first-tok   vs NLTK      p   vs ceiling")
-        print("  " + "-" * 56)
+        print("  model          first-tok   vs NLTK    McNemar p"
+              "   (unpaired)  vs ceiling")
+        print("  " + "-" * 72)
 
         rows = sorted(
             ((m, v["first_token"]) for m, v in scores[task].items()
@@ -121,17 +190,35 @@ def main():
         )
         per_model = {}
         for model, score in rows:
-            successes = round(score / 100 * n)
-            z, p = one_sided_binomial(successes, n, nltk_baseline / 100)
             gap = score - stats["ceiling"]
-            mark = "" if p < 0.05 else "  n.s."
+
+            # Unpaired, as earlier versions of this script reported it.
+            successes = round(score / 100 * n)
+            _, p_binom = one_sided_binomial(successes, n, nltk_baseline / 100)
+
+            # Paired, which is the test the design calls for.
+            outcomes = paired_outcomes(root, task, model)
+            if outcomes is None:
+                p_mcnemar = float("nan")
+                discordant = (None, None)
+            else:
+                model_ok, base_ok = outcomes
+                b = sum(1 for m_, b_ in zip(model_ok, base_ok) if m_ and not b_)
+                c = sum(1 for m_, b_ in zip(model_ok, base_ok) if b_ and not m_)
+                _, p_mcnemar = mcnemar(b, c)
+                discordant = (b, c)
+
+            mark = "" if p_mcnemar < 0.05 else " n.s."
             print(f"  {model:<13} {score:7.2f}  {score - nltk_baseline:+8.2f}"
-                  f" {p:7.4f}{mark:>6}  {gap:+8.2f}")
+                  f"  {p_mcnemar:10.2e}{mark:>5}  {p_binom:10.2e}  {gap:+8.2f}")
             per_model[model] = {
                 "first_token": score,
                 "vs_nltk_baseline": score - nltk_baseline,
-                "p_value": p,
-                "significant_at_05": bool(p < 0.05),
+                "p_value_mcnemar": p_mcnemar,
+                "p_value_unpaired_binomial": p_binom,
+                "discordant_model_only": discordant[0],
+                "discordant_baseline_only": discordant[1],
+                "significant_at_05": bool(p_mcnemar < 0.05),
                 "vs_ceiling": gap,
             }
 

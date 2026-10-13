@@ -42,6 +42,20 @@ TASKS = {
     "morphosyntax_probe": "ExpectedTags",
 }
 
+# Penn Treebank tags -> this corpus's label vocabulary, for the English-only
+# baseline. A module constant rather than a local so that task_ceiling.py can
+# score the same baseline per item for the paired significance test; the two
+# must not drift apart.
+NLTK_TO_GOLD = {
+    "NN": "noun", "NNS": "noun", "NNP": "noun", "NNPS": "noun",
+    "VB": "verb", "VBD": "verb", "VBG": "verb", "VBN": "verb",
+    "VBP": "verb", "VBZ": "verb",
+    "JJ": "adjective", "JJR": "adjective", "JJS": "adjective", "DT": "adjective",
+    "RB": "adverb", "RBR": "adverb", "RBS": "adverb",
+    "IN": "preposition", "PRP": "pronoun", "PRP$": "pronoun",
+    "CC": "conjunction", "UH": "interjection",
+}
+
 
 def tags(text):
     return set(WORD_RE.findall(str(text).lower()))
@@ -95,15 +109,7 @@ def english_only_baseline(rows, gold_key):
                 nltk.download(pkg, quiet=True)
     except Exception:
         return None
-    mapping = {
-        "NN": "noun", "NNS": "noun", "NNP": "noun", "NNPS": "noun",
-        "VB": "verb", "VBD": "verb", "VBG": "verb", "VBN": "verb",
-        "VBP": "verb", "VBZ": "verb",
-        "JJ": "adjective", "JJR": "adjective", "JJS": "adjective", "DT": "adjective",
-        "RB": "adverb", "RBR": "adverb", "RBS": "adverb",
-        "IN": "preposition", "PRP": "pronoun", "PRP$": "pronoun",
-        "CC": "conjunction", "UH": "interjection",
-    }
+    mapping = NLTK_TO_GOLD
     ok = 0
     for r in rows:
         eng = str(r.get("English", "")).split(",")[0].strip()
