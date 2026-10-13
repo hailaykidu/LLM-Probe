@@ -146,36 +146,29 @@ This lexicon and these four tasks were introduced by
 
 Tigrinya remains severely underrepresented in NLP: a survey of over 50
 studies from 2011 to 2025 finds a field driven almost entirely by discrete
-resource-creation milestones rather than by modelling
-advances~\citep{gaim-park-2026-tigrinya}, a pattern echoed in broader surveys
-of Ethiopian-language NLP~\citep{tonja-etal-2023-ethiopian}. The resources
-that exist are small and task-specific: domain-specific
-Tigrinya$\rightarrow$English NMT by transfer from other Ge'ez-script
-languages~\citep{oktem-etal-2020-tigrinya}; sentiment transfer from English
-XLNet, reaching 78.88 F1 on 10k
-examples~\citep{tela-etal-2020-transferring}; and two question-answering
-sets, TiQuAD with 10.6k pairs over 572
-paragraphs~\citep{gaim-etal-2023-tiquad} and TiGQA with
-2,685~\citep{teklehaymanot-etal-2024-tigqa}. Tagging specifically has been
-approached with neural taggers over the small Nagaoka corpus, where a BiLSTM
-reaches 92\%~\citep{tesfagergish-kapociute-2020-pos}; those systems are
-trained on running text, whereas we evaluate untrained models on dictionary
-headwords.
+resource-creation milestones rather than modelling
+advances~\citep{gaim-park-2026-tigrinya}, a pattern echoed across Ethiopian
+languages~\citep{tonja-etal-2023-ethiopian}. Existing resources are small
+and task-specific: domain-adapted
+Tigrinya$\rightarrow$English NMT~\citep{oktem-etal-2020-tigrinya}, sentiment
+transfer from English XLNet~\citep{tela-etal-2020-transferring}, two
+question-answering sets~\citep{gaim-etal-2023-tiquad,teklehaymanot-etal-2024-tigqa},
+and neural taggers over the small Nagaoka corpus, where a BiLSTM reaches
+92\%~\citep{tesfagergish-kapociute-2020-pos}. Those taggers are trained on
+running text; we evaluate untrained models on dictionary headwords.
 
-Tigrinya appears in some multilingual benchmarks, such as Belebele, a
-parallel reading-comprehension set in 122 language
-variants~\citep{bandarkar-etal-2024-belebele}, and is absent from others:
+Tigrinya appears in some multilingual benchmarks, such as
+Belebele~\citep{bandarkar-etal-2024-belebele}, and is absent from others:
 MasakhaPOS, the largest POS dataset for African languages, covers 20
 languages under UD guidelines but not
 Tigrinya~\citep{dione-etal-2023-masakhapos}. AfroBench reports the same gap
-at scale, over 64 African languages and 15 tasks, and finds LLM performance
-tracking monolingual data availability~\citep{ojo-etal-2025-afrobench}. That
-is the structural pattern \citet{joshi-etal-2020-state} documented:
-representation in NLP venues tracks resource availability. It also bears on
-how a positive result here should be read, since
-\citet{blevins-zettlemoyer-2022-language} show that English pretraining
-corpora contain enough incidental non-English text to explain much
-cross-lingual transfer, so apparent Tigrinya ability need not come from
+over 64 languages and 15 tasks, with LLM performance tracking monolingual
+data availability~\citep{ojo-etal-2025-afrobench} --- the pattern
+\citet{joshi-etal-2020-state} documented, where representation in NLP venues
+tracks resource availability. This also bears on how a positive result
+should be read, since \citet{blevins-zettlemoyer-2022-language} show English
+pretraining corpora carry enough incidental non-English text to explain much
+cross-lingual transfer, so apparent Tigrinya ability need not reflect
 deliberate coverage.
 
 The lexicon and the four tasks used here were introduced by
@@ -218,64 +211,60 @@ Section~\ref{sec:results} shows why.
 
 The methodological core of this paper has a direct precedent in natural
 language inference. \citet{poliak-etal-2018-hypothesis} showed that a
-hypothesis-only model (one that never sees the premise, a degenerate
-solution by construction) significantly outperforms a majority-class
-baseline on a number of NLI datasets;
-\citet{gururangan-etal-2018-annotation} showed the same artefacts let a simple
-text classifier label the hypothesis alone correctly in about 67\% of SNLI and
-53\% of MultiNLI, concluding that model success ``has been overestimated''.
-\citet{mccoy-etal-2019-right} demonstrated that strong test-set scores can
-rest on fallible syntactic heuristics that collapse on controlled sets, and
-\citet{niven-kao-2019-probing} found BERT's 77\% on argument reasoning
-comprehension to be entirely accounted for by spurious statistical cues. Our
-English-only tagger is a hypothesis-only baseline in this sense: the prompt
-format \texttt{Phrase: \{Tigrinya\} (\{English\})} leaves the part of speech
-largely recoverable from the gloss, and the baseline reaching 60.38 is the
-lexicon-task analogue of the 67\% SNLI result.
+hypothesis-only model --- one that never sees the premise, a degenerate
+solution by construction --- significantly outperforms a majority-class
+baseline on several NLI datasets, and
+\citet{gururangan-etal-2018-annotation} showed the same artefacts let a
+classifier label the hypothesis alone correctly in about 67\% of SNLI,
+concluding that model success ``has been overestimated''. Related work finds
+strong scores resting on fallible syntactic
+heuristics~\citep{mccoy-etal-2019-right} or on spurious statistical cues
+that account for a model's performance
+entirely~\citep{niven-kao-2019-probing}. Our English-only tagger is a
+hypothesis-only baseline in this sense: the prompt format \texttt{Phrase:
+\{Tigrinya\} (\{English\})} leaves the part of speech largely recoverable
+from the gloss, and the baseline reaching 60.38 is the lexicon-task analogue
+of that 67\% SNLI result.
 
 For POS tagging specifically, \citet{kann-etal-2020-weakly} make the closest
 argument to ours: weakly supervised taggers reported to perform ``almost as
 well as supervised ones'' were evaluated on languages unlike truly
 low-resource ones, and on 15 genuinely low-resource languages the best model
-gets fewer than half the words right, with a strongest baseline macro-average
-of 39.11\%. They also note that such methods presuppose ``high-coverage and
-almost error-free dictionaries''  precisely the assumption our
-Section~\ref{subsec:iaa} annotator notes undermine, where the source
-dictionary contains mislabelled parts of speech and outright mistranslations.
-At the level of benchmark design, \citeauthor{reuel-etal-2024-betterbench}'s
-assessment of 46 best practices across 24 benchmarks identifies stating random
-performance as a scored criterion, since without it one cannot separate
-capability from chance or metric design~\citep{reuel-etal-2024-betterbench}.
+gets fewer than half the words right. They also note that such methods
+presuppose ``high-coverage and almost error-free dictionaries'' --- precisely
+the assumption the annotator notes behind Section~\ref{subsec:iaa} undermine,
+where the source dictionary carries mislabelled parts of speech and outright
+mistranslations. At the level of benchmark design,
+\citet{reuel-etal-2024-betterbench} assess 46 best practices across 24
+benchmarks and score stating random performance as a criterion, since
+without it capability cannot be separated from chance or metric design.
 
-\subsection{Scoring rules, answer extraction and prompt artefacts}
+\subsection{Scoring rules and prompt artefacts}
 
 Our finding that the matching rule moves reported accuracy on fixed outputs
 by up to 26 points between lenient rules, and by as much as 89 points once
 exact match is included, belongs to a growing literature on evaluation
-mechanics.
-\citet{tam-etal-2024-speak} show that constraining LLMs to structured output
-formats significantly degrades measured reasoning, and disentangle format
+mechanics. \citet{tam-etal-2024-speak} show that constraining LLMs to
+structured output formats degrades measured reasoning, and separate format
 errors from content by using an LLM as a ``perfect parser'' rather than a
-regex the mirror image of our problem, where permissive parsing
+regex --- the mirror image of our problem, where permissive parsing
 manufactures competence instead of destroying it.
 \citet{kirouane-petrocheilos-2026-thinking} document the same failure mode
-concretely in a low-resource setting: a scorer that scanned the whole response
-instead of the requested answer line produced a $+29.8$ pp artefact,
-one-directional against verbose outputs, and they conclude that ``any
-benchmark that requests an answer format must score that format first and
-report how often it was absent''. Our first-token rule is that recommendation
-applied; our exact / first-token / set-intersection triple reports the spread
-it would otherwise hide.
+in a low-resource setting: a scorer that scanned the whole response instead
+of the requested answer line produced a $+29.8$ pp artefact, one-directional
+against verbose outputs, concluding that ``any benchmark that requests an
+answer format must score that format first and report how often it was
+absent''. Our first-token rule is that recommendation applied, and the
+three-rule triple reports the spread it would otherwise hide.
 
 The prompt-echo column in Section~\ref{subsec:morph} relates to known
-label-copying behaviour. \citet{zhao-etal-2021-calibrate} show that few-shot
-LLM accuracy is destabilised by bias towards answers appearing in the prompt
-or common in pretraining, varying ``from near chance to near
-state-of-the-art'' with prompt format alone. When the gold distribution is
-53.7\% \texttt{noun} and the prompt example contains the word \texttt{noun}, a
-model that copies the example is scored correct by construction under
-set-intersection gemma-7b does this on 97.4\% of answers. We therefore
-treat echo rate as a reportable diagnostic rather than a footnote.
+label-copying behaviour: \citet{zhao-etal-2021-calibrate} show few-shot
+accuracy destabilised by bias towards answers appearing in the prompt,
+varying ``from near chance to near state-of-the-art'' with prompt format
+alone. When the gold distribution is 53.8\% \texttt{noun} and the prompt
+example contains \texttt{noun}, a model that copies the example is correct
+by construction under set-intersection --- gemma-7b does this on 97.4\% of
+answers --- so we treat echo rate as a reportable diagnostic.
 
 \subsection{Metrics, agreement and dictionary sources}
 
@@ -358,58 +347,33 @@ what it measures: a second POS task with a different prompt.
 
 % Wording here is anonymous and must stay so under the review option; see
 % CAMERA_READY.md for what changes once the byline is in place.
-A 500-item subset of the lexicon was annotated independently by two of the
-authors for part of speech, gender, number, category agreement and lexical
-alignment. Both are native speakers of Tigrinya. Each assigned labels
-separately using the annotation guide, and the two sheets were then compared
-to locate disagreements. The final sheet was compiled from those two sheets:
-\textbf{no third annotator took part, and no party outside the author group
-adjudicated}. We state this
-because it bounds what the coefficients below can mean, and because the
-compiled sheet is sometimes read as an independent adjudication, which it is
-not.
-
-The records are released as
-\texttt{POS\_english\_to\_tigrigna\_Annotated.xlsx} the two annotation
-sheets, the compiled sheet and the annotation guide that defines each value and \texttt{scripts/compute\_iaa.py} recomputes every figure below from
-them.
-
-The workbook carries no edit history: the annotators exchanged their sheets
-as messaging attachments that have since expired, so the labels are intact
-but the order and timing in which they were entered are not recoverable.
+A 500-item subset was annotated independently by two of the authors, both
+native speakers of Tigrinya, for part of speech, gender, number, category
+agreement and lexical alignment. Each assigned labels separately using the
+annotation guide; the two sheets were then compared and a final sheet
+compiled from them. \textbf{No third annotator took part, and no party
+outside the author group adjudicated}, which bounds what the coefficients
+below can mean: the compiled sheet is sometimes read as an independent
+adjudication, and it is not one. The records --- both annotation sheets, the
+compiled sheet and the guide that defines every permitted value --- are
+released as a single workbook, and \texttt{scripts/compute\_iaa.py}
+recomputes every figure here from it. The
+workbook carries no edit history: the annotators exchanged sheets as
+messaging attachments that have since expired, so the labels survive but the
+order in which they were entered does not.
 
 The five dimensions are not of one kind. The guide's instruction is to
-``verify and annotate'': gender, number, category agreement and lexical
-alignment are assigned from scratch, while the part-of-speech label arrives
-pre-filled from the source dictionary and is verified. The two annotators
-used that latitude very differently --- Annotator 1 corrected the
-dictionary's part of speech on 25 of 500 items, Annotator 2 on none --- so
-all 25 part-of-speech disagreements are of one shape: one annotator
-exercising the verification the guide asks for, the other accepting the
-dictionary.
+``verify and annotate'': four are assigned from scratch, while the
+part-of-speech label arrives pre-filled from the source dictionary and is
+verified. The annotators used that latitude very differently --- Annotator 1
+corrected the dictionary's part of speech on 25 of 500 items, Annotator 2 on
+none --- so all 25 part-of-speech disagreements have one shape: one
+annotator exercising the verification the guide asks for, the other
+accepting the dictionary. Where an annotator left a cell empty and the other
+assigned a label, that is not a matching judgement, so we count it as a
+disagreement and report Cohen's $\kappa$ over all 500 items with a blank as
+its own category (Table~\ref{tab:iaa}, in Appendix~\ref{app:iaa}).
 
-An annotator sometimes left a cell empty where the other assigned a label.
-Those are not matching judgements, so we count them as disagreements and
-report Cohen's $\kappa$ over all 500 items, with a blank treated as its own
-category (Table~\ref{tab:iaa}).
-
-\begin{table}[t]
-\centering
-\begin{tabular}{lrr}
-\toprule
-Dimension & $\kappa$ & Observed \\
-\midrule
-Part of speech     & 0.9076 & 0.9500 \\
-Gender             & 0.8079 & 0.9240 \\
-Number             & 0.6762 & 0.9280 \\
-Category agreement & 0.5912 & 0.9000 \\
-Lexical alignment  & 0.8487 & 0.9480 \\
-\bottomrule
-\end{tabular}
-\caption{Inter-annotator agreement on the 500-item subset, blanks counted as
-disagreements. All five dimensions are computed over all 500 items.}
-\label{tab:iaa}
-\end{table}
 
 Restricting instead to the items both annotators labelled raises every
 dimension --- 0.9076, 1.0000, 1.0000, 0.9815 and 0.9850 on 500, 420, 428, 445
@@ -470,27 +434,22 @@ perfectly confounded in this set.}
 \label{tab:models}
 \end{table*}
 
-\paragraph{A later run on newer models, and why it is not in the tables.}
-The eight models of Table~\ref{tab:models} are those the evaluation was run
-on in full. They are dated: none exceeds 7B parameters and three cannot
-follow an instruction. We later began a run on nine newer and larger
-checkpoints, which reached the time limit after completing part-of-speech
-tagging only; its log and its saved generations are released with the rest.
-We do not put it in the tables because it covers one of four tasks, but it
-does not sit quietly in the logs either, because its best model scores
-above ours: Falcon3-10B-Instruct reaches 82.62 under the task script's own
-scorer, against mistral-7b's 78.76 on the same rule.
+\paragraph{A later run on newer models.} The eight models above are those
+the evaluation was run on in full. They are dated: none exceeds 7B
+parameters and three cannot follow an instruction. A later run on nine newer
+and larger checkpoints reached its time limit after part-of-speech tagging
+alone, so it is not in the tables; its log and generations are released, and
+its best model scores above ours, Falcon3-10B-Instruct reaching 82.62 under
+the task script's own scorer against mistral-7b's 78.76.
 
-That comparison illustrates this paper's argument rather than undercutting
-it. Falcon3-10B emits its chat template into every one of the 5,701 answers
-(\texttt{<|assistant|> adverb}), so on the first-token rule this paper
-reports it scores \textbf{0.00}; strip the prefix and the same outputs score
-80.25; score them by set intersection and they reach 82.76. One model, one
-set of generations, and a range of 82 points depending on how the text is
-handled. A larger model does not escape the measurement problem, and the
-ceiling of Section~\ref{subsec:baselines} applies to it unchanged: 82.76 is
-still below the 96.49 an English-only oracle reaches, so the higher score is
-not evidence that it read the Tigrinya.
+That illustrates this paper's argument rather than undercutting it.
+Falcon3-10B emits its chat template into all 5,701 answers
+(\texttt{<|assistant|> adverb}), so under the first-token rule it scores
+\textbf{0.00}; strip the prefix and the same outputs give 80.25; score by
+set intersection and they give 82.76. One model, one set of generations, a
+range of 82 points. A larger model does not escape the measurement problem,
+and 82.76 is still below the 96.49 an English-only oracle reaches, so the
+higher score is not evidence that it read the Tigrinya.
 
 \paragraph{We do not compare architectures.} All five causal models are
 instruction-tuned and all three sequence-to-sequence models are raw pretrained
@@ -502,18 +461,14 @@ those checkpoints on this task rather than of their architecture.
 
 Generation sets \texttt{max\_new\_tokens=128} and
 \texttt{min\_new\_tokens=1} and nothing else, so each checkpoint decodes
-under its own \texttt{generation\_config.json}. We state this precisely
-because it is not uniform across the roster: Qwen1.5-7B-Chat ships
-\texttt{do\_sample=true} with temperature 0.7 and \texttt{top\_p} 0.8, so
-qwen-7b was sampled rather than decoded greedily, and its numbers carry
-sampling variance that the others may not. We did not apply each
-instruction-tuned model's chat template; prompts were passed as plain text,
-which is one reason the verbose and off-format answers of
-Section~\ref{subsec:scoring} are so common. Both choices are limitations
-rather than design decisions, and a rerun that fixed decoding to greedy and
-applied each chat template would be a cleaner measurement of the models;
-neither affects the paper's claims, which concern what the tasks can measure
-on fixed outputs. \texttt{xlm-roberta-base}~\citep{conneau-etal-2020-unsupervised}
+under its own \texttt{generation\_config.json}. This is not uniform:
+Qwen1.5-7B-Chat ships \texttt{do\_sample=true} at temperature 0.7, so
+qwen-7b was sampled, not decoded greedily. We also did not apply the
+instruction-tuned models' chat templates; prompts were passed as plain text,
+which is one reason the off-format answers of Section~\ref{subsec:scoring}
+are so common. Both are limitations rather than design choices, and neither
+affects claims about what the tasks can measure on fixed outputs.
+\texttt{xlm-roberta-base}~\citep{conneau-etal-2020-unsupervised}
 was included initially but fails on all tasks (its prompts contain no
 \texttt{<mask>} token) and is excluded.
 
@@ -799,43 +754,34 @@ example contains the majority gold label, a permissive scorer rewards it.
 Echo rate belongs in any report whose prompt contains a worked example.
 
 \paragraph{What we can claim about Tigrinya competence.} On the two tagging
-tasks, nothing: the tasks cannot separate a model that reads Tigrinya from
-one that reads the English gloss and answers worse than an oracle would.
+tasks, nothing: they cannot separate a model that reads Tigrinya from one
+that reads the English gloss and answers worse than an oracle would.
 Translation is the one task here not solvable from the prompt's English, and
 there the result is unambiguous --- no model translates into Tigrinya, while
 NLLB-200, which supports the language, is more than an order of magnitude
-better on chrF. For low-resource languages, model selection dominates model
-size; and even NLLB reaches only 16.24\% exact on dictionary headwords, so
-the difficulty is real rather than an artefact of our setup.
+better on chrF. Model selection dominates model size; and even NLLB reaches
+only 16.24\% exact on dictionary headwords, so the difficulty is real rather
+than an artefact of our setup.
 
 \section{Relation to prior work, and reproducibility}
 \label{sec:relation}
+\label{sec:reproducibility}
 
 This lexicon and these four tasks were introduced by \citet{llmprobe-2026},
-whose retraction has been requested.
+whose retraction has been requested. The results here are not a re-scoring
+of that paper's outputs: they come from new runs in September 2026 against a
+gold set rebuilt from the source lexicon, and differ in inputs as well as
+scoring. The earlier runs evaluated 3,899 items per tagging task against
+these 5,701, and the earlier gold stored an expected tag as
+\texttt{(adv)~adverb} rather than \texttt{adverb} and presented all
+comma-separated senses rather than one, so the prompts and the generations
+they elicit both differ. No number is carried over, and the two sets of
+results are not alternative measurements of the same quantity.
 
-The results reported here are not a re-scoring of that paper's outputs. They
-come from new runs carried out in September 2026, against a gold set rebuilt
-from the source lexicon, and the two differ in their inputs as well as in
-their scoring. The earlier runs evaluated 3,899 items per tagging task;
-these evaluate 5,701. The earlier gold carried the source dictionary's
-parenthetical notation, so an expected tag was stored as
-\texttt{(adv)~adverb} rather than \texttt{adverb}, and an entry was
-presented with all of its comma-separated Tigrinya senses rather than one.
-Prompts built from those entries differ, and so do the generations they
-elicit. No number is carried over, and the two sets of results are not
-alternative measurements of the same quantity.
-
-\label{sec:reproducibility}
-The lexicon, the gold label files, the saved model outputs, the annotation
-workbook and the scoring code accompany this submission as supplementary
-material, and will be released publicly on acceptance. Every figure in this
-paper is recomputed from those artifacts by a released command, and
-Appendix~\ref{app:repro} lists each table, the command that regenerates it
-and the artifact it reads. The supplementary material also holds the raw
-generation for every item, stored per task and per model, so a scoring rule
-other than the three reported here can be applied to the same outputs
-without re-running a model.
+The lexicon, the gold files, the saved outputs, the annotation workbook and
+the scoring code accompany this submission and will be released publicly on
+acceptance; Appendix~\ref{app:repro} gives the command that recomputes each
+reported table from them.
 
 \section{Limitations}
 \label{sec:limitations}
@@ -923,6 +869,24 @@ numbers, and it is why we report the task ceiling alongside every score.
 
 \section{Annotation records in detail}
 \label{app:iaa}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Dimension & $\kappa$ & Observed \\
+\midrule
+Part of speech     & 0.9076 & 0.9500 \\
+Gender             & 0.8079 & 0.9240 \\
+Number             & 0.6762 & 0.9280 \\
+Category agreement & 0.5912 & 0.9000 \\
+Lexical alignment  & 0.8487 & 0.9480 \\
+\bottomrule
+\end{tabular}
+\caption{Inter-annotator agreement on the 500-item subset, blanks counted as
+disagreements. All five dimensions are computed over all 500 items.}
+\label{tab:iaa}
+\end{table}
 
 What the released workbook does not carry is the history of how it was
 filled. The annotators exchanged their sheets as messaging attachments, and
