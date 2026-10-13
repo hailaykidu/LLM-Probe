@@ -412,27 +412,31 @@ interface~\citep{wolf-etal-2020-transformers} and run on a single compute
 node with four A100 GPUs, 32 CPU cores and 128\,GB of RAM
 (Table~\ref{tab:models}).
 
-\begin{table*}[t]
+\begin{table}[tb]
 \centering
 \small
-\begin{tabular}{llll}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llc@{}}
 \toprule
-Label & Checkpoint & Arch. & Inst. \\
+Label & Checkpoint & Inst. \\
 \midrule
-gemma-2b    & \texttt{google/gemma-2b-it}~\citep{gemma-2024}                  & causal  & yes \\
-gemma-7b    & \texttt{google/gemma-7b-it}~\citep{gemma-2024}                  & causal  & yes \\
-mistral-7b  & \texttt{Mistral-7B-Instruct-v0.2}~\citep{jiang-etal-2023-mistral} & causal  & yes \\
-qwen-7b     & \texttt{Qwen1.5-7B-Chat}~\citep{bai-etal-2023-qwen}             & causal  & yes \\
-falcon-7b   & \texttt{falcon-7b-instruct}~\citep{almazrouei-etal-2023-falcon} & causal  & yes \\
-mt5-small   & \texttt{google/mt5-small}~\citep{xue-etal-2021-mt5}             & seq2seq & no  \\
-mt5-large   & \texttt{google/mt5-large}~\citep{xue-etal-2021-mt5}             & seq2seq & no  \\
-byt5        & \texttt{google/byt5-small}~\citep{xue-etal-2022-byt5}           & seq2seq & no  \\
+gemma-2b    & \texttt{google/gemma-2b-it}        & yes \\
+gemma-7b    & \texttt{google/gemma-7b-it}        & yes \\
+mistral-7b  & \texttt{Mistral-7B-Instruct-v0.2}  & yes \\
+qwen-7b     & \texttt{Qwen1.5-7B-Chat}           & yes \\
+falcon-7b   & \texttt{falcon-7b-instruct}        & yes \\
+\midrule
+mt5-small   & \texttt{google/mt5-small}          & no  \\
+mt5-large   & \texttt{google/mt5-large}          & no  \\
+byt5        & \texttt{google/byt5-small}         & no  \\
 \bottomrule
 \end{tabular}
-\caption{Evaluated models. Architecture and instruction-tuning status are
-perfectly confounded in this set.}
+\caption{Evaluated models: five instruction-tuned causal above the rule,
+three raw span-denoising seq2seq below it. Architecture and
+instruction-tuning are perfectly confounded in this
+set~\citep{gemma-2024,jiang-etal-2023-mistral,bai-etal-2023-qwen,almazrouei-etal-2023-falcon,xue-etal-2021-mt5,xue-etal-2022-byt5}.}
 \label{tab:models}
-\end{table*}
+\end{table}
 
 \paragraph{A later run on newer models.} The eight models above are those
 the evaluation was run on in full. They are dated: none exceeds 7B
@@ -538,7 +542,7 @@ whose gold labels are too unreliable to support a conclusion.
 \subsection{POS tagging ($n = 5{,}701$)}
 \label{subsec:pos}
 
-\begin{table}[t]
+\begin{table}[tb]
 \centering
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrr}
@@ -572,14 +576,12 @@ seq2seq checkpoints are at or near zero.
 \textbf{No model reaches the English-only ceiling.} The best, mistral-7b,
 falls 14.93 points short of it; gemma-7b 17.10 and gemma-2b 23.63. Since the
 ceiling is what a system achieves from the gloss alone, the ordering above is
-not evidence that any model used the Tigrinya form. It is consistent with
-every model using the gloss and using it worse than an English-only oracle
-would.
-
-The exact column shows how brittle these numbers are. Gemma-7b scores 0.00\%
-exact and 79.39\% first-token: it always answers in a sentence, never a bare
-label. A reader given only one of these columns would draw opposite
-conclusions.
+not evidence that any model used the Tigrinya form: it is equally consistent
+with every model using the gloss, and using it worse than an oracle would.
+The exact column shows how brittle the numbers are --- gemma-7b scores 0.00
+exact and 79.39 first-token, always answering in a sentence and never a bare
+label, so a reader given one column alone would draw the opposite
+conclusion.
 
 \subsection{Morphosyntactic labelling ($n = 5{,}701$)}
 \label{subsec:morph}
@@ -587,7 +589,7 @@ conclusions.
 Because the gold is 96.8\% identical to the POS label
 (Section~\ref{subsec:annotations}), this is effectively a second POS task.
 
-\begin{table}[t]
+\begin{table}[tb]
 \centering
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrr}
@@ -640,7 +642,7 @@ Tigrinya references average 1.18 whitespace tokens, so word-level BLEU-4 is
 near-undefined; we report chrF and character-level BLEU
 (Table~\ref{tab:translation}).
 
-\begin{table}[t]
+\begin{table}[tb]
 \centering
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lrrrr}
@@ -713,18 +715,16 @@ the models emit Ge'ez-shaped strings that are not the target words
 \subsection{Lexical alignment}
 \label{subsec:alignment}
 
-We report this task for completeness but do not draw conclusions from it:
-2,208 of 5,783 alignment labels (38\%) are positional fallbacks
-(\texttt{AlignmentSource: auto}) rather than annotation. Format accuracy
-ranges from 0.0383 (mt5-large) to 0.5484 (gemma-2b); semantic accuracy from
-0.0012 (mt5-small) to 0.8876 (mistral-7b). The two measures diverge widely for
-individual models, which makes the task ill-posed as currently scored.
-
-We release its data and outputs nonetheless: the 3,575 manually verified rows
-are marked as such, so restricting to them or annotating the remaining 2,208
-would give a task this one cannot, and the divergence is itself another
-instance of the paper's point, two defensible scorers disagreeing on fixed
-outputs by more than the models differ.
+We report this task for completeness but draw no conclusion from it: 2,208
+of 5,783 alignment labels (38\%) are positional fallbacks
+(\texttt{AlignmentSource: auto}) rather than annotation, and its two
+measures diverge widely per model --- format accuracy from 0.0383
+(mt5-large) to 0.5484 (gemma-2b), semantic accuracy from 0.0012 (mt5-small)
+to 0.8876 (mistral-7b) --- which is the paper's point again, two defensible
+scorers disagreeing on fixed outputs by more than the models differ. We
+release its data and outputs as a resource for reposing the task: the 3,575
+verified rows are marked, so restricting to them or annotating the other
+2,208 would give a task this one cannot.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -777,11 +777,6 @@ these 5,701, and the earlier gold stored an expected tag as
 comma-separated senses rather than one, so the prompts and the generations
 they elicit both differ. No number is carried over, and the two sets of
 results are not alternative measurements of the same quantity.
-
-The lexicon, the gold files, the saved outputs, the annotation workbook and
-the scoring code accompany this submission and will be released publicly on
-acceptance; Appendix~\ref{app:repro} gives the command that recomputes each
-reported table from them.
 
 \section{Limitations}
 \label{sec:limitations}
@@ -855,7 +850,10 @@ chrF and character BLEU are computed with NLTK rather than sacreBLEU, so our
 chrF values are not directly comparable to sacreBLEU figures reported
 elsewhere; every comparison we draw is within this paper, between outputs
 scored by the same implementation, including the NLLB comparison. Package
-versions are listed in the released requirements file.
+versions are listed in the released requirements file. The lexicon, gold files, saved
+outputs, annotation workbook and scoring code accompany this submission and
+will be released publicly on acceptance; Appendix~\ref{app:repro} gives the
+command that recomputes each reported table from them.
 
 A risk specific to this work: a benchmark that reports high accuracy on a
 low-resource language can be cited as evidence that the language is served
